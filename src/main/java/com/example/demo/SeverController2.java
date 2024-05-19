@@ -14,18 +14,19 @@ public class SeverController2 {
     private final String NAVER_API_ID = "SaxdyV1a_KAviNQhXO5Z";
     private final String NAVER_API_SECRET = "21k6H8Ga3k";
     KeywordService ks = new KeywordService();
+    String sa;
 
     // http://localhost:8888/api/server/naver?startDate=2024-05-07&endDate=2024-05-08&groupName=범죄도시&keywords=범죄도시&device=mo&gender=f
     //http://localhost:8080/naver2?startDate=2024-03-07&endDate=2024-05-08&groupName=%EB%B2%94%EC%A3%84%EB%8F%84%EC%8B%9C&keywords=%EB%B2%94%EC%A3%84%EB%8F%84%EC%8B%9C
-    @GetMapping("/naver2")
-    public ResponseEntity<String> naver2(
+    @GetMapping("/search")
+    public ResponseEntity<String> search(
             @RequestParam String startDate,
             @RequestParam String endDate,
             @RequestParam String groupName,
             @RequestParam String keywords
-    ) {
-        String requestBody = String.format("{\"startDate\":\"%s\",\"endDate\":\"%s\",\"timeUnit\":\"month\",\"keywordGroups\":[{\"groupName\":\"%s\",\"keywords\":[\"%s\"]}],\"device\":\"mo\",\"gender\":\"f\"}",
-                startDate, endDate, groupName, keywords);
+    ) { //,"gender":"f"
+        String requestBody = String.format("{\"startDate\":\"2024-03-07\",\"endDate\":\"2024-05-18\",\"timeUnit\":\"month\",\"keywordGroups\":[{\"groupName\":\"%s\",\"keywords\":[\"%s\"]}],\"device\":\"mo\"}",
+                groupName, keywords);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -42,7 +43,7 @@ public class SeverController2 {
                 requestEntity,
                 String.class);
 
-        //ks.getKeywordData("제주도");
+        //sa = ks.getKeywordData(keywords);
 
         return response;
     }
