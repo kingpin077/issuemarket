@@ -17,8 +17,8 @@ public class SeverController2 {
 
     // http://localhost:8888/api/server/naver?startDate=2024-05-07&endDate=2024-05-08&groupName=범죄도시&keywords=범죄도시&device=mo&gender=f
     //http://localhost:8080/naver2?startDate=2024-03-07&endDate=2024-05-08&groupName=%EB%B2%94%EC%A3%84%EB%8F%84%EC%8B%9C&keywords=%EB%B2%94%EC%A3%84%EB%8F%84%EC%8B%9C
-    @GetMapping("/naver2")
-    public ResponseEntity<String> naver2(
+    @GetMapping("/search")
+    public ResponseEntity<String> search(
             @RequestParam String startDate,
             @RequestParam String endDate,
             @RequestParam String groupName,
@@ -42,7 +42,7 @@ public class SeverController2 {
                 requestEntity,
                 String.class);
 
-        //ks.getKeywordData("제주도");
+        ks.getKeywordData("제주도");
 
         return response;
     }
