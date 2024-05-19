@@ -36,4 +36,9 @@ public class UserController {
         model.addAttribute("error", "로그인 실패");
         return "login";
     }
+
+    @GetMapping("/main")
+    public String mainPage() {
+        return "main";
+    }
 }

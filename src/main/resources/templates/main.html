@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main</title>
+    <link rel="stylesheet" type="text/css" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{css/globals.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{css/style.css}" />
+</head>
+<body>
+<div class="box">
+    <div class="group">
+        <div class="overlap-group">
+            <div class="homepage">
+                <div class="element-table">
+                    <div class="text-wrapper">Col 1</div>
+                    <div class="div">Col 2</div>
+                    <div class="text-wrapper-2">Col 3</div>
+                    <div class="list">
+                        <div class="frame">
+                            <div class="text-wrapper-3">Row 1</div>
+                            <div class="text-wrapper-4">123</div>
+                            <div class="text-wrapper-5">456</div>
+                        </div>
+                        <div class="frame">
+                            <div class="text-wrapper-3">Row 2</div>
+                            <div class="text-wrapper-4">123</div>
+                            <div class="text-wrapper-5">456</div>
+                        </div>
+                        <div class="frame">
+                            <div class="text-wrapper-3">Row 3</div>
+                            <div class="text-wrapper-4">123</div>
+                            <div class="text-wrapper-5">456</div>
+                        </div>
+                        <div class="frame">
+                            <div class="text-wrapper-3">Row 4</div>
+                            <div class="text-wrapper-4">123</div>
+                            <div class="text-wrapper-5">456</div>
+                        </div>
+                        <div class="frame">
+                            <div class="text-wrapper-3">Row 5</div>
+                            <div class="text-wrapper-4">123</div>
+                            <div class="text-wrapper-5">456</div>
+                        </div>
+                        <div class="frame">
+                            <div class="text-wrapper-3">Row 6</div>
+                            <div class="text-wrapper-4">123</div>
+                            <div class="text-wrapper-5">456</div>
+                        </div>
+                        <div class="frame">
+                            <div class="text-wrapper-3">Row 7</div>
+                            <div class="text-wrapper-4">123</div>
+                            <div class="text-wrapper-5">456</div>
+                        </div>
+                    </div>
+                    <div class="title">실시간 인기순위</div>
+                </div>
+                <div class="element-table-2">
+                    <div class="text-wrapper-6">Col 1</div>
+                    <div class="text-wrapper-7">Col 2</div>
+                    <div class="text-wrapper-8">Col 3</div>
+                    <div class="list-2">
+                        <div class="frame">
+                            <div class="text-wrapper-9">Row 1</div>
+                            <div class="text-wrapper-10">123</div>
+                            <div class="text-wrapper-11">456</div>
+                        </div>
+                        <div class="frame">
+                            <div class="text-wrapper-9">Row 2</div>
+                            <div class="text-wrapper-10">123</div>
+                            <div class="text-wrapper-11">456</div>
+                        </div>
+                        <div class="frame">
+                            <div class="text-wrapper-9">Row 3</div>
+                            <div class="text-wrapper-10">123</div>
+                            <div class="text-wrapper-11">456</div>
+                        </div>
+                        <div class="frame">
+                            <div class="text-wrapper-9">Row 4</div>
+                            <div class="text-wrapper-10">123</div>
+                            <div class="text-wrapper-11">456</div>
+                        </div>
+                        <div class="frame">
+                            <div class="text-wrapper-9">Row 5</div>
+                            <div class="text-wrapper-10">123</div>
+                            <div class="text-wrapper-11">456</div>
+                        </div>
+                        <div class="frame">
+                            <div class="text-wrapper-9">Row 6</div>
+                            <div class="text-wrapper-10">123</div>
+                            <div class="text-wrapper-11">456</div>
+                        </div>
+                        <div class="frame">
+                            <div class="text-wrapper-9">Row 7</div>
+                            <div class="text-wrapper-10">123</div>
+                            <div class="text-wrapper-11">456</div>
+                        </div>
+                    </div>
+                    <div class="title">기간별 인기순위</div>
+                </div>
+            </div>
+            <div class="element-input-field-with">
+                <!-- Adding form to collect input and submit it to Spring Boot -->
+                <form action="/submit" method="post" class="d-flex">
+                    <div class="form-group mr-2">
+                        <input type="text" id="inputField" name="inputField" class="form-control" placeholder="Placeholder" required>
+                    </div>
+                    <button type="submit" class="btn btn-dark bigbutton">
+                        <div class="text-wrapper-12">Submit</div>
+                    </button>
+                </form>
+            </div>
+            <div class="element-sidebar">
+                <div class="list-3">
+                    <div class="menu-item"><div class="text-wrapper-13">Discover</div></div>
+                    <div class="menu-item-2">
+                        <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/home.svg" />
+                        <div class="text-wrapper-14">Home</div>
+                    </div>
+                    <div class="menu-item-3">
+                        <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/search.svg" />
+                        <div class="text-wrapper-14">영화</div>
+                    </div>
+                    <div class="menu-item-3">
+                        <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                        <div class="text-wrapper-14">음악</div>
+                    </div>
+                    <div class="menu-item-3">
+                        <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                        <div class="text-wrapper-14">배우</div>
+                    </div>
+                    <div class="menu-item-3">
+                        <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                        <div class="text-wrapper-14">가수</div>
+                    </div>
+                </div>
+                <div class="list-4">
+                    <div class="div-wrapper"><div class="text-wrapper-15">Library</div></div>
+                    <div class="menu-item-3">
+                        <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/list.svg" />
+                        <div class="text-wrapper-14">필터링</div>
+                    </div>
+                    <div class="menu-item-3">
+                        <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/music.svg" />
+                        <div class="text-wrapper-14">즐겨찾기</div>
+                    </div>
+                </div>
+                <div class="title-2">Menu</div>
+            </div>
+            <div class="element-header-navigation">
+                <div class="items">
+                    <button type="button" class="btn btn-light"><div class="text-wrapper-16">Page1</div></button>
+                    <button type="button" class="btn btn-light"><div class="text-wrapper-16">Page2</div></button>
+                    <button type="button" class="btn btn-light"><div class="text-wrapper-16">Page3</div></button>
+                    <button type="button" class="btn btn-dark" onclick="location.href='login'"><div class="text-wrapper-17">로그인</div></button>
+                </div>
+                <div class="text-wrapper-18"><h2 class="display-3">Issue Market</h2></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
