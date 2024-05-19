@@ -23,9 +23,9 @@ public class SeverController2 {
             @RequestParam String endDate,
             @RequestParam String groupName,
             @RequestParam String keywords
-    ) {
-        String requestBody = String.format("{\"startDate\":\"%s\",\"endDate\":\"%s\",\"timeUnit\":\"month\",\"keywordGroups\":[{\"groupName\":\"%s\",\"keywords\":[\"%s\"]}],\"device\":\"mo\",\"gender\":\"f\"}",
-                startDate, endDate, groupName, keywords);
+    ) { //,"gender":"f"
+        String requestBody = String.format("{\"startDate\":\"2024-03-07\",\"endDate\":\"2024-05-18\",\"timeUnit\":\"month\",\"keywordGroups\":[{\"groupName\":\"%s\",\"keywords\":[\"%s\"]}],\"device\":\"mo\"}",
+                groupName, keywords);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
