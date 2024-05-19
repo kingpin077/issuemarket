@@ -1,6 +1,6 @@
 #inputField {
-  width: 800px; /* 너비를 조정 */
-  height: 200px; /* 높이를 submit 버튼과 동일하게 */
+  width: 800px;
+  height: 200px;
   padding: 14px 24px;
   font-size: 16px;
   border: 1px solid #e0e0e0;
@@ -10,7 +10,7 @@
 
 .box {
   width: 2700px;
-  height: 100%; /* 뷰포트의 높이에 맞게 조정 */
+  height: 100%;
   overflow: auto;
 }
 
@@ -21,7 +21,7 @@
 .list-3,
 .list-4,
 .items {
-  overflow: auto; /* 필요에 따라 설정 */
+  overflow: auto;
 }
 
 .box .group {

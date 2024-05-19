@@ -13,4 +13,9 @@ public class hello {
 
         return ks.getKeywordData("범죄도시");
     }
+
+    @GetMapping ("/keyword_submit")
+    public String keywordSubmit() {
+        return ks.getKeywordData("범죄도시");
+    }
 }
