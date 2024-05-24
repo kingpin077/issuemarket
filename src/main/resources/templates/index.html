@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keyword Search</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<h1>Keyword Search</h1>
+<form id="searchForm">
+    <label for="keyword">Keyword:</label>
+    <input type="text" id="keyword" name="keyword" required>
+    <button type="submit">Search</button>
+</form>
+<h2>Search Results</h2>
+<div id="results">
+    <h3>Keyword Data</h3>
+    <pre id="keywordData"></pre>
+    <h3>Gender Ratio</h3>
+    <canvas id="genderChart" width="400" height="400"></canvas>
+    <h3>Age Ratio</h3>
+    <canvas id="ageChart" width="400" height="400"></canvas>
+</div>
+<script>
+    document.getElementById('searchForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const keyword = document.getElementById('keyword').value;
+        fetch(`/search?startDate=2024-04-22&endDate=2024-05-22&groupName=${keyword}&keywords=${keyword}&gender=f`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('keywordData').textContent = JSON.stringify(data.naverData, null, 2);
+                const genderData = data.kakaoData.gender;
+                const ageData = data.kakaoData.age;
+
+                const genderCtx = document.getElementById('genderChart').getContext('2d');
+                new Chart(genderCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Male', 'Female'],
+                        datasets: [{
+                            data: [genderData.male, genderData.female],
+                            backgroundColor: ['#36A2EB', '#FF6384']
+                        }]
+                    }
+                });
+
+                const ageCtx = document.getElementById('ageChart').getContext('2d');
+                new Chart(ageCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['10', '20', '30', '40', '50', '60'],
+                        datasets: [{
+                            data: [ageData['10'], ageData['20'], ageData['30'], ageData['40'], ageData['50'], ageData['60']],
+                            backgroundColor: '#4BC0C0'
+                        }]
+                    }
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
+</body>
+</html>
