@@ -26,7 +26,7 @@ public class TestService {
         return entities.stream().map(entity -> {
             TestDTO dto = new TestDTO();
             dto.setKeyword(entity.getKeyword());
-            dto.setTotal(entity.getTotal());
+            dto.setPc(entity.getPc());
             return dto;
         }).collect(Collectors.toList());
     }
