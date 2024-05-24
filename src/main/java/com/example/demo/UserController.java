@@ -4,12 +4,16 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.Optional;
 
 @Controller
 public class UserController {
     @Autowired
     private UserRepository userRepository;
+   @Autowired
+    private TestService testService;
 
     @GetMapping("/login")
     public String homepage(){
@@ -38,7 +42,13 @@ public class UserController {
     }
 
     @GetMapping("/main")
-    public String mainPage() {
+    public String mainPage(Model model, Model model2) {
+        List<TestDTO> keywords = testService.findAllByTotalOrderByDesc();
+        System.out.println("Keywords: " + keywords); // 데이터 확인
+        List<TestDTO> keywords2 = testService.findAllByPcOrderByDesc();
+        System.out.println("Keywords2: " + keywords2); // 데이터 확인
+        model.addAttribute("keyword", testService.findAllByTotalOrderByDesc());
+        model2.addAttribute("keyword2", testService.findAllByPcOrderByDesc());
         return "main";
     }
 

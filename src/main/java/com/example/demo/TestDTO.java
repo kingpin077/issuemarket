@@ -55,12 +55,6 @@ public class TestDTO {
     // toString 등 필요한 메서드 추가
     @Override
     public String toString() {
-        return "TestDTO{" +
-                "no=" + no +
-                ", keyword='" + keyword + '\'' +
-                ", mobile=" + mobile +
-                ", pc=" + pc +
-                ", total=" + total +
-                '}';
+        return "keyword='" + keyword;
     }
 }

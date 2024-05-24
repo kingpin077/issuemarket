@@ -135,7 +135,7 @@
 }
 
 .box .text-wrapper-4 {
-  left: 587px;
+  left: 570px;
   position: absolute;
   top: 11px;
   font-family: "Inter", Helvetica;
@@ -149,17 +149,16 @@
 }
 
 .box .text-wrapper-5 {
-  left: 662px;
+  width: 529px;
+  left: 0px;
   position: absolute;
   top: 11px;
   font-family: "Inter", Helvetica;
-  font-weight: 400;
+  font-weight: 500;
   color: #000000;
   font-size: 16px;
-  text-align: right;
   letter-spacing: 0;
   line-height: 24px;
-  white-space: nowrap;
 }
 
 .box .title {
@@ -167,7 +166,7 @@
   top: 23px;
   left: 24px;
   font-family: "Inter", Helvetica;
-  font-weight: 600;
+  font-weight: 400;
   color: #000000;
   font-size: 16px;
   letter-spacing: 0;
@@ -190,12 +189,11 @@
 
 .box .text-wrapper-6 {
   position: absolute;
-  width: 497px;
-  top: 63px;
-  left: 24px;
+  top: 11px;
+  left: 570px;
   font-family: "Inter", Helvetica;
-  font-weight: 600;
-  color: #828282;
+  font-weight: 400;
+  color: #000000;
   font-size: 16px;
   letter-spacing: 0;
   line-height: 24px;

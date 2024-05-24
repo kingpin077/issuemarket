@@ -13,92 +13,32 @@
         <div class="overlap-group">
             <div class="homepage">
                 <div class="element-table">
-                    <div class="text-wrapper">Col 1</div>
-                    <div class="div">Col 2</div>
-                    <div class="text-wrapper-2">Col 3</div>
-                    <div class="list">
-                        <div class="frame">
-                            <div class="text-wrapper-3">Row 1</div>
-                            <div class="text-wrapper-4">123</div>
-                            <div class="text-wrapper-5">456</div>
-                        </div>
-                        <div class="frame">
-                            <div class="text-wrapper-3">Row 2</div>
-                            <div class="text-wrapper-4">123</div>
-                            <div class="text-wrapper-5">456</div>
-                        </div>
-                        <div class="frame">
-                            <div class="text-wrapper-3">Row 3</div>
-                            <div class="text-wrapper-4">123</div>
-                            <div class="text-wrapper-5">456</div>
-                        </div>
-                        <div class="frame">
-                            <div class="text-wrapper-3">Row 4</div>
-                            <div class="text-wrapper-4">123</div>
-                            <div class="text-wrapper-5">456</div>
-                        </div>
-                        <div class="frame">
-                            <div class="text-wrapper-3">Row 5</div>
-                            <div class="text-wrapper-4">123</div>
-                            <div class="text-wrapper-5">456</div>
-                        </div>
-                        <div class="frame">
-                            <div class="text-wrapper-3">Row 6</div>
-                            <div class="text-wrapper-4">123</div>
-                            <div class="text-wrapper-5">456</div>
-                        </div>
-                        <div class="frame">
-                            <div class="text-wrapper-3">Row 7</div>
-                            <div class="text-wrapper-4">123</div>
-                            <div class="text-wrapper-5">456</div>
-                        </div>
-                    </div>
+                    <div class="text-wrapper">키워드</div>
+                    <div class="div">검색량</div>
                     <div class="title">실시간 인기순위</div>
+                    <div class="list">
+                            <div th:each="keywordItem : ${keyword}">
+                                <div class="frame">
+                                <div class="text-wrapper-3" th:text="${keywordItem.getKeyword()}"></div>
+                                <div class="text-wrapper-4" th:text="${keywordItem.getTotal()}"></div>
+                                </div>
+                            </div>
+                    </div>
                 </div>
                 <div class="element-table-2">
-                    <div class="text-wrapper-6">Col 1</div>
-                    <div class="text-wrapper-7">Col 2</div>
-                    <div class="text-wrapper-8">Col 3</div>
-                    <div class="list-2">
-                        <div class="frame">
-                            <div class="text-wrapper-9">Row 1</div>
-                            <div class="text-wrapper-10">123</div>
-                            <div class="text-wrapper-11">456</div>
-                        </div>
-                        <div class="frame">
-                            <div class="text-wrapper-9">Row 2</div>
-                            <div class="text-wrapper-10">123</div>
-                            <div class="text-wrapper-11">456</div>
-                        </div>
-                        <div class="frame">
-                            <div class="text-wrapper-9">Row 3</div>
-                            <div class="text-wrapper-10">123</div>
-                            <div class="text-wrapper-11">456</div>
-                        </div>
-                        <div class="frame">
-                            <div class="text-wrapper-9">Row 4</div>
-                            <div class="text-wrapper-10">123</div>
-                            <div class="text-wrapper-11">456</div>
-                        </div>
-                        <div class="frame">
-                            <div class="text-wrapper-9">Row 5</div>
-                            <div class="text-wrapper-10">123</div>
-                            <div class="text-wrapper-11">456</div>
-                        </div>
-                        <div class="frame">
-                            <div class="text-wrapper-9">Row 6</div>
-                            <div class="text-wrapper-10">123</div>
-                            <div class="text-wrapper-11">456</div>
-                        </div>
-                        <div class="frame">
-                            <div class="text-wrapper-9">Row 7</div>
-                            <div class="text-wrapper-10">123</div>
-                            <div class="text-wrapper-11">456</div>
+                    <div class="text-wrapper">키워드</div>
+                    <div class="div">검색량</div>
+                    <div class="title">기간별 인기순위</div>
+                    <div class="list">
+                        <div th:each="keywordItem2 : ${keyword2}">
+                            <div class="frame">
+                                <div class="text-wrapper-5" th:text="${keywordItem2.getKeyword()}"></div>
+                                <div class="text-wrapper-6" th:text="${keywordItem2.getTotal()}"></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="title">기간별 인기순위</div>
                 </div>
-            </div>
+
             <div class="element-input-field-with">
                 <!-- Adding form to collect input and submit it to Spring Boot -->
                 <form action="/submit" method="post" class="d-flex">
@@ -158,6 +98,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 </body>
 </html>

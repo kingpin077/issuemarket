@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import com.example.demo.TestEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,4 +13,5 @@ public interface TestRepository extends JpaRepository<TestEntity, Long> {
     List<TestEntity> findTop10ByOrderByMobileDesc();
 
     List<TestEntity> findTop10ByOrderByTotalDesc();
+
 }

@@ -25,8 +25,4 @@ public class TestController {
         return testService.findAllByMobileOrderByDesc();
     }
 
-    @GetMapping("/test3")
-    public List<TestDTO> getTotalTestData() {
-        return testService.findAllByTotalOrderByDesc();
-    }
 }

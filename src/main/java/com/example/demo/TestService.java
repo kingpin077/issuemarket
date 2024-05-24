@@ -6,6 +6,8 @@ import com.example.demo.TestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,11 +25,8 @@ public class TestService {
 
         return entities.stream().map(entity -> {
             TestDTO dto = new TestDTO();
-            //dto.setNo(entity.getNo());
             dto.setKeyword(entity.getKeyword());
-            // dto.setMobile(entity.getMobile());
-            dto.setPc(entity.getPc());
-            // dto.setTotal(entity.getTotal());
+            dto.setTotal(entity.getTotal());
             return dto;
         }).collect(Collectors.toList());
     }
@@ -52,13 +51,11 @@ public class TestService {
 
         return entities.stream().map(entity -> {
             TestDTO dto = new TestDTO();
-            //dto.setNo(entity.getNo());
             dto.setKeyword(entity.getKeyword());
-            //dto.setMobile(entity.getMobile());
-            //dto.setPc(entity.getPc());
             dto.setTotal(entity.getTotal());
             return dto;
         }).collect(Collectors.toList());
     }
+
 
 }
