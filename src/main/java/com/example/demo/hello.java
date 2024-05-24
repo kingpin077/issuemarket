@@ -7,11 +7,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class hello {
     String a;
     KeywordService ks = new KeywordService();
+    SeverController2 sv =  new SeverController2();
 
     @GetMapping ("/hc")
     public String hello() {
 
-        return ks.getKeywordData("범죄도시");
+        return String.valueOf(sv.getKeywordRatio("고혼진"));
     }
 
     @GetMapping ("/keyword_submit")

@@ -51,7 +51,6 @@ public class KeywordService {
 
             int responseCode = con.getResponseCode();
             BufferedReader br;
-            System.out.println("responseCode : "+responseCode);
             if(responseCode == 200) {
                 br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
             }
@@ -64,7 +63,6 @@ public class KeywordService {
                 response.append(inputLine);
             }
             br.close();
-            //System.out.println("Response : "+response.toString());
             return response.toString();
 
         } catch (Exception e) {
@@ -74,7 +72,6 @@ public class KeywordService {
     }
     public String getKeywordData(String keyword) {
         String jsonResponse = requestKeyword(keyword);
-        //System.out.println(keyword);
         if (jsonResponse == null) {
             return "{}";
         }
