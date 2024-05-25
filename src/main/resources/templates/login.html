@@ -4,15 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" type="text/css" th:href="@{css/styles.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{css/login_style.css}" />
 </head>
 <body>
+
 <div class="container" id="container">
+    <div class="form-container sign-up-container">
+        <form action="signup" method="post">
+            <h1>Create Account</h1>
+            <input type="text" name="userId" placeholder="아이디" />
+            <input type="password" name="userPwd" placeholder="패스워드" />
+            <input type="text" name="userName" placeholder="사용자 이름" />
+            <div class="gender-container">
+                <span>성별  &nbsp;</span>
+                <div class="radio-group">
+                    <label for="male"><input type="radio" id="male" name="gender" value="1" checked/>남성&nbsp;</label>
+                    <label for="female"><input type="radio" id="female" name="gender" value="0"/>여성</label>
+                </div>
+            </div>
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+
     <div class="form-container sign-in-container">
         <form action="/login_process" method="post">
             <h1>Sign in</h1>
-            <input type="text" placeholder="User ID" name="userId" />
-            <input type="password" placeholder="Password" name="userPwd"/>
+            <input type="text" placeholder="아이디" name="userId" />
+            <input type="password" placeholder="패스워드" name="userPwd"/>
             <a href="#">Forgot your password?</a>
             <button type="submit">Login</button>
         </form>
@@ -27,11 +45,25 @@
             <div class="overlay-panel overlay-right">
                 <h1>Hello, Friend!</h1>
                 <p>Enter your personal details and start journey with us</p>
-                <button class="ghost" id="signUp">Sign Up</button>
+                    <button class="ghost" id="signUp">Sign Up</button>
             </div>
         </div>
     </div>
 </div>
 <p th:text="${error}"></p>
+
+<script>
+    const signUpButton = document.getElementById('signUp');
+    const signInButton = document.getElementById('signIn');
+    const container = document.getElementById('container');
+
+    signUpButton.addEventListener('click', () => {
+        container.classList.add("right-panel-active");
+    });
+
+    signInButton.addEventListener('click', () => {
+        container.classList.remove("right-panel-active");
+    });
+</script>
 </body>
 </html>

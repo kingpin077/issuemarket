@@ -1,5 +1,12 @@
-package com.example.demo;
+package com.example.demo.Controller;
 
+import com.example.demo.DTO.UserDTO;
+import com.example.demo.Entity.UserEntity;
+import com.example.demo.TestDTO;
+import com.example.demo.TestService;
+import com.example.demo.Repository.UserRepository;
+import com.example.demo.Service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
@@ -8,12 +15,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Controller
 public class UserController {
     @Autowired
     private UserRepository userRepository;
-   @Autowired
+    @Autowired
     private TestService testService;
+    private final UserService userService;
 
     @GetMapping("/login")
     public String homepage(){
@@ -32,12 +41,25 @@ public class UserController {
 
     @PostMapping("/login_process")
     public String login(@RequestParam("userId") String userId, @RequestParam("userPwd") String userPwd, Model model) {
-        Optional<User> optUser = userRepository.findByUserId(userId);
+        Optional<UserEntity> optUser = userRepository.findByUserId(userId);
         if (optUser.isPresent() && optUser.get().getUserPwd().equals(userPwd)) {
             System.out.println("Database userPwd: " + optUser.get().getUserPwd());
             return "success";
         }
         model.addAttribute("error", "로그인 실패");
+        return "login";
+    }
+
+    @GetMapping("/signup")
+    public String sign_Page(){
+        return  "signup";
+    }
+
+    @PostMapping("/signup")
+    public String jogin(@ModelAttribute UserDTO userDTO) {
+        // System.out.println("userDTO = " + userDTO);
+        userService.createUser(userDTO);
+
         return "login";
     }
 
