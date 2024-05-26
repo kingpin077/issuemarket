@@ -59,7 +59,7 @@ public class SeverController2 {
         RestTemplate restTemplate = new RestTemplate();
 
         String q, from, to, device;
-        q = "고혼진";
+        q = keyword;
         from = "20240422";
         to = "20240522";
         device = "m";
