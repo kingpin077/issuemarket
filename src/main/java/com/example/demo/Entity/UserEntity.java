@@ -16,7 +16,7 @@ public class UserEntity {
     @Column(name="user_code", unique = true)
     private int userCode;
 
-    @Column(name="user_id", unique = true)
+    @Column(name="user_id")
     private String userId;
 
     @Column(name="user_pwd")
