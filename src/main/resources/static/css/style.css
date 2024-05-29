@@ -1,17 +1,17 @@
 #inputField {
-  width: 800px;
-  height: 200px;
+  width: 800px; /* 너비를 조정 */
+  height: 200px; /* 높이를 submit 버튼과 동일하게 */
   padding: 14px 24px;
   font-size: 16px;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   box-shadow: 0px 1px 2px #0000000d;
+  margin-left: 20px;
 }
 
 .box {
-  width: 2700px;
-  height: 100%;
-  overflow: auto;
+  width: 100%;
+  height: 100vh; /* 뷰포트의 높이에 맞게 조정 */
 }
 
 .element-table,
@@ -19,17 +19,14 @@
 .list-2,
 .element-input-field-with,
 .list-3,
-.list-4,
-.items {
-  overflow: auto;
+.list-4 {
+  overflow: auto; /* 필요에 따라 설정 */
 }
 
 .box .group {
-  position: fixed;
-  width: 2700px;
-  height: 1660px;
-  top: 0;
-  left: 0;
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .box .overlap-group {
@@ -51,7 +48,7 @@
   width: 740px;
   height: 690px;
   top: 749px;
-  left: 639px;
+  left: 600px;
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid;
@@ -166,7 +163,7 @@
   top: 23px;
   left: 24px;
   font-family: "Inter", Helvetica;
-  font-weight: 400;
+  font-weight: 600;
   color: #000000;
   font-size: 16px;
   letter-spacing: 0;
@@ -179,7 +176,7 @@
   width: 708px;
   height: 690px;
   top: 749px;
-  left: 1698px;
+  left: 1678px;
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid;
@@ -343,16 +340,21 @@
   white-space: nowrap;
 }
 
-.box .element-sidebar {
+.element-sidebar {
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  width: 300px;
+  height: 100%;
   position: absolute;
-  width: 480px;
-  height: 1423px;
-  top: 237px;
   left: 0;
-  background-color: #ffffff;
-  border-right-width: 1px;
-  border-right-style: solid;
-  border-color: #e0e0e0;
+  top: 0;
+  background-color: white;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+
+.sidebar-visible {
+  transform: translateX(0);
 }
 
 .box .list-3 {
@@ -406,8 +408,8 @@
 
 .box .img {
   position: relative;
-  width: 24px;
-  height: 24px;
+  width: 38px;
+  height: 38px;
 }
 
 .box .text-wrapper-14 {
@@ -487,13 +489,11 @@
   white-space: nowrap;
 }
 
-.box .element-header-navigation {
-  position: absolute;
-  width: 2700px;
-  height: 237px;
-  top: 0;
-  left: 0;
-  background-color: #ffffff;
+.element-header-navigation {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  padding: 10px;
 }
 
 .box .items {
@@ -577,4 +577,64 @@
   letter-spacing: 0;
   line-height: 30px;
   white-space: nowrap;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: #e0e0e0;
+  margin-top: 10px;
+
+}
+
+
+/* 오버레이 기본 스타일 */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 투명한 검은색 배경 */
+  opacity: 0; /* 초기에는 투명하게 설정 */
+  transition: opacity 0.3s ease; /* 페이드 효과를 위한 transition 추가 */
+  z-index: 900; /* 다른 요소 위에 나타나도록 설정 */
+  pointer-events: none; /* 이벤트가 오버레이를 통과할 수 있도록 설정 */
+}
+
+/* 오버레이가 보일 때 적용되는 클래스 */
+.overlay-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.text-wrapper-18 h2 {
+  margin: 0;
+}
+
+.header-wrapper {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  width: 100%;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  padding: 20px;
+}
+
+.menu-button-wrapper {
+  float: left;
+  margin-right: 15px;
+}
+
+.issue-market-title {
+  float: left;
+  margin-right: auto;
+  font-size: 24px;
+}
+
+.items {
+  float: right;
 }

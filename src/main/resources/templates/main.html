@@ -1,13 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>Main</title>
-    <link rel="stylesheet" type="text/css" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{css/globals.css}" />
-    <link rel="stylesheet" type="text/css" th:href="@{css/style.css}" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/globals.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+
 </head>
 <body>
+<div class="header-wrapper">
+    <div class="menu-button-wrapper">
+        <button type="button" class="btn btn-light" id="menu-button">
+            <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/list.svg" />
+        </button>
+    </div>
+    <h2 class="issue-market-title">Issue Market</h2>
+    <div class="items">
+        <button type="button" class="btn btn-light"><div class="text-wrapper-16">Page1</div></button>
+        <button type="button" class="btn btn-light"><div class="text-wrapper-16">Page2</div></button>
+        <button type="button" class="btn btn-light"><div class="text-wrapper-16">Page3</div></button>
+        <button type="button" class="btn btn-dark" th:onclick="|location.href='@{/login}'|"><div class="text-wrapper-17">로그인</div></button>
+    </div>
+</div>
+<div class="divider"></div>
 <div class="box">
     <div class="group">
         <div class="overlap-group">
@@ -17,12 +31,12 @@
                     <div class="div">검색량</div>
                     <div class="title">실시간 인기순위</div>
                     <div class="list">
-                            <div th:each="keywordItem : ${keyword}">
-                                <div class="frame">
+                        <div th:each="keywordItem : ${keyword}">
+                            <div class="frame">
                                 <div class="text-wrapper-3" th:text="${keywordItem.getKeyword()}"></div>
                                 <div class="text-wrapper-4" th:text="${keywordItem.getTotal()}"></div>
-                                </div>
                             </div>
+                        </div>
                     </div>
                 </div>
                 <div class="element-table-2">
@@ -45,60 +59,86 @@
                     <div class="form-group mr-2">
                         <input type="text" id="inputField" name="inputField" class="form-control" placeholder="Placeholder" required>
                     </div>
-                    <button type="button" class="btn btn-dark bigbutton" onclick="location.href='keyword_submit'">
+                    <button type="submit" class="btn btn-dark bigbutton">
                         <div class="text-wrapper-12">Submit</div>
                     </button>
                 </form>
             </div>
-            <div class="element-sidebar">
-                <div class="list-3">
-                    <div class="menu-item"><div class="text-wrapper-13">Discover</div></div>
-                    <div class="menu-item-2">
-                        <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/home.svg" />
-                        <div class="text-wrapper-14">Home</div>
-                    </div>
-                    <div class="menu-item-3">
-                        <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/search.svg" />
-                        <div class="text-wrapper-14">영화</div>
-                    </div>
-                    <div class="menu-item-3">
-                        <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
-                        <div class="text-wrapper-14">음악</div>
-                    </div>
-                    <div class="menu-item-3">
-                        <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
-                        <div class="text-wrapper-14">배우</div>
-                    </div>
-                    <div class="menu-item-3">
-                        <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
-                        <div class="text-wrapper-14">가수</div>
-                    </div>
-                </div>
-                <div class="list-4">
-                    <div class="div-wrapper"><div class="text-wrapper-15">Library</div></div>
-                    <div class="menu-item-3">
-                        <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/list.svg" />
-                        <div class="text-wrapper-14">필터링</div>
-                    </div>
-                    <div class="menu-item-3">
-                        <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/music.svg" />
-                        <div class="text-wrapper-14">즐겨찾기</div>
-                    </div>
-                </div>
-                <div class="title-2">Menu</div>
-            </div>
             <div class="element-header-navigation">
-                <div class="items">
-                    <button type="button" class="btn btn-light"><div class="text-wrapper-16">Page1</div></button>
-                    <button type="button" class="btn btn-light"><div class="text-wrapper-16">Page2</div></button>
-                    <button type="button" class="btn btn-light"><div class="text-wrapper-16">Page3</div></button>
-                    <button type="button" class="btn btn-dark" onclick="location.href='login'"><div class="text-wrapper-17">로그인</div></button>
+                <div class="element-sidebar" id="sidebar">
+                    <div class="list-3">
+                        <div class="menu-item"><div class="text-wrapper-13">Discover</div></div>
+                        <div class="menu-item-2">
+                            <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/home.svg" />
+                            <div class="text-wrapper-14">Home</div>
+                        </div>
+                        <div class="menu-item-3">
+                            <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/search.svg" />
+                            <div class="text-wrapper-14">영화</div>
+                        </div>
+                        <div class="menu-item-3">
+                            <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                            <div class="text-wrapper-14">음악</div>
+                        </div>
+                        <div class="menu-item-3">
+                            <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                            <div class="text-wrapper-14">배우</div>
+                        </div>
+                        <div class="menu-item-3">
+                            <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                            <div class="text-wrapper-14">가수</div>
+                        </div>
+                    </div>
+                    <div class="list-4">
+                        <div class="div-wrapper"><div class="text-wrapper-15">Library</div></div>
+                        <div class="menu-item-3">
+                            <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/list.svg" />
+                            <div class="text-wrapper-14">필터링</div>
+                        </div>
+                        <div class="menu-item-3">
+                            <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/music.svg" />
+                            <div class="text-wrapper-14">즐겨찾기</div>
+                        </div>
+                    </div>
+                    <div class="title-2">Menu</div>
                 </div>
-                <div class="text-wrapper-18"><h2 class="display-3">Issue Market</h2></div>
             </div>
         </div>
     </div>
 </div>
 </div>
+<script>
+    document.getElementById('menu-button').addEventListener('click', function() {
+        var sidebar = document.getElementById('sidebar');
+        var overlay = document.getElementById('overlay');
+        sidebar.classList.toggle('sidebar-visible');
+        overlay.classList.toggle('overlay-visible');
+    });
+
+    document.getElementById('overlay').addEventListener('click', function() {
+        var sidebar = document.getElementById('sidebar');
+        var overlay = document.getElementById('overlay');
+        sidebar.classList.remove('sidebar-visible');
+        overlay.classList.remove('overlay-visible');
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var menuButton = document.getElementById('menu-button');
+        var sidebar = document.getElementById('sidebar');
+        var overlay = document.getElementById('overlay');
+
+        // 메뉴 버튼 클릭 시 sidebar를 보이거나 숨깁니다.
+        menuButton.addEventListener('click', function() {
+            sidebar.classList.toggle('sidebar-visible');
+            overlay.classList.toggle('overlay-visible');
+        });
+
+        // overlay를 클릭하여 sidebar를 닫습니다.
+        overlay.addEventListener('click', function() {
+            sidebar.classList.remove('sidebar-visible');
+            overlay.classList.remove('overlay-visible');
+        });
+    });
+</script>
 </body>
 </html>
