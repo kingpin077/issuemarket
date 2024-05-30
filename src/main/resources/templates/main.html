@@ -53,59 +53,59 @@
                     </div>
                 </div>
 
-            <div class="element-input-field-with">
-                <!-- Adding form to collect input and submit it to Spring Boot -->
-                <form action="/submit" method="post" class="d-flex">
-                    <div class="form-group mr-2">
-                        <input type="text" id="inputField" name="inputField" class="form-control" placeholder="Placeholder" required>
+                <div class="element-input-field-with">
+                    <!-- Adding form to collect input and submit it to Spring Boot -->
+                    <form id="keywordForm" action="/index" method="get" class="d-flex">
+                        <div class="form-group mr-2">
+                            <input type="text" id="keyword" name="keyword" class="form-control" placeholder="Placeholder" required>
+                        </div>
+                        <button type="submit" class="btn btn-dark bigbutton">
+                            <div class="text-wrapper-12">Submit</div>
+                        </button>
+                    </form>
+                </div>
+                <div class="element-header-navigation">
+                    <div class="element-sidebar" id="sidebar">
+                        <div class="list-3">
+                            <div class="menu-item"><div class="text-wrapper-13">Discover</div></div>
+                            <div class="menu-item-2">
+                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/home.svg" />
+                                <div class="text-wrapper-14">Home</div>
+                            </div>
+                            <div class="menu-item-3">
+                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/search.svg" />
+                                <div class="text-wrapper-14">영화</div>
+                            </div>
+                            <div class="menu-item-3">
+                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                                <div class="text-wrapper-14">음악</div>
+                            </div>
+                            <div class="menu-item-3">
+                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                                <div class="text-wrapper-14">배우</div>
+                            </div>
+                            <div class="menu-item-3">
+                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                                <div class="text-wrapper-14">가수</div>
+                            </div>
+                        </div>
+                        <div class="list-4">
+                            <div class="div-wrapper"><div class="text-wrapper-15">Library</div></div>
+                            <div class="menu-item-3">
+                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/list.svg" />
+                                <div class="text-wrapper-14">필터링</div>
+                            </div>
+                            <div class="menu-item-3">
+                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/music.svg" />
+                                <div class="text-wrapper-14">즐겨찾기</div>
+                            </div>
+                        </div>
+                        <div class="title-2">Menu</div>
                     </div>
-                    <button type="submit" class="btn btn-dark bigbutton">
-                        <div class="text-wrapper-12">Submit</div>
-                    </button>
-                </form>
-            </div>
-            <div class="element-header-navigation">
-                <div class="element-sidebar" id="sidebar">
-                    <div class="list-3">
-                        <div class="menu-item"><div class="text-wrapper-13">Discover</div></div>
-                        <div class="menu-item-2">
-                            <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/home.svg" />
-                            <div class="text-wrapper-14">Home</div>
-                        </div>
-                        <div class="menu-item-3">
-                            <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/search.svg" />
-                            <div class="text-wrapper-14">영화</div>
-                        </div>
-                        <div class="menu-item-3">
-                            <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
-                            <div class="text-wrapper-14">음악</div>
-                        </div>
-                        <div class="menu-item-3">
-                            <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
-                            <div class="text-wrapper-14">배우</div>
-                        </div>
-                        <div class="menu-item-3">
-                            <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
-                            <div class="text-wrapper-14">가수</div>
-                        </div>
-                    </div>
-                    <div class="list-4">
-                        <div class="div-wrapper"><div class="text-wrapper-15">Library</div></div>
-                        <div class="menu-item-3">
-                            <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/list.svg" />
-                            <div class="text-wrapper-14">필터링</div>
-                        </div>
-                        <div class="menu-item-3">
-                            <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/music.svg" />
-                            <div class="text-wrapper-14">즐겨찾기</div>
-                        </div>
-                    </div>
-                    <div class="title-2">Menu</div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 <script>
     document.getElementById('menu-button').addEventListener('click', function() {
@@ -138,6 +138,31 @@
             sidebar.classList.remove('sidebar-visible');
             overlay.classList.remove('overlay-visible');
         });
+    });
+
+    document.getElementById('keywordForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // 폼의 기본 제출 동작을 방지
+        const keyword = document.getElementById('keyword').value.trim();
+        //const formData = new FormData(); // FormData 객체 생성
+        //formData.append('keyword', keyword); // 폼 데이터에 키워드 추가
+        window.location.href = `/search?keyword=${keyword}`;
+
+        // fetch('/index', {
+        //     method: 'GET', // POST 메소드 사용
+        //     body: formData  // 폼 데이터 전송
+        // })
+        //     .then(response => {
+        //         if (response.ok) {
+        //             return response.text(); // 응답을 텍스트로 변환
+        //         }
+        //         throw new Error('Something went wrong'); // 오류 발생 시 처리
+        //     })
+        //     .then(text => {
+        //         console.log('Success:', text); // 성공 시 로그 출력
+        //     })
+        //     .catch(error => {
+        //         console.error('Error:', error); // 오류 발생 시 로그 출력
+        //     });
     });
 </script>
 </body>
