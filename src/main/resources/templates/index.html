@@ -65,46 +65,6 @@
     </div>
 </div>
 <script>
-    window.onload = function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const keyword = urlParams.get('keyword');
-        fetch(`/search?groupName=${keyword}&keywords=${keyword}`,
-            {
-                method: 'POST', // POST 메소드 사용
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('keywordData').textContent = JSON.stringify(data.naverData, null, 2);
-                const genderData = data.kakaoData.gender;
-                const ageData = data.kakaoData.age;
-
-                const genderCtx = document.getElementById('genderChart').getContext('2d');
-                new Chart(genderCtx, {
-                    type: 'pie',
-                    data: {
-                        labels: ['Male', 'Female'],
-                        datasets: [{
-                            data: [genderData.male, genderData.female],
-                            backgroundColor: ['#36A2EB', '#FF6384']
-                        }]
-                    }
-                });
-
-                const ageCtx = document.getElementById('ageChart').getContext('2d');
-                new Chart(ageCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['10대', '20대', '30대', '40대', '50대', '60대'],
-                        datasets: [{
-                            data: [ageData['10'], ageData['20'], ageData['30'], ageData['40'], ageData['50'], ageData['60']],
-                            backgroundColor: '#4BC0C0'
-                        }]
-                    }
-                });
-            })
-            .catch(error => console.error('Error:', error));
-    }
-
     document.getElementById('searchForm').addEventListener('submit', function(event) {
         event.preventDefault();
         const keyword = document.getElementById('keyword').value;
