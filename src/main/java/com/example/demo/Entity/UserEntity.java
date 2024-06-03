@@ -39,4 +39,7 @@ public class UserEntity {
 
         return userEntity;
     }
+    public void setUserPwd(String userPwd){
+        this.userPwd = userPwd;
+    }
 }

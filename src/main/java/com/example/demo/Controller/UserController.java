@@ -36,19 +36,19 @@ public class UserController {
 
     @GetMapping("/logout")
     public String showHomePage() {
-        return "login";
+        return "redirect:/login?logout";
     }
 
-    @PostMapping("/login_process")
-    public String login(@RequestParam("userId") String userId, @RequestParam("userPwd") String userPwd, Model model) {
-        Optional<UserEntity> optUser = userRepository.findByUserId(userId);
-        if (optUser.isPresent() && optUser.get().getUserPwd().equals(userPwd)) {
-            System.out.println("Database userPwd: " + optUser.get().getUserPwd());
-            return "success";
-        }
-        model.addAttribute("error", "로그인 실패");
-        return "login";
-    }
+//    @PostMapping("/login_process")
+//    public String login(@RequestParam("userId") String userId, @RequestParam("userPwd") String userPwd, Model model) {
+//        Optional<UserEntity> optUser = userRepository.findByUserId(userId);
+//        if (optUser.isPresent() && optUser.get().getUserPwd().equals(userPwd)) {
+//            System.out.println("Database userPwd: " + optUser.get().getUserPwd());
+//            return "success";
+//        }
+//        model.addAttribute("error", "로그인 실패");
+//        return "login";
+//    }
 
     @GetMapping("/signup")
     public String sign_Page(){
