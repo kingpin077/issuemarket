@@ -4,8 +4,35 @@
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/globals.css">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+<style>
+    #results {
+        position: absolute;
+        top: 1500px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+    #results > div {
+        flex: 1;
+        min-width: 300px;
+        max-width: 45%;
+        margin: 10px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    canvas {
+        width: 100% !important;
+        height: auto !important;
+    }
+    pre {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+</style>
 <body>
 <div class="header-wrapper">
     <div class="menu-button-wrapper">
@@ -61,9 +88,9 @@
 
                 <div class="element-input-field-with">
                     <!-- Adding form to collect input and submit it to Spring Boot -->
-                    <form id="keywordForm" action="/index" method="get" class="d-flex">
+                    <form id="keywordForm" method="get" class="d-flex">
                         <div class="form-group mr-2">
-                            <input type="text" id="keyword" name="keyword" class="form-control" placeholder="Placeholder" required>
+                            <input type="text" id="keyword_search" name="keyword_search" class="form-control" placeholder="Placeholder" required>
                         </div>
                         <button type="submit" class="btn btn-dark bigbutton">
                             <div class="text-wrapper-12">Submit</div>
@@ -109,11 +136,27 @@
                         <div class="title-2">Menu</div>
                     </div>
                 </div>
+                <div id="results">
+                    <div>
+                        <h3>Keyword Data</h3>
+                        <pre id="keywordData"></pre>
+                    </div>
+                    <div>
+                        <h3>Gender Ratio</h3>
+                        <canvas id="genderChart"></canvas>
+                    </div>
+                    <div>
+                        <h3>Age Ratio</h3>
+                        <canvas id="ageChart"></canvas>
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
 </div>
 <script>
+
     document.getElementById('menu-button').addEventListener('click', function() {
         var sidebar = document.getElementById('sidebar');
         var overlay = document.getElementById('overlay');
@@ -121,54 +164,69 @@
         overlay.classList.toggle('overlay-visible');
     });
 
-    document.getElementById('overlay').addEventListener('click', function() {
-        var sidebar = document.getElementById('sidebar');
-        var overlay = document.getElementById('overlay');
-        sidebar.classList.remove('sidebar-visible');
-        overlay.classList.remove('overlay-visible');
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
-        var menuButton = document.getElementById('menu-button');
-        var sidebar = document.getElementById('sidebar');
-        var overlay = document.getElementById('overlay');
-
-        // 메뉴 버튼 클릭 시 sidebar를 보이거나 숨깁니다.
-        menuButton.addEventListener('click', function() {
-            sidebar.classList.toggle('sidebar-visible');
-            overlay.classList.toggle('overlay-visible');
-        });
-
-        // overlay를 클릭하여 sidebar를 닫습니다.
-        overlay.addEventListener('click', function() {
-            sidebar.classList.remove('sidebar-visible');
-            overlay.classList.remove('overlay-visible');
-        });
-    });
+    // document.getElementById('overlay').addEventListener('click', function() {
+    //     var sidebar = document.getElementById('sidebar');
+    //     var overlay = document.getElementById('overlay');
+    //     sidebar.classList.remove('sidebar-visible');
+    //     overlay.classList.remove('overlay-visible');
+    // });
+    //
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     var menuButton = document.getElementById('menu-button');
+    //     var sidebar = document.getElementById('sidebar');
+    //     var overlay = document.getElementById('overlay');
+    //
+    //     // 메뉴 버튼 클릭 시 sidebar를 보이거나 숨깁니다.
+    //     menuButton.addEventListener('click', function() {
+    //         sidebar.classList.toggle('sidebar-visible');
+    //         overlay.classList.toggle('overlay-visible');
+    //     });
+    //
+    //     // overlay를 클릭하여 sidebar를 닫습니다.
+    //     overlay.addEventListener('click', function() {
+    //         sidebar.classList.remove('sidebar-visible');
+    //         overlay.classList.remove('overlay-visible');
+    //     });
+    // });
 
     document.getElementById('keywordForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // 폼의 기본 제출 동작을 방지
-        const keyword = document.getElementById('keyword').value.trim();
-        //const formData = new FormData(); // FormData 객체 생성
-        //formData.append('keyword', keyword); // 폼 데이터에 키워드 추가
-        window.location.href = `/search?keyword=${keyword}`;
+        event.preventDefault();
+        const keyword_s = document.getElementById('keyword_search').value;
+        fetch(`/search?groupName=${keyword_s}&keywords=${keyword_s}`,
+            {
+                method: 'POST', // POST 메소드 사용
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('keywordData').textContent = JSON.stringify(data.naverData, null, 2);
+                const genderData = data.kakaoData.gender;
+                const ageData = data.kakaoData.age;
 
-        // fetch('/index', {
-        //     method: 'GET', // POST 메소드 사용
-        //     body: formData  // 폼 데이터 전송
-        // })
-        //     .then(response => {
-        //         if (response.ok) {
-        //             return response.text(); // 응답을 텍스트로 변환
-        //         }
-        //         throw new Error('Something went wrong'); // 오류 발생 시 처리
-        //     })
-        //     .then(text => {
-        //         console.log('Success:', text); // 성공 시 로그 출력
-        //     })
-        //     .catch(error => {
-        //         console.error('Error:', error); // 오류 발생 시 로그 출력
-        //     });
+                const genderCtx = document.getElementById('genderChart').getContext('2d');
+                new Chart(genderCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Male', 'Female'],
+                        datasets: [{
+                            data: [genderData.male, genderData.female],
+                            backgroundColor: ['#36A2EB', '#FF6384']
+                        }]
+                    }
+                });
+
+                const ageCtx = document.getElementById('ageChart').getContext('2d');
+                new Chart(ageCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['10대', '20대', '30대', '40대', '50대', '60대'],
+                        datasets: [{
+                            data: [ageData['10'], ageData['20'], ageData['30'], ageData['40'], ageData['50'], ageData['60']],
+                            backgroundColor: '#4BC0C0'
+                        }]
+                    }
+                });
+            })
+            .catch(error => console.error('Error:', error));
     });
 </script>
 </body>
