@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +20,12 @@
         <button type="button" class="btn btn-light page-button"><div class="text-wrapper-16">Page1</div></button>
         <button type="button" class="btn btn-light page-button"><div class="text-wrapper-16">Page2</div></button>
         <button type="button" class="btn btn-light page-button"><div class="text-wrapper-16">Page3</div></button>
-        <button type="button" class="btn btn-dark" onclick="location.href='/login'"><div class="text-wrapper-17">로그인</div></button>
+        <button type="button" class="btn btn-dark" sec:authorize="isAuthenticated()" onclick="location.href='/logout'">
+            <div class="text-wrapper-17">로그아웃</div>
+        </button>
+        <button type="button" class="btn btn-dark" sec:authorize="!isAuthenticated()" onclick="location.href='/login'">
+            <div class="text-wrapper-17">로그인</div>
+        </button>
     </div>
 </div>
 
