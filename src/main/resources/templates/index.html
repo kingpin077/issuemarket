@@ -68,7 +68,10 @@
     document.getElementById('searchForm').addEventListener('submit', function(event) {
         event.preventDefault();
         const keyword = document.getElementById('keyword').value;
-        fetch(`/search?startDate=2024-04-22&endDate=2024-05-22&groupName=${keyword}&keywords=${keyword}&gender=f`)
+        fetch(`/search?groupName=${keyword}&keywords=${keyword}`,
+            {
+                method: 'POST', // POST 메소드 사용
+            })
             .then(response => response.json())
             .then(data => {
                 document.getElementById('keywordData').textContent = JSON.stringify(data.naverData, null, 2);
