@@ -14,19 +14,23 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
+        max-width: 1450px; /* 최대 너비 설정 */
+        margin: 0 auto; /* 중앙 정렬 */
     }
+
     #results > div {
         flex: 1;
         min-width: 300px;
-        max-width: 45%;
         margin: 10px;
         padding: 20px;
         border: 1px solid #ddd;
         border-radius: 8px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center; /* 텍스트 중앙 정렬 */
     }
+
     canvas {
-        width: 100% !important;
+        max-width: 100%; /* 그래프 최대 너비 설정 */
         height: auto !important;
     }
     pre {
@@ -41,7 +45,7 @@
         <button type="button" class="btn btn-light" id="menu-button">
             <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/list.svg" />
         </button>
-        <h2 class="issue-market-title">Issue Market</h2>
+        <button class="issue-market-title btn btn-link" id="issue-market-title">&nbsp;Issue Market</button>
     </div>
     <div class="items">
         <button type="button" class="btn btn-light page-button"><div class="text-wrapper-16">Page1</div></button>
@@ -58,7 +62,7 @@
 
 <div class="element-input-field-with">
     <form id="keywordForm" method="get" class="d-flex">
-        <div class="form-group mr-2">
+        <div class="form-group mr-2" style="flex: 1;">
             <input type="text" id="keyword_search" name="keyword_search" class="form-control" placeholder="Placeholder" required>
         </div>
         <button type="submit" class="btn btn-dark bigbutton">
@@ -125,7 +129,7 @@
                     <div class="element-sidebar" id="sidebar">
                         <div class="top-divider"></div> <!-- 사이드바 맨 위에 추가된 검은 줄 -->
                         <div class="list-3">
-                            <button class="menu-item">
+                            <button class="menu-item" id="home-button">
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/home.svg" />
                                 <div class="text-wrapper-14">Home</div>
                             </button>
@@ -169,6 +173,8 @@
         var menuButton = document.getElementById('menu-button');
         var sidebar = document.getElementById('sidebar');
         var overlay = document.getElementById('overlay');
+        var issueMarketTitle = document.getElementById('issue-market-title');
+        var homeButton = document.getElementById('home-button');
 
         menuButton.addEventListener('click', function() {
             sidebar.classList.toggle('sidebar-visible');
@@ -180,11 +186,12 @@
             overlay.classList.remove('overlay-visible');
         });
 
-        var menuItems = document.querySelectorAll('.menu-item');
-        menuItems.forEach(function(item) {
-            item.addEventListener('click', function() {
-                alert('You clicked on ' + this.textContent.trim());
-            });
+        issueMarketTitle.addEventListener('click', function() {
+            location.reload(); // 새로고침
+        });
+
+        homeButton.addEventListener('click', function() {
+            location.reload(); // 새로고침
         });
     });
 
