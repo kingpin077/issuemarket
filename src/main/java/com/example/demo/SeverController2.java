@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -7,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,9 +31,16 @@ public class SeverController2 {
     public ResponseEntity<Map<String, Object>> search(
             @RequestParam(required = false) String groupName,
             @RequestParam(required = false) String keywords
-    ) { //,"gender":"f"
-        String requestBody = String.format("{\"startDate\":\"2024-04-07\",\"endDate\":\"2024-05-07\",\"timeUnit\":\"month\",\"keywordGroups\":[{\"groupName\":\"%s\",\"keywords\":[\"%s\"]}],\"device\":\"mo\",\"gender\":\"f\"}",
-                groupName, keywords);
+    ) {
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusMonths(1);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedEndDate = endDate.format(formatter);
+        String formattedStartDate = startDate.format(formatter);
+
+        String requestBody = String.format("{\"startDate\":\"%s\",\"endDate\":\"%s\",\"timeUnit\":\"month\",\"keywordGroups\":[{\"groupName\":\"%s\",\"keywords\":[\"%s\"]}],\"device\":\"mo\",\"gender\":\"f\"}",
+                formattedStartDate, formattedEndDate, groupName, keywords);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -50,35 +61,18 @@ public class SeverController2 {
         result.put("naverData", response.getBody());
         result.put("kakaoData", getKeywordRatio(keywords).getBody());
 
+        String keywordData = ks.getKeywordData(keywords);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            JsonNode keywordJson = objectMapper.readTree(keywordData);
+            result.put("monthlyPcQcCnt", keywordJson.get("monthlyPcQcCnt").asInt());
+            result.put("monthlyMobileQcCnt", keywordJson.get("monthlyMobileQcCnt").asInt());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return ResponseEntity.ok(result);
     }
-
-//    public ResponseEntity<Map<String, Object>> getKeyword(String keywords, String groupName) {
-//
-//        String requestBody = String.format("{\"startDate\":\"2024-04-07\",\"endDate\":\"2024-05-07\",\"timeUnit\":\"month\",\"keywordGroups\":[{\"groupName\":\"%s\",\"keywords\":[\"%s\"]}],\"device\":\"mo\",\"gender\":\"f\"}",
-//                groupName, keywords);
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        headers.set("X-Naver-Client-Id", NAVER_API_ID);
-//        headers.set("X-Naver-Client-Secret", NAVER_API_SECRET);
-//
-//        HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
-//
-//        RestTemplate restTemplate = new RestTemplate();
-//
-//        ResponseEntity<String> response = restTemplate.exchange(
-//                "https://openapi.naver.com/v1/datalab/search",
-//                HttpMethod.POST,
-//                requestEntity,
-//                String.class);
-//
-//        Map<String, Object> result = new HashMap<>();
-//        result.put("naverData", response.getBody());
-//        result.put("kakaoData", getKeywordRatio(keywords).getBody());
-//
-//        return ResponseEntity.ok(result);
-//    }
 
     public ResponseEntity<Map<String, Object>> getKeywordRatio(String keyword){
         RestTemplate restTemplate = new RestTemplate();

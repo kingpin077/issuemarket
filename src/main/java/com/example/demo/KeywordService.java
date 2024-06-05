@@ -94,6 +94,6 @@ public class KeywordService {
             System.out.println("JSON Parsing Error: " + e.getMessage());
         }
 
-        return "{}"; // "제주도" 키워드가 없으면 빈 JSON 객체 반환
+        return "{}";
     }
 }

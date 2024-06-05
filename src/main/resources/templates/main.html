@@ -37,6 +37,23 @@
         white-space: pre-wrap;
         word-wrap: break-word;
     }
+
+    .keyword-stats {
+        display: flex;
+        justify-content: space-around;
+    }
+    .stat-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .device-icon {
+        font-size: 24px;
+    }
+    .stat-value {
+        font-size: 20px;
+        font-weight: bold;
+    }
 </style>
 
 <body>
@@ -198,13 +215,36 @@
     document.getElementById('keywordForm').addEventListener('submit', function(event) {
         event.preventDefault();
         const keyword_s = document.getElementById('keyword_search').value;
-        fetch(`/search?groupName=${keyword_s}&keywords=${keyword_s}`,
-            {
-                method: 'POST', // POST 메소드 사용
-            })
+        fetch(`/search?groupName=${keyword_s}&keywords=${keyword_s}`, {
+            method: 'POST', // POST 메소드 사용
+        })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('keywordData').textContent = JSON.stringify(data.naverData, null, 2);
+                const keywordDataDiv = document.getElementById('keywordData');
+                const pcCount = data.monthlyPcQcCnt;
+                const mobileCount = data.monthlyMobileQcCnt;
+                const totalCount = pcCount + mobileCount;
+
+                keywordDataDiv.innerHTML = `
+                <div class="keyword-stats">
+                    <div class="stat-item">
+                        <span class="device-icon">💻</span>
+                        <span class="stat-value">${pcCount.toLocaleString()}</span>
+                        <span>PC</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="device-icon">📱</span>
+                        <span class="stat-value">${mobileCount.toLocaleString()}</span>
+                        <span>Mobile</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="device-icon">➕</span>
+                        <span class="stat-value">${totalCount.toLocaleString()}</span>
+                        <span>Total</span>
+                    </div>
+                </div>
+            `;
+
                 const genderData = data.kakaoData.gender;
                 const ageData = data.kakaoData.age;
 
@@ -226,6 +266,7 @@
                     data: {
                         labels: ['10대', '20대', '30대', '40대', '50대', '60대'],
                         datasets: [{
+                            label: '나이 비율',
                             data: [ageData['10'], ageData['20'], ageData['30'], ageData['40'], ageData['50'], ageData['60']],
                             backgroundColor: '#4BC0C0'
                         }]
