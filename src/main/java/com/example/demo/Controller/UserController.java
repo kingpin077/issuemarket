@@ -38,7 +38,7 @@ public class UserController {
     public String showHomePage() {
         return "redirect:/login?logout";
     }
-    
+
 
     @GetMapping("/signup")
     public String sign_Page(){

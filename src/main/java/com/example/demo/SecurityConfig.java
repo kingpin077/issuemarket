@@ -53,7 +53,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeRequests((authorizeHttpRequests) -> authorizeHttpRequests
                         .antMatchers("/", "/login", "/signup", "/css/**").permitAll()
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .headers((headers)-> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN
