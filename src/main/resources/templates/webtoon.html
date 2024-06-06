@@ -7,54 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/globals.css">
     <link rel="stylesheet" href="/css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<style>
-    #results {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        max-width: 1450px; /* 최대 너비 설정 */
-        margin: 0 auto; /* 중앙 정렬 */
-    }
-
-    #results > div {
-        flex: 1;
-        min-width: 300px;
-        margin: 10px;
-        padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        text-align: center; /* 텍스트 중앙 정렬 */
-    }
-
-    canvas {
-        max-width: 100%; /* 그래프 최대 너비 설정 */
-        height: auto !important;
-    }
-    pre {
-        white-space: pre-wrap;
-        word-wrap: break-word;
-    }
-
-    .keyword-stats {
-        display: flex;
-        justify-content: space-around;
-    }
-    .stat-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .device-icon {
-        font-size: 24px;
-    }
-    .stat-value {
-        font-size: 20px;
-        font-weight: bold;
-    }
-</style>
 
 <body>
 <div class="header-wrapper" id="header-wrapper">
@@ -127,20 +80,6 @@
                         </div>
                     </div>
                 </div>
-                <div id="results">
-                    <div>
-                        <h3>Keyword Data</h3>
-                        <pre id="keywordData"></pre>
-                    </div>
-                    <div>
-                        <h3>Gender Ratio</h3>
-                        <canvas id="genderChart"></canvas>
-                    </div>
-                    <div>
-                        <h3>Age Ratio</h3>
-                        <canvas id="ageChart"></canvas>
-                    </div>
-                </div>
 
                 <div class="element-header-navigation">
                     <div class="element-sidebar" id="sidebar">
@@ -168,14 +107,14 @@
                             </button>
                         </div>
                         <div class="list-4" sec:authorize="isAuthenticated()">
-                            <div class="library-header" >Library</div>
-                            <button class="menu-item"  >
+                            <div class="library-header">Library</div>
+                            <button class="menu-item">
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/list.svg" />
                                 <div class="text-wrapper-14">필터링</div>
+                            </button>
                             <button class="menu-item">
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/music.svg" />
-                                <div class="text-wrapper-14" >즐겨찾기</div>
-                            </button>
+                                <div class="text-wrapper-14">즐겨찾기</div>
                             </button>
                         </div>
                     </div>
@@ -186,9 +125,6 @@
 </div>
 <div class="overlay" id="overlay"></div>
 <script>
-    let genderChart = null;
-    let ageChart = null;
-
     document.addEventListener('DOMContentLoaded', function() {
         var menuButton = document.getElementById('menu-button');
         var sidebar = document.getElementById('sidebar');
@@ -221,82 +157,8 @@
         document.getElementById('webtoon-button').addEventListener('click', function() {
             window.location.href = 'webtoon'; // 웹툰 버튼 클릭 시 webtoon으로 이동
         });
+
     });
-
-    document.getElementById('keywordForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const keyword_s = document.getElementById('keyword_search').value;
-        fetch(`/search?groupName=${keyword_s}&keywords=${keyword_s}`, {
-            method: 'POST', // POST 메소드 사용
-        })
-            .then(response => response.json())
-            .then(data => {
-                const keywordDataDiv = document.getElementById('keywordData');
-                const pcCount = data.monthlyPcQcCnt;
-                const mobileCount = data.monthlyMobileQcCnt;
-                const totalCount = pcCount + mobileCount;
-
-                keywordDataDiv.innerHTML = `
-                <div class="keyword-stats">
-                    <div class="stat-item">
-                        <span class="device-icon">💻</span>
-                        <span class="stat-value">${pcCount.toLocaleString()}</span>
-                        <span>PC</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="device-icon">📱</span>
-                        <span class="stat-value">${mobileCount.toLocaleString()}</span>
-                        <span>Mobile</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="device-icon">➕</span>
-                        <span class="stat-value">${totalCount.toLocaleString()}</span>
-                        <span>Total</span>
-                    </div>
-                </div>
-                <div class="keyword-stats">
-                    <span class="stat-value">네이버 검색: <a href="https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=${keyword_s}">${keyword_s}</a></span>
-                    <span class="stat-value">구글 검색: <a href="https://www.google.com/search?q=${keyword_s}">${keyword_s}</a></span>
-                </div>
-            `;
-
-                const genderData = data.kakaoData.gender;
-                const ageData = data.kakaoData.age;
-
-                if (genderChart) {
-                    genderChart.destroy();
-                }
-                const genderCtx = document.getElementById('genderChart').getContext('2d');
-                genderChart = new Chart(genderCtx, {
-                    type: 'pie',
-                    data: {
-                        labels: ['Male', 'Female'],
-                        datasets: [{
-                            data: [genderData.male, genderData.female],
-                            backgroundColor: ['#36A2EB', '#FF6384']
-                        }]
-                    }
-                });
-
-                if (ageChart) {
-                    ageChart.destroy();
-                }
-                const ageCtx = document.getElementById('ageChart').getContext('2d');
-                ageChart = new Chart(ageCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['10대', '20대', '30대', '40대', '50대', '60대'],
-                        datasets: [{
-                            label: '나이 비율',
-                            data: [ageData['10'], ageData['20'], ageData['30'], ageData['40'], ageData['50'], ageData['60']],
-                            backgroundColor: '#4BC0C0'
-                        }]
-                    }
-                });
-            })
-            .catch(error => console.error('Error:', error));
-    });
-
 </script>
 </body>
 </html>

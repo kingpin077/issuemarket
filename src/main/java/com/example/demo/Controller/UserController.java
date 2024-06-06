@@ -72,7 +72,7 @@ public class UserController {
         System.out.println("Keywords2: " + keywords2); // 데이터 확인
         model.addAttribute("keyword", testService.findAllByWebtoonOrderByDesc());
         model2.addAttribute("keyword2", testService.findAllByPcOrderByDesc());
-        return "main";
+        return "webtoon";
     }
 
     @GetMapping("/actor")
@@ -83,7 +83,7 @@ public class UserController {
         System.out.println("Keywords2: " + keywords2); // 데이터 확인
         model.addAttribute("keyword", testService.findAllByactorOrderByDesc());
         model2.addAttribute("keyword2", testService.findAllByPcOrderByDesc());
-        return "main";
+        return "actor";
     }
 
     @GetMapping("/index")
