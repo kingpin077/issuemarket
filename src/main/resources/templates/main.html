@@ -186,6 +186,9 @@
 </div>
 <div class="overlay" id="overlay"></div>
 <script>
+    let genderChart = null;
+    let ageChart = null;
+
     document.addEventListener('DOMContentLoaded', function() {
         var menuButton = document.getElementById('menu-button');
         var sidebar = document.getElementById('sidebar');
@@ -208,7 +211,7 @@
         });
 
         homeButton.addEventListener('click', function() {
-            location.reload(); // 새로고침
+            location.reload(); // 새로고침구글 검색 url
         });
     });
 
@@ -243,13 +246,20 @@
                         <span>Total</span>
                     </div>
                 </div>
+                <div class="keyword-stats">
+                    <span class="stat-value">네이버 검색: <a href="https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=${keyword_s}">${keyword_s}</a></span>
+                    <span class="stat-value">구글 검색: <a href="https://www.google.com/search?q=${keyword_s}">${keyword_s}</a></span>
+                </div>
             `;
 
                 const genderData = data.kakaoData.gender;
                 const ageData = data.kakaoData.age;
 
+                if (genderChart) {
+                    genderChart.destroy();
+                }
                 const genderCtx = document.getElementById('genderChart').getContext('2d');
-                new Chart(genderCtx, {
+                genderChart = new Chart(genderCtx, {
                     type: 'pie',
                     data: {
                         labels: ['Male', 'Female'],
@@ -260,8 +270,11 @@
                     }
                 });
 
+                if (ageChart) {
+                    ageChart.destroy();
+                }
                 const ageCtx = document.getElementById('ageChart').getContext('2d');
-                new Chart(ageCtx, {
+                ageChart = new Chart(ageCtx, {
                     type: 'bar',
                     data: {
                         labels: ['10대', '20대', '30대', '40대', '50대', '60대'],
