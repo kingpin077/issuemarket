@@ -18,16 +18,18 @@ public class TestEntity {
     private int mobile;
 
     private int total;
+    private String tag;
 
     // 생성자
     public TestEntity() {
     }
 
-    public TestEntity(String keyword, int pc, int mobile, int total) {
+    public TestEntity(String keyword, int pc, int mobile, int total, String tag) {
         this.keyword = keyword;
         this.pc = pc;
         this.mobile = mobile;
         this.total = total;
+        this.tag = tag;
     }
 
     // Getter 및 Setter 메서드
@@ -69,5 +71,13 @@ public class TestEntity {
 
     public void setTotal(int total) {
         this.total = total;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 }

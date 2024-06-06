@@ -32,20 +32,6 @@ public class TestService {
     }
 
 
-    public List<TestDTO> findAllByMobileOrderByDesc() {
-        List<TestEntity> entities = testRepository.findTop10ByOrderByMobileDesc();
-
-        return entities.stream().map(entity -> {
-            TestDTO dto = new TestDTO();
-            //dto.setNo(entity.getNo());
-            dto.setKeyword(entity.getKeyword());
-            dto.setMobile(entity.getMobile());
-            //dto.setPc(entity.getPc());
-            //dto.setTotal(entity.getTotal());
-            return dto;
-        }).collect(Collectors.toList());
-    }
-
     public List<TestDTO> findAllByTotalOrderByDesc() {
         List<TestEntity> entities = testRepository.findTop10ByOrderByTotalDesc();
 
@@ -56,6 +42,29 @@ public class TestService {
             return dto;
         }).collect(Collectors.toList());
     }
+
+    public List<TestDTO> findAllByWebtoonOrderByDesc() {
+        List<TestEntity> entities = testRepository.findTop10ByTagOrderByTotalDesc("webtoon");
+
+        return entities.stream().map(entity -> {
+            TestDTO dto = new TestDTO();
+            dto.setKeyword(entity.getKeyword());
+            dto.setTotal(entity.getTotal());
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
+    public List<TestDTO> findAllByactorOrderByDesc() {
+        List<TestEntity> entities = testRepository.findTop10ByTagOrderByTotalDesc("actor");
+
+        return entities.stream().map(entity -> {
+            TestDTO dto = new TestDTO();
+            dto.setKeyword(entity.getKeyword());
+            dto.setTotal(entity.getTotal());
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
 
 
 }
