@@ -75,6 +75,7 @@ public class UserController {
         model.addAttribute("keyword", testService.findAllByTotalOrderByDesc());
         model2.addAttribute("keyword2", testService.findAllByPcOrderByDesc());
         return "actor";
+        // 배우페이지
     }
 
     @GetMapping("/webtoon")
@@ -86,6 +87,7 @@ public class UserController {
         model.addAttribute("keyword", testService.findAllByTotalOrderByDesc());
         model2.addAttribute("keyword2", testService.findAllByPcOrderByDesc());
         return "webtoon";
+        // 웹툰페이지
     }
 
     @GetMapping("/index")
