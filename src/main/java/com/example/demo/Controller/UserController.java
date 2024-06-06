@@ -45,6 +45,7 @@ public class UserController {
         return  "signup";
     }
 
+
     @PostMapping("/signup")
     public String jogin(@ModelAttribute UserDTO userDTO) {
         // System.out.println("userDTO = " + userDTO);
@@ -62,6 +63,29 @@ public class UserController {
         model.addAttribute("keyword", testService.findAllByTotalOrderByDesc());
         model2.addAttribute("keyword2", testService.findAllByPcOrderByDesc());
         return "main";
+    }
+
+
+    @GetMapping("/actor")
+    public String actorPage(Model model, Model model2) {
+        List<TestDTO> keywords = testService.findAllByTotalOrderByDesc();
+        System.out.println("Keywords: " + keywords); // 데이터 확인
+        List<TestDTO> keywords2 = testService.findAllByPcOrderByDesc();
+        System.out.println("Keywords2: " + keywords2); // 데이터 확인
+        model.addAttribute("keyword", testService.findAllByTotalOrderByDesc());
+        model2.addAttribute("keyword2", testService.findAllByPcOrderByDesc());
+        return "actor";
+    }
+
+    @GetMapping("/webtoon")
+    public String webtoonPage(Model model, Model model2) {
+        List<TestDTO> keywords = testService.findAllByTotalOrderByDesc();
+        System.out.println("Keywords: " + keywords); // 데이터 확인
+        List<TestDTO> keywords2 = testService.findAllByPcOrderByDesc();
+        System.out.println("Keywords2: " + keywords2); // 데이터 확인
+        model.addAttribute("keyword", testService.findAllByTotalOrderByDesc());
+        model2.addAttribute("keyword2", testService.findAllByPcOrderByDesc());
+        return "webtoon";
     }
 
     @GetMapping("/index")
