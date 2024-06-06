@@ -45,7 +45,6 @@ public class UserController {
         return  "signup";
     }
 
-
     @PostMapping("/signup")
     public String jogin(@ModelAttribute UserDTO userDTO) {
         // System.out.println("userDTO = " + userDTO);
@@ -65,29 +64,26 @@ public class UserController {
         return "main";
     }
 
-
-    @GetMapping("/actor")
-    public String actorPage(Model model, Model model2) {
-        List<TestDTO> keywords = testService.findAllByTotalOrderByDesc();
+    @GetMapping("/webtoon")
+    public String webtoon(Model model, Model model2) {
+        List<TestDTO> keywords = testService.findAllByWebtoonOrderByDesc();
         System.out.println("Keywords: " + keywords); // 데이터 확인
         List<TestDTO> keywords2 = testService.findAllByPcOrderByDesc();
         System.out.println("Keywords2: " + keywords2); // 데이터 확인
-        model.addAttribute("keyword", testService.findAllByTotalOrderByDesc());
+        model.addAttribute("keyword", testService.findAllByWebtoonOrderByDesc());
         model2.addAttribute("keyword2", testService.findAllByPcOrderByDesc());
-        return "actor";
-        // 배우페이지
+        return "main";
     }
 
-    @GetMapping("/webtoon")
-    public String webtoonPage(Model model, Model model2) {
-        List<TestDTO> keywords = testService.findAllByTotalOrderByDesc();
+    @GetMapping("/actor")
+    public String actor(Model model, Model model2) {
+        List<TestDTO> keywords = testService.findAllByactorOrderByDesc();
         System.out.println("Keywords: " + keywords); // 데이터 확인
         List<TestDTO> keywords2 = testService.findAllByPcOrderByDesc();
         System.out.println("Keywords2: " + keywords2); // 데이터 확인
-        model.addAttribute("keyword", testService.findAllByTotalOrderByDesc());
+        model.addAttribute("keyword", testService.findAllByactorOrderByDesc());
         model2.addAttribute("keyword2", testService.findAllByPcOrderByDesc());
-        return "webtoon";
-        // 웹툰페이지
+        return "main";
     }
 
     @GetMapping("/index")
