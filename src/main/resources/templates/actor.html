@@ -48,7 +48,7 @@
                 <div class="element-tables">
                     <!-- 1~5위 데이터 -->
                     <div class="element-table">
-                        <div class="title">실시간 인기순위</div>
+                        <div class="title">인기순위</div>
                         <div class="table-header">
                             <div class="text-wrapper">키워드</div>
                             <div class="div">검색량</div>
@@ -65,16 +65,16 @@
 
                     <!-- 6~10위 데이터 -->
                     <div class="element-table-2">
-                        <div class="title">기간별 인기순위</div>
+                        <div class="title">인기순위</div>
                         <div class="table-header">
                             <div class="text-wrapper">키워드</div>
                             <div class="div">검색량</div>
                         </div>
                         <div class="list">
-                            <div th:each="keywordItem2, iterStat : ${keyword2}" th:if="${iterStat.index < 5}">
+                            <div th:each="keywordItem, iterStat : ${keywords}" th:if="${iterStat.index < 5}">
                                 <div class="frame">
-                                    <div class="text-wrapper-5" th:text="(${iterStat.index} + 1 + '. ') +${keywordItem2.getKeyword()}"></div>
-                                    <div class="text-wrapper-6" th:text="${keywordItem2.getPc()}"></div>
+                                    <div class="text-wrapper-5" th:text="(${iterStat.index} + 6 + '. ') +${keywordItem.getKeyword()}"></div>
+                                    <div class="text-wrapper-6" th:text="${keywordItem.getTotal()}"></div>
                                 </div>
                             </div>
                         </div>

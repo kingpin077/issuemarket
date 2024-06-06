@@ -979,7 +979,7 @@
         testentity0_.mobile as mobile3_0_,
         testentity0_.pc as pc4_0_,
     from
-        csvjson testentity0_ 
+        csvjson testentity0_
     order by
         testentity0_.total desc limit ?
     select
@@ -997,7 +997,7 @@
         testentity0_.mobile as mobile3_0_,
         testentity0_.pc as pc4_0_,
     from
-        csvjson testentity0_ 
+        csvjson testentity0_
     order by
         testentity0_.total desc limit ?
     select
@@ -1015,7 +1015,7 @@
         testentity0_.mobile as mobile3_0_,
         testentity0_.pc as pc4_0_,
     from
-        csvjson testentity0_ 
+        csvjson testentity0_
     order by
         testentity0_.total desc limit ?
     select
@@ -1033,7 +1033,7 @@
         testentity0_.mobile as mobile3_0_,
         testentity0_.pc as pc4_0_,
     from
-        csvjson testentity0_ 
+        csvjson testentity0_
     order by
         testentity0_.total desc limit ?
     select
@@ -1051,7 +1051,7 @@
         testentity0_.mobile as mobile3_0_,
         testentity0_.pc as pc4_0_,
     from
-        csvjson testentity0_ 
+        csvjson testentity0_
     order by
         testentity0_.total desc limit ?
     select
@@ -1069,7 +1069,7 @@
         testentity0_.mobile as mobile3_0_,
         testentity0_.pc as pc4_0_,
     from
-        csvjson testentity0_ 
+        csvjson testentity0_
     order by
         testentity0_.total desc limit ?
     select
@@ -1087,7 +1087,7 @@
         testentity0_.mobile as mobile3_0_,
         testentity0_.pc as pc4_0_,
     from
-        csvjson testentity0_ 
+        csvjson testentity0_
     order by
         testentity0_.total desc limit ?
     select
@@ -1105,7 +1105,7 @@
         testentity0_.mobile as mobile3_0_,
         testentity0_.pc as pc4_0_,
     from
-        csvjson testentity0_ 
+        csvjson testentity0_
     order by
         testentity0_.total desc limit ?
     select

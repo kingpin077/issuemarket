@@ -158,7 +158,7 @@
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
                                 <div class="text-wrapper-14">음악</div>
                             </button>
-                            <button class="menu-item" id="actor-button"> <!-- id를 추가해줍니다 -->
+                            <button class="menu-item" id="actor-button">
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
                                 <div class="text-wrapper-14">배우</div>
                             </button>
@@ -206,20 +206,20 @@
             overlay.classList.remove('overlay-visible');
         });
 
-        issueMarketTitle.addEventListener('click', function() {
-            window.location.href = 'main'; // 이슈 마켓 타이틀을 클릭하면 메인 화면으로 이동
-        });
-
-        homeButton.addEventListener('click', function() {
-            window.location.href = 'main'; // 홈 버튼을 클릭하면 메인 화면으로 이동
-        });
-
         document.getElementById('actor-button').addEventListener('click', function() {
             window.location.href = 'actor'; // 배우 버튼 클릭 시 actor로 이동
         });
 
         document.getElementById('webtoon-button').addEventListener('click', function() {
             window.location.href = 'webtoon'; // 웹툰 버튼 클릭 시 webtoon으로 이동
+        });
+
+        issueMarketTitle.addEventListener('click', function() {
+            location.reload(); // 새로고침
+        });
+
+        homeButton.addEventListener('click', function() {
+            location.reload(); // 새로고침구글 검색 url
         });
     });
 
