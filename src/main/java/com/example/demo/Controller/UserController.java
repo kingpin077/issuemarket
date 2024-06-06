@@ -102,7 +102,7 @@ public class UserController {
 //        // 모델에 추가된 결과는 index 페이지에서 표시됩니다.
 //        String result = getSearchResult(keyword); // 검색 결과를 얻는 메소드 호출
 //        model.addAttribute("searchResult", result); // 검색 결과를 모델에 추가
-//        return "index"; // 결과를 표시할 index 페이지로 이동합니다.
+//        return "index"; // 결과를 표시할 index 페이지로 이동합니다..
 //    }
 //
 //    // 검색 결과를 가져오는 메소드
