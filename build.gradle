@@ -46,6 +46,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'
+    testImplementation 'org.springframework.security:spring-security-test'
+
 }
 
 dependencyManagement {
@@ -62,5 +64,9 @@ generateJava {
     schemaPaths = ["${projectDir}/src/main/resources/graphql-client"]
     packageName = 'com.example.demo.codegen'
     generateClient = true
+}
+
+test{
+    useJUnitPlatform()
 }
 

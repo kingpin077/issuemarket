@@ -10,8 +10,8 @@
 
 <div class="container" id="container">
     <div class="form-container sign-up-container">
-        <form action="signup" method="post">
-            <h1>Create Account</h1>
+        <form action="signup" method="post" onsubmit="return validateSignupForm()">
+            <h1>회원가입</h1><br>
             <input type="text" name="userId" placeholder="아이디" />
             <input type="password" name="userPwd" placeholder="패스워드" />
             <input type="text" name="userName" placeholder="사용자 이름" />
@@ -20,39 +20,60 @@
                 <div class="radio-group">
                     <label for="male"><input type="radio" id="male" name="gender" value="1" checked/>남성&nbsp;</label>
                     <label for="female"><input type="radio" id="female" name="gender" value="0"/>여성</label>
-                </div>
+                </div><br><br>
             </div>
-            <button type="submit">Sign Up</button>
+            <button type="submit">가입하기</button>
         </form>
     </div>
 
     <div class="form-container sign-in-container">
         <form action="/login" method="post">
-            <h1>Sign in</h1>
+            <h1>로그인</h1>
             <input type="text" placeholder="아이디" name="userId" />
-            <input type="password" placeholder="패스워드" name="userPwd"/>
-            <a href="#">Forgot your password?</a>
-            <button type="submit">Login</button>
+            <input type="password" placeholder="패스워드" name="userPwd"/><br>
+            <button type="submit">로그인</button>
+            <div>
+                <p th:if="${session.errorMessage}" style="color: red;" th:text="${session.errorMessage}"></p>
+            </div>
         </form>
     </div>
     <div class="overlay-container">
         <div class="overlay">
             <div class="overlay-panel overlay-left">
-                <h1>Welcome Back!</h1>
-                <p>To keep connected with us please login with your personal info</p>
-                <button class="ghost" id="signIn">Sign In</button>
+                <h1>로그인</h1>
+                <p>로그인을 진행하여 확장된 기능들을 이용하실 수 있습니다.</p><br>
+                <button class="ghost" id="signIn">로그인</button>
             </div>
             <div class="overlay-panel overlay-right">
-                <h1>Hello, Friend!</h1>
-                <p>Enter your personal details and start journey with us</p>
-                    <button class="ghost" id="signUp">Sign Up</button>
+                <h1>환영합니다 !</h1>
+                <p>아직 IssueMarket 계정이 없으신가요?</p>
+                    <button class="ghost" id="signUp">회원가입</button>
             </div>
         </div>
     </div>
 </div>
-<p th:text="${error}"></p>
+
 
 <script>
+    function validateSignupForm() {
+        const userId = document.getElementById("userId").value.trim();
+        const userPwd = document.getElementById("userPwd").value.trim();
+        const userName = document.getElementById("userName").value.trim();
+
+        if (!userId) {
+            alert("사용할 아이디를 입력해주세요");
+            return false;
+        }
+        if (!userPwd) {
+            alert("사용할 패스워드를 입력해주세요");
+            return false;
+        }
+        if (!userName) {
+            alert("사용자의 이름을 입력해주세요");
+            return false;
+        }
+        return true;
+    }
     const signUpButton = document.getElementById('signUp');
     const signInButton = document.getElementById('signIn');
     const container = document.getElementById('container');

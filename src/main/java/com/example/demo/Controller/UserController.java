@@ -25,7 +25,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/login")
-    public String homepage(){
+    public String login_page(){
         return "login";
     }
 
@@ -38,17 +38,7 @@ public class UserController {
     public String showHomePage() {
         return "redirect:/login?logout";
     }
-
-//    @PostMapping("/login_process")
-//    public String login(@RequestParam("userId") String userId, @RequestParam("userPwd") String userPwd, Model model) {
-//        Optional<UserEntity> optUser = userRepository.findByUserId(userId);
-//        if (optUser.isPresent() && optUser.get().getUserPwd().equals(userPwd)) {
-//            System.out.println("Database userPwd: " + optUser.get().getUserPwd());
-//            return "success";
-//        }
-//        model.addAttribute("error", "로그인 실패");
-//        return "login";
-//    }
+    
 
     @GetMapping("/signup")
     public String sign_Page(){
