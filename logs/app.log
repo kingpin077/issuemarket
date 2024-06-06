@@ -13242,3 +13242,230 @@ java.lang.RuntimeException: Driver com.mysql.cj.jdbc.Driver claims to not accept
 2024-06-06 12:07:53.079  INFO 13888 --- [restartedMain] s.a.ScheduledAnnotationBeanPostProcessor : No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
 2024-06-06 12:07:53.080  INFO 13888 --- [restartedMain] com.example.demo.Demo1Application        : Started Demo1Application in 1.53 seconds (JVM running for 868.643)
 2024-06-06 12:07:53.081  INFO 13888 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2024-06-06 12:12:59.490  INFO 13888 --- [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 5 class path changes (0 additions, 5 deletions, 0 modifications)
+2024-06-06 12:12:59.616  INFO 13888 --- [Thread-23] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2024-06-06 12:12:59.703  INFO 13888 --- [Thread-23] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-06-06 12:13:00.408  INFO 13888 --- [restartedMain] com.example.demo.Demo1Application        : Starting Demo1Application using Java 17.0.11 on LAPTOP-EVK13GHI with PID 13888 (C:\Users\abc\Desktop\spring-\build\classes\java\main started by user in C:\Users\abc\Desktop\spring-)
+2024-06-06 12:13:00.410 DEBUG 13888 --- [restartedMain] com.example.demo.Demo1Application        : Running with Spring Boot v2.7.14, Spring v5.3.29
+2024-06-06 12:13:00.411  INFO 13888 --- [restartedMain] com.example.demo.Demo1Application        : No active profile set, falling back to 1 default profile: "default"
+2024-06-06 12:13:01.879  INFO 13888 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-06-06 12:13:02.168  INFO 13888 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 289 ms. Found 1 JPA repository interfaces.
+2024-06-06 12:13:02.462  INFO 13888 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$EnhancerBySpringCGLIB$$2d387e10] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2024-06-06 12:13:02.474  INFO 13888 --- [restartedMain] .w.s.a.s.AnnotationActionEndpointMapping : Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+2024-06-06 12:13:02.836  INFO 13888 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-06-06 12:13:02.841  INFO 13888 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-06-06 12:13:02.843  INFO 13888 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.78]
+2024-06-06 12:13:04.720  INFO 13888 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-06-06 12:13:04.721  INFO 13888 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4292 ms
+2024-06-06 12:13:05.179  INFO 13888 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-06-06 12:13:05.209  INFO 13888 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-7 - Starting...
+2024-06-06 12:13:05.226  WARN 13888 --- [restartedMain] o.h.e.j.e.i.JdbcEnvironmentInitiator     : HHH000342: Could not obtain connection to query metadata
+
+java.lang.RuntimeException: Driver com.mysql.cj.jdbc.Driver claims to not accept jdbcUrl, ${SPRING_DATASOURCE_URL}
+	at com.zaxxer.hikari.util.DriverDataSource.<init>(DriverDataSource.java:110) ~[HikariCP-4.0.3.jar:na]
+	at com.zaxxer.hikari.pool.PoolBase.initializeDataSource(PoolBase.java:331) ~[HikariCP-4.0.3.jar:na]
+	at com.zaxxer.hikari.pool.PoolBase.<init>(PoolBase.java:114) ~[HikariCP-4.0.3.jar:na]
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:108) ~[HikariCP-4.0.3.jar:na]
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112) ~[HikariCP-4.0.3.jar:na]
+	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:122) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:181) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:68) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:35) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:101) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:272) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:246) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:223) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
+	at org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory.injectServices(DefaultIdentifierGeneratorFactory.java:175) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.injectDependencies(AbstractServiceRegistryImpl.java:295) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:252) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:223) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:173) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:127) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1460) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1494) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:58) ~[spring-orm-5.3.29.jar:5.3.29]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365) ~[spring-orm-5.3.29.jar:5.3.29]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-5.3.29.jar:5.3.29]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-5.3.29.jar:5.3.29]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341) ~[spring-orm-5.3.29.jar:5.3.29]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1863) ~[spring-beans-5.3.29.jar:5.3.29]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1800) ~[spring-beans-5.3.29.jar:5.3.29]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:620) ~[spring-beans-5.3.29.jar:5.3.29]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.29.jar:5.3.29]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.29.jar:5.3.29]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.29.jar:5.3.29]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.29.jar:5.3.29]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.29.jar:5.3.29]
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1157) ~[spring-context-5.3.29.jar:5.3.29]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:911) ~[spring-context-5.3.29.jar:5.3.29]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583) ~[spring-context-5.3.29.jar:5.3.29]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:147) ~[spring-boot-2.7.14.jar:2.7.14]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:731) ~[spring-boot-2.7.14.jar:2.7.14]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:408) ~[spring-boot-2.7.14.jar:2.7.14]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307) ~[spring-boot-2.7.14.jar:2.7.14]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1303) ~[spring-boot-2.7.14.jar:2.7.14]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292) ~[spring-boot-2.7.14.jar:2.7.14]
+	at com.example.demo.Demo1Application.main(Demo1Application.java:14) ~[main/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-2.7.14.jar:2.7.14]
+
+2024-06-06 12:13:05.228  INFO 13888 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+2024-06-06 12:13:05.366  INFO 13888 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-06-06 12:13:05.367  INFO 13888 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-06-06 12:13:05.811 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for ExactUrl [processUrl='/login']
+2024-06-06 12:13:05.811 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for ExactUrl [processUrl='/login']
+2024-06-06 12:13:05.812 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Or [Ant [pattern='/logout', GET], Ant [pattern='/logout', POST], Ant [pattern='/logout', PUT], Ant [pattern='/logout', DELETE]]
+2024-06-06 12:13:05.812 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for ExactUrl [processUrl='/main']
+2024-06-06 12:13:05.812 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/']
+2024-06-06 12:13:05.812 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/login']
+2024-06-06 12:13:05.814 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/signup']
+2024-06-06 12:13:05.814 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/css/**']
+2024-06-06 12:13:05.814 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for any request
+2024-06-06 12:13:05.820  INFO 13888 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6b31e079, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3e4c96cc, org.springframework.security.web.context.SecurityContextPersistenceFilter@6bdb9b42, org.springframework.security.web.header.HeaderWriterFilter@5b5847ac, org.springframework.security.web.authentication.logout.LogoutFilter@58eb9d43, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@6dc10bd1, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@73d48d08, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6a28c1f9, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3ec8d1aa, org.springframework.security.web.session.SessionManagementFilter@1e036e7b, org.springframework.security.web.access.ExceptionTranslationFilter@f32f4ad, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@38e70c7b]
+2024-06-06 12:13:07.375  WARN 13888 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-06-06 12:13:07.459 DEBUG 13888 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-06-06 12:13:07.484  INFO 13888 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2024-06-06 12:13:07.520 DEBUG 13888 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 5 mappings in 'requestMappingHandlerMapping'
+2024-06-06 12:13:07.580 DEBUG 13888 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2024-06-06 12:13:07.649 DEBUG 13888 --- [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-06-06 12:13:08.335  INFO 13888 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-06-06 12:13:08.407  INFO 13888 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-06-06 12:13:08.420  INFO 13888 --- [restartedMain] s.a.ScheduledAnnotationBeanPostProcessor : No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2024-06-06 12:13:08.431  INFO 13888 --- [restartedMain] com.example.demo.Demo1Application        : Started Demo1Application in 8.451 seconds (JVM running for 1183.994)
+2024-06-06 12:13:08.434  INFO 13888 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2024-06-06 12:13:11.309  INFO 13888 --- [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 17 class path changes (4 additions, 2 deletions, 11 modifications)
+2024-06-06 12:13:11.357  INFO 13888 --- [Thread-27] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2024-06-06 12:13:11.389  INFO 13888 --- [Thread-27] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-06-06 12:13:11.809  INFO 13888 --- [restartedMain] com.example.demo.Demo1Application        : Starting Demo1Application using Java 17.0.11 on LAPTOP-EVK13GHI with PID 13888 (C:\Users\abc\Desktop\spring-\build\classes\java\main started by user in C:\Users\abc\Desktop\spring-)
+2024-06-06 12:13:11.810 DEBUG 13888 --- [restartedMain] com.example.demo.Demo1Application        : Running with Spring Boot v2.7.14, Spring v5.3.29
+2024-06-06 12:13:11.810  INFO 13888 --- [restartedMain] com.example.demo.Demo1Application        : No active profile set, falling back to 1 default profile: "default"
+2024-06-06 12:13:14.706  INFO 13888 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-06-06 12:13:15.684  INFO 13888 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 973 ms. Found 2 JPA repository interfaces.
+2024-06-06 12:13:16.387  INFO 13888 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$EnhancerBySpringCGLIB$$2d387e10] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2024-06-06 12:13:16.400  INFO 13888 --- [restartedMain] .w.s.a.s.AnnotationActionEndpointMapping : Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+2024-06-06 12:13:16.534  INFO 13888 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-06-06 12:13:16.553  INFO 13888 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-06-06 12:13:16.554  INFO 13888 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.78]
+2024-06-06 12:13:16.796  INFO 13888 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-06-06 12:13:16.797  INFO 13888 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4974 ms
+2024-06-06 12:13:17.125  INFO 13888 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-06-06 12:13:17.155  INFO 13888 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-8 - Starting...
+2024-06-06 12:13:19.171  INFO 13888 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-8 - Start completed.
+2024-06-06 12:13:19.172  INFO 13888 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+2024-06-06 12:13:19.240  INFO 13888 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-06-06 12:13:19.241  INFO 13888 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-06-06 12:13:20.445 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for ExactUrl [processUrl='/login']
+2024-06-06 12:13:20.462 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for ExactUrl [processUrl='/login']
+2024-06-06 12:13:20.463 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Or [Ant [pattern='/logout', GET], Ant [pattern='/logout', POST], Ant [pattern='/logout', PUT], Ant [pattern='/logout', DELETE]]
+2024-06-06 12:13:20.463 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for ExactUrl [processUrl='/main']
+2024-06-06 12:13:20.463 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/']
+2024-06-06 12:13:20.464 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/login']
+2024-06-06 12:13:20.464 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/signup']
+2024-06-06 12:13:20.464 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/css/**']
+2024-06-06 12:13:20.464 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for any request
+2024-06-06 12:13:20.468  INFO 13888 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@3713187e, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5a929571, org.springframework.security.web.context.SecurityContextPersistenceFilter@1f063bfe, org.springframework.security.web.header.HeaderWriterFilter@64a9f2c1, org.springframework.security.web.authentication.logout.LogoutFilter@5ac10556, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@1667a6ba, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2da58c4d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6314cc2, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@8c75e6e, org.springframework.security.web.session.SessionManagementFilter@6bb338c1, org.springframework.security.web.access.ExceptionTranslationFilter@463e85e6, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@2ebf871a]
+2024-06-06 12:13:20.587  WARN 13888 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-06-06 12:13:20.644 DEBUG 13888 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-06-06 12:13:20.669  INFO 13888 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2024-06-06 12:13:20.701 DEBUG 13888 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 14 mappings in 'requestMappingHandlerMapping'
+2024-06-06 12:13:20.716 DEBUG 13888 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2024-06-06 12:13:20.730 DEBUG 13888 --- [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-06-06 12:13:20.869  INFO 13888 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-06-06 12:13:20.905  INFO 13888 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-06-06 12:13:20.913  INFO 13888 --- [restartedMain] s.a.ScheduledAnnotationBeanPostProcessor : No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2024-06-06 12:13:20.916  INFO 13888 --- [restartedMain] com.example.demo.Demo1Application        : Started Demo1Application in 9.315 seconds (JVM running for 1196.479)
+2024-06-06 12:13:20.918  INFO 13888 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2024-06-06 12:16:11.236  INFO 13888 --- [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 4 class path changes (0 additions, 4 deletions, 0 modifications)
+2024-06-06 12:16:11.321  INFO 13888 --- [Thread-31] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2024-06-06 12:16:11.369  INFO 13888 --- [Thread-31] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-06-06 12:16:11.383  INFO 13888 --- [Thread-31] com.zaxxer.hikari.HikariDataSource       : HikariPool-8 - Shutdown initiated...
+2024-06-06 12:16:11.399  INFO 13888 --- [Thread-31] com.zaxxer.hikari.HikariDataSource       : HikariPool-8 - Shutdown completed.
+2024-06-06 12:16:11.676  INFO 13888 --- [restartedMain] com.example.demo.Demo1Application        : Starting Demo1Application using Java 17.0.11 on LAPTOP-EVK13GHI with PID 13888 (C:\Users\abc\Desktop\spring-\build\classes\java\main started by user in C:\Users\abc\Desktop\spring-)
+2024-06-06 12:16:11.679 DEBUG 13888 --- [restartedMain] com.example.demo.Demo1Application        : Running with Spring Boot v2.7.14, Spring v5.3.29
+2024-06-06 12:16:11.679  INFO 13888 --- [restartedMain] com.example.demo.Demo1Application        : No active profile set, falling back to 1 default profile: "default"
+2024-06-06 12:16:12.158  INFO 13888 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-06-06 12:16:12.199  INFO 13888 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 39 ms. Found 1 JPA repository interfaces.
+2024-06-06 12:16:12.294  INFO 13888 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$EnhancerBySpringCGLIB$$2d387e10] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2024-06-06 12:16:12.298  INFO 13888 --- [restartedMain] .w.s.a.s.AnnotationActionEndpointMapping : Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+2024-06-06 12:16:12.369  INFO 13888 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-06-06 12:16:12.370  INFO 13888 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-06-06 12:16:12.370  INFO 13888 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.78]
+2024-06-06 12:16:12.430  INFO 13888 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-06-06 12:16:12.431  INFO 13888 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 748 ms
+2024-06-06 12:16:12.493  INFO 13888 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-06-06 12:16:12.502  INFO 13888 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-9 - Starting...
+2024-06-06 12:16:14.390  INFO 13888 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-9 - Start completed.
+2024-06-06 12:16:14.392  INFO 13888 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+2024-06-06 12:16:14.464  INFO 13888 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-06-06 12:16:14.464  INFO 13888 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-06-06 12:16:14.708 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for ExactUrl [processUrl='/login']
+2024-06-06 12:16:14.708 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for ExactUrl [processUrl='/login']
+2024-06-06 12:16:14.709 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Or [Ant [pattern='/logout', GET], Ant [pattern='/logout', POST], Ant [pattern='/logout', PUT], Ant [pattern='/logout', DELETE]]
+2024-06-06 12:16:14.709 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for ExactUrl [processUrl='/main']
+2024-06-06 12:16:14.709 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/']
+2024-06-06 12:16:14.709 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/login']
+2024-06-06 12:16:14.709 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/signup']
+2024-06-06 12:16:14.709 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/css/**']
+2024-06-06 12:16:14.709 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for any request
+2024-06-06 12:16:14.711  INFO 13888 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@18009482, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1f3e80ec, org.springframework.security.web.context.SecurityContextPersistenceFilter@e9d80ac, org.springframework.security.web.header.HeaderWriterFilter@307f185b, org.springframework.security.web.authentication.logout.LogoutFilter@182052aa, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@35be9de4, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@347de96a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7c88827e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@600a58f7, org.springframework.security.web.session.SessionManagementFilter@ab19cae, org.springframework.security.web.access.ExceptionTranslationFilter@620b0a27, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3c48607c]
+2024-06-06 12:16:14.814  WARN 13888 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-06-06 12:16:14.848 DEBUG 13888 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-06-06 12:16:14.860  INFO 13888 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2024-06-06 12:16:14.878 DEBUG 13888 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 5 mappings in 'requestMappingHandlerMapping'
+2024-06-06 12:16:14.909 DEBUG 13888 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2024-06-06 12:16:14.922 DEBUG 13888 --- [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-06-06 12:16:14.985  INFO 13888 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-06-06 12:16:15.000  INFO 13888 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-06-06 12:16:15.006  INFO 13888 --- [restartedMain] s.a.ScheduledAnnotationBeanPostProcessor : No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2024-06-06 12:16:15.008  INFO 13888 --- [restartedMain] com.example.demo.Demo1Application        : Started Demo1Application in 3.435 seconds (JVM running for 1370.57)
+2024-06-06 12:16:15.009  INFO 13888 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2024-06-06 12:16:16.495  INFO 13888 --- [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 4 class path changes (4 additions, 0 deletions, 0 modifications)
+2024-06-06 12:16:16.518  INFO 13888 --- [Thread-35] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2024-06-06 12:16:16.524  INFO 13888 --- [Thread-35] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-06-06 12:16:16.524  INFO 13888 --- [Thread-35] com.zaxxer.hikari.HikariDataSource       : HikariPool-9 - Shutdown initiated...
+2024-06-06 12:16:17.634  INFO 13888 --- [Thread-35] com.zaxxer.hikari.HikariDataSource       : HikariPool-9 - Shutdown completed.
+2024-06-06 12:16:17.770  INFO 13888 --- [restartedMain] com.example.demo.Demo1Application        : Starting Demo1Application using Java 17.0.11 on LAPTOP-EVK13GHI with PID 13888 (C:\Users\abc\Desktop\spring-\build\classes\java\main started by user in C:\Users\abc\Desktop\spring-)
+2024-06-06 12:16:17.770 DEBUG 13888 --- [restartedMain] com.example.demo.Demo1Application        : Running with Spring Boot v2.7.14, Spring v5.3.29
+2024-06-06 12:16:17.770  INFO 13888 --- [restartedMain] com.example.demo.Demo1Application        : No active profile set, falling back to 1 default profile: "default"
+2024-06-06 12:16:18.067  INFO 13888 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-06-06 12:16:18.104  INFO 13888 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 37 ms. Found 2 JPA repository interfaces.
+2024-06-06 12:16:18.162  INFO 13888 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$EnhancerBySpringCGLIB$$2d387e10] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2024-06-06 12:16:18.163  INFO 13888 --- [restartedMain] .w.s.a.s.AnnotationActionEndpointMapping : Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+2024-06-06 12:16:18.204  INFO 13888 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-06-06 12:16:18.206  INFO 13888 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-06-06 12:16:18.206  INFO 13888 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.78]
+2024-06-06 12:16:18.255  INFO 13888 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-06-06 12:16:18.256  INFO 13888 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 483 ms
+2024-06-06 12:16:18.304  INFO 13888 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-06-06 12:16:18.312  INFO 13888 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-10 - Starting...
+2024-06-06 12:16:20.425  INFO 13888 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-10 - Start completed.
+2024-06-06 12:16:20.426  INFO 13888 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+2024-06-06 12:16:20.466  INFO 13888 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-06-06 12:16:20.466  INFO 13888 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-06-06 12:16:20.572 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for ExactUrl [processUrl='/login']
+2024-06-06 12:16:20.572 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for ExactUrl [processUrl='/login']
+2024-06-06 12:16:20.572 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Or [Ant [pattern='/logout', GET], Ant [pattern='/logout', POST], Ant [pattern='/logout', PUT], Ant [pattern='/logout', DELETE]]
+2024-06-06 12:16:20.572 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for ExactUrl [processUrl='/main']
+2024-06-06 12:16:20.572 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/']
+2024-06-06 12:16:20.573 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/login']
+2024-06-06 12:16:20.573 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/signup']
+2024-06-06 12:16:20.573 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/css/**']
+2024-06-06 12:16:20.573 DEBUG 13888 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for any request
+2024-06-06 12:16:20.574  INFO 13888 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@218fc9a3, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7bae7af4, org.springframework.security.web.context.SecurityContextPersistenceFilter@5084f168, org.springframework.security.web.header.HeaderWriterFilter@68de8762, org.springframework.security.web.authentication.logout.LogoutFilter@1a4dbf82, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@5ef2e314, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3ef9b442, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2200d168, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6eb337a8, org.springframework.security.web.session.SessionManagementFilter@47e11376, org.springframework.security.web.access.ExceptionTranslationFilter@49f4ece6, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@6f9f42f3]
+2024-06-06 12:16:20.625  WARN 13888 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-06-06 12:16:20.639 DEBUG 13888 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-06-06 12:16:20.646  INFO 13888 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2024-06-06 12:16:20.657 DEBUG 13888 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 14 mappings in 'requestMappingHandlerMapping'
+2024-06-06 12:16:20.664 DEBUG 13888 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2024-06-06 12:16:20.670 DEBUG 13888 --- [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-06-06 12:16:20.720  INFO 13888 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-06-06 12:16:20.733  INFO 13888 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-06-06 12:16:20.736  INFO 13888 --- [restartedMain] s.a.ScheduledAnnotationBeanPostProcessor : No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2024-06-06 12:16:20.738  INFO 13888 --- [restartedMain] com.example.demo.Demo1Application        : Started Demo1Application in 3.025 seconds (JVM running for 1376.301)
+2024-06-06 12:16:20.739  INFO 13888 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2024-06-06 12:16:47.116  INFO 13888 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-06-06 12:16:47.117  INFO 13888 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-10 - Shutdown initiated...
+2024-06-06 12:16:47.121  INFO 13888 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-10 - Shutdown completed.
