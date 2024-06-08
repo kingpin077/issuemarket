@@ -3,7 +3,6 @@ package com.example.demo.Controller;
 import com.example.demo.DTO.UserDTO;
 import com.example.demo.TestDTO;
 import com.example.demo.TestService;
-import com.example.demo.Repository.UserRepository;
 import com.example.demo.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.*;
@@ -61,20 +60,18 @@ public class UserController {
     }
 
     @GetMapping("/webtoon")
-    public String webtoon(Model model, Model model2) {
-        List<List<TestDTO>> keywords = testService.findAllByTagOrderByDesc("webtoon");
+    public String webtoon(Model model) {
+        List<TestDTO> keywords = testService.findAllByTagOrderByDesc("webtoon");
 
-        model.addAttribute("keyword", keywords.get(0));
-        model2.addAttribute("keywords", keywords.get(1));
+        model.addAttribute("keyword", keywords);
         return "webtoon";
     }
 
     @GetMapping("/actor")
-    public String actor(Model model, Model model2) {
-        List<List<TestDTO>> keywords = testService.findAllByTagOrderByDesc("actor");
+    public String actor(Model model) {
+        List<TestDTO> keywords = testService.findAllByTagOrderByDesc("actor");
 
-        model.addAttribute("keyword", keywords.get(0));
-        model2.addAttribute("keywords", keywords.get(1));
+        model.addAttribute("keyword", keywords);
         return "actor";
     }
 
