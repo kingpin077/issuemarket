@@ -13,7 +13,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder  passwordEncoder;
 
-    public void createUser(UserDTO userDTO) {
+    public void createUser(UserDTO userDTO) throws Exception {
+
+        if (userRepository.existsByUserId(userDTO.getUserId())) {
+            throw new Exception("User ID already exists");
+        }
         userDTO.setUserPwd(passwordEncoder.encode(userDTO.getUserPwd()));
         UserEntity userEntity = UserEntity.toUserEntity(userDTO);
         userRepository.save(userEntity);

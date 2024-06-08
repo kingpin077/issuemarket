@@ -40,15 +40,16 @@ public class UserController {
     }
 
 
-    @GetMapping("/signup")
-    public String sign_Page(){
-        return  "signup";
-    }
+
 
     @PostMapping("/signup")
-    public String jogin(@ModelAttribute UserDTO userDTO) {
-        // System.out.println("userDTO = " + userDTO);
-        userService.createUser(userDTO);
+    public String jogin(@ModelAttribute UserDTO userDTO, Model model) {
+        try {
+            userService.createUser(userDTO);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "이미 존재하는 아이디 입니다.");
+            return "login";
+        }
 
         return "login";
     }

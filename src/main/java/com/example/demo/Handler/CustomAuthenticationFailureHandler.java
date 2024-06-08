@@ -25,9 +25,9 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
             errorMessage = exception.getMessage();
         }
         request.getSession().setAttribute("errorMessage", errorMessage);
-        super.onAuthenticationFailure(request, response, exception);
-//        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//        response.getWriter().write("Authentication Failed: " + exception.getMessage());
-        response.sendRedirect("/login?error=true");
+        if (!response.isCommitted()) {
+            super.setDefaultFailureUrl("/login?error=true");
+            super.onAuthenticationFailure(request, response, exception);
+        }
     }
 }
