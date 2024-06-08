@@ -6,7 +6,7 @@
     <title>Issue Market</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/globals.css">
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/substyle.css">
 </head>
 
 <body>
@@ -18,9 +18,6 @@
         <button class="issue-market-title btn btn-link" id="issue-market-title">&nbsp;Issue Market</button>
     </div>
     <div class="items">
-        <button type="button" class="btn btn-light page-button"><div class="text-wrapper-16">Page1</div></button>
-        <button type="button" class="btn btn-light page-button"><div class="text-wrapper-16">Page2</div></button>
-        <button type="button" class="btn btn-light page-button"><div class="text-wrapper-16">Page3</div></button>
         <button type="button" class="btn btn-dark" sec:authorize="isAuthenticated()" onclick="location.href='/logout'">
             <div class="text-wrapper-17">로그아웃</div>
         </button>
@@ -35,11 +32,12 @@
         <div class="form-group mr-2" style="flex: 1;">
             <input type="text" id="keyword_search" name="keyword_search" class="form-control" placeholder="Placeholder" required>
         </div>
-        <button type="submit" class="btn btn-dark bigbutton">
+        <button type="submit" class="btn btn-dark bigbutton">  
             <div class="text-wrapper-12">Submit</div>
         </button>
     </form>
 </div>
+
 
 <div class="box">
     <div class="group">
@@ -54,31 +52,21 @@
                             <div class="div">검색량</div>
                         </div>
                         <div class="list">
-                            <div th:each="keywordItem, iterStat : ${keyword}" th:if="${iterStat.index < 5}">
-                                <div class="frame">
-                                    <div class="text-wrapper-3" th:text="(${iterStat.index} + 1 + '. ') + ${keywordItem.getKeyword()}"></div>
-                                    <div class="text-wrapper-4" th:text="${keywordItem.getTotal()}"></div>
-                                </div>
+                            <div th:each="keywordItem, iterStat : ${keyword}" th:if="${iterStat.index < 10}">
+                                <button class="keyword-button frame" onclick="expandButton(this)">
+                                    <div class="keyword-wrapper">
+                                        <div class="text-wrapper-3" th:text="(${iterStat.index} + 1 + '. ') + ${keywordItem.getKeyword()}"></div>
+                                        <div class="text-wrapper-4" th:text="${keywordItem.getTotal()}"></div>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="article-url" style="display: none;">기사 URL: <a href="기사 URL 주소">기사 제목</a></div>
+                                </button>
                             </div>
                         </div>
                     </div>
 
                     <!-- 6~10위 데이터 -->
-                    <div class="element-table-2">
-                        <div class="title">기간별 인기순위</div>
-                        <div class="table-header">
-                            <div class="text-wrapper">키워드</div>
-                            <div class="div">검색량</div>
-                        </div>
-                        <div class="list">
-                            <div th:each="keywordItem2, iterStat : ${keyword2}" th:if="${iterStat.index < 5}">
-                                <div class="frame">
-                                    <div class="text-wrapper-5" th:text="(${iterStat.index} + 1 + '. ') +${keywordItem2.getKeyword()}"></div>
-                                    <div class="text-wrapper-6" th:text="${keywordItem2.getPc()}"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
 
                 <div class="element-header-navigation">
@@ -158,7 +146,23 @@
             window.location.href = 'webtoon'; // 웹툰 버튼 클릭 시 webtoon으로 이동
         });
 
+        function expandButton(element) {
+            element.classList.toggle('expanded');
+        }
+
     });
+
+    function expandButton(button) {
+        if (button.style.height === '198px') {
+            button.style.height = '48px';
+            button.querySelector('.article-url').style.display = 'none';
+            button.classList.remove('expanded');
+        } else {
+            button.style.height = '198px';
+            button.querySelector('.article-url').style.display = 'block';
+            button.classList.add('expanded');
+        }
+    }
 </script>
 </body>
 </html>

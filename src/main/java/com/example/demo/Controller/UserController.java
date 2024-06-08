@@ -1,10 +1,8 @@
 package com.example.demo.Controller;
 
 import com.example.demo.DTO.UserDTO;
-import com.example.demo.Entity.UserEntity;
 import com.example.demo.TestDTO;
 import com.example.demo.TestService;
-import com.example.demo.Repository.UserRepository;
 import com.example.demo.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.*;
@@ -13,13 +11,10 @@ import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Controller
 public class UserController {
-    @Autowired
-    private UserRepository userRepository;
     @Autowired
     private TestService testService;
     private final UserService userService;
@@ -66,24 +61,18 @@ public class UserController {
     }
 
     @GetMapping("/webtoon")
-    public String webtoon(Model model, Model model2) {
-        List<TestDTO> keywords = testService.findAllByWebtoonOrderByDesc();
-        System.out.println("Keywords: " + keywords); // 데이터 확인
-        List<TestDTO> keywords2 = testService.findAllByPcOrderByDesc();
-        System.out.println("Keywords2: " + keywords2); // 데이터 확인
-        model.addAttribute("keyword", testService.findAllByWebtoonOrderByDesc());
-        model2.addAttribute("keyword2", testService.findAllByPcOrderByDesc());
+    public String webtoon(Model model) {
+        List<TestDTO> keywords = testService.findAllByTagOrderByDesc("webtoon");
+
+        model.addAttribute("keyword", keywords);
         return "webtoon";
     }
 
     @GetMapping("/actor")
-    public String actor(Model model, Model model2) {
-        List<TestDTO> keywords = testService.findAllByactorOrderByDesc();
-        System.out.println("Keywords: " + keywords); // 데이터 확인
-        List<TestDTO> keywords2 = testService.findAllByPcOrderByDesc();
-        System.out.println("Keywords2: " + keywords2); // 데이터 확인
-        model.addAttribute("keyword", testService.findAllByactorOrderByDesc());
-        model2.addAttribute("keyword2", testService.findAllByPcOrderByDesc());
+    public String actor(Model model) {
+        List<TestDTO> keywords = testService.findAllByTagOrderByDesc("actor");
+
+        model.addAttribute("keyword", keywords);
         return "actor";
     }
 
