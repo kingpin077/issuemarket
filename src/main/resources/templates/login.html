@@ -12,9 +12,9 @@
     <div class="form-container sign-up-container">
         <form action="signup" method="post" onsubmit="return validateSignupForm()">
             <h1>회원가입</h1><br>
-            <input type="text" name="userId" placeholder="아이디" />
-            <input type="password" name="userPwd" placeholder="패스워드" />
-            <input type="text" name="userName" placeholder="사용자 이름" />
+            <input type="text" id="userId" name="userId" placeholder="아이디" />
+            <input type="password" id="userPwd" name="userPwd" placeholder="패스워드" />
+            <input type="text" id="userName" name="userName" placeholder="사용자 이름" />
             <div class="gender-container">
                 <span>성별  &nbsp;</span>
                 <div class="radio-group">
@@ -23,14 +23,15 @@
                 </div><br><br>
             </div>
             <button type="submit">가입하기</button>
+            <p th:if="${errorMessage}" style="color: red;" th:text="${errorMessage}"></p>
         </form>
     </div>
 
     <div class="form-container sign-in-container">
-        <form action="/login" method="post">
+        <form action="/login" method="post" onsubmit="return SignInForm()">
             <h1>로그인</h1>
-            <input type="text" placeholder="아이디" name="userId" />
-            <input type="password" placeholder="패스워드" name="userPwd"/><br>
+            <input type="text" id="loginId" placeholder="아이디" name="userId" />
+            <input type="password" id="loginPwd" placeholder="패스워드" name="userPwd"/><br>
             <button type="submit">로그인</button>
             <div>
                 <p th:if="${session.errorMessage}" style="color: red;" th:text="${session.errorMessage}"></p>
@@ -60,16 +61,34 @@
         const userPwd = document.getElementById("userPwd").value.trim();
         const userName = document.getElementById("userName").value.trim();
 
+
         if (!userId) {
             alert("사용할 아이디를 입력해주세요");
             return false;
         }
-        if (!userPwd) {
+        else if (!userPwd) {
             alert("사용할 패스워드를 입력해주세요");
             return false;
         }
-        if (!userName) {
+        else if (!userName) {
             alert("사용자의 이름을 입력해주세요");
+            return false;
+        }
+
+        return true;
+
+    }
+
+    function SignInForm() {
+        const loginId = document.getElementById("loginId").value.trim();
+        const loginPwd = document.getElementById("loginPwd").value.trim();
+
+    if (!loginId) {
+            alert("아이디를 입력해주세요");
+            return false;
+        }
+    else if (!loginPwd) {
+            alert("패스워드를 입력해주세요");
             return false;
         }
         return true;
