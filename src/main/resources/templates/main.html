@@ -134,7 +134,7 @@
                     </div>
                     <div>
                         <h3>Gender Ratio</h3>
-                        <canvas id="genderChart"></canvas>
+                        <canvas id="genderChart" width="500" height="350"></canvas>
                     </div>
                     <div>
                         <h3>Age Ratio</h3>
@@ -275,6 +275,8 @@
                             data: [genderData.male, genderData.female],
                             backgroundColor: ['#36A2EB', '#FF6384']
                         }]
+                    },options:{
+                        responsive: false
                     }
                 });
 

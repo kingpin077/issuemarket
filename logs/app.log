@@ -422,3 +422,53 @@
 2024-06-09 10:05:46.618  INFO 15324 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2024-06-09 10:05:46.619  INFO 15324 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown initiated...
 2024-06-09 10:05:46.624  INFO 15324 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown completed.
+2024-06-09 10:23:30.010  INFO 11604 --- [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 1 deletion, 0 modifications)
+2024-06-09 10:23:30.015  INFO 11604 --- [Thread-7] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2024-06-09 10:23:30.016  INFO 11604 --- [Thread-7] o.a.c.c.C.[Tomcat].[localhost].[/]       : Destroying Spring FrameworkServlet 'dispatcherServlet'
+2024-06-09 10:23:30.020  INFO 11604 --- [Thread-7] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-06-09 10:23:30.021  INFO 11604 --- [Thread-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
+2024-06-09 10:23:30.022  INFO 11604 --- [Thread-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
+2024-06-09 10:23:30.104  INFO 11604 --- [restartedMain] com.example.demo.Demo1Application        : Starting Demo1Application using Java 20.0.1 on DESKTOP-PC with PID 11604 (C:\Users\USER\IdeaProjects\spring-1\build\classes\java\main started by USER in C:\Users\USER\IdeaProjects\spring-1)
+2024-06-09 10:23:30.104 DEBUG 11604 --- [restartedMain] com.example.demo.Demo1Application        : Running with Spring Boot v2.7.14, Spring v5.3.29
+2024-06-09 10:23:30.104  INFO 11604 --- [restartedMain] com.example.demo.Demo1Application        : No active profile set, falling back to 1 default profile: "default"
+2024-06-09 10:23:30.250  INFO 11604 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-06-09 10:23:30.261  INFO 11604 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11 ms. Found 2 JPA repository interfaces.
+2024-06-09 10:23:30.302  INFO 11604 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$EnhancerBySpringCGLIB$$b2ac2c5e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2024-06-09 10:23:30.303  INFO 11604 --- [restartedMain] .w.s.a.s.AnnotationActionEndpointMapping : Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+2024-06-09 10:23:30.334  INFO 11604 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-06-09 10:23:30.334  INFO 11604 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-06-09 10:23:30.334  INFO 11604 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.78]
+2024-06-09 10:23:30.354  INFO 11604 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-06-09 10:23:30.354  INFO 11604 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 248 ms
+2024-06-09 10:23:30.392  INFO 11604 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-06-09 10:23:30.397  INFO 11604 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2024-06-09 10:23:31.996  INFO 11604 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2024-06-09 10:23:31.996  INFO 11604 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+2024-06-09 10:23:32.016  INFO 11604 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-06-09 10:23:32.016  INFO 11604 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-06-09 10:23:32.091 DEBUG 11604 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for ExactUrl [processUrl='/login']
+2024-06-09 10:23:32.091 DEBUG 11604 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for ExactUrl [processUrl='/login']
+2024-06-09 10:23:32.091 DEBUG 11604 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Or [Ant [pattern='/logout', GET], Ant [pattern='/logout', POST], Ant [pattern='/logout', PUT], Ant [pattern='/logout', DELETE]]
+2024-06-09 10:23:32.092 DEBUG 11604 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for ExactUrl [processUrl='/main']
+2024-06-09 10:23:32.092 DEBUG 11604 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/']
+2024-06-09 10:23:32.092 DEBUG 11604 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/login']
+2024-06-09 10:23:32.092 DEBUG 11604 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/signup']
+2024-06-09 10:23:32.092 DEBUG 11604 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for Ant [pattern='/css/**']
+2024-06-09 10:23:32.092 DEBUG 11604 --- [restartedMain] edFilterInvocationSecurityMetadataSource : Adding web access control expression [permitAll] for any request
+2024-06-09 10:23:32.093  INFO 11604 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7544069, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4ad1fd29, org.springframework.security.web.context.SecurityContextPersistenceFilter@5b8be082, org.springframework.security.web.header.HeaderWriterFilter@4f3b8d7f, org.springframework.security.web.authentication.logout.LogoutFilter@6648e73f, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@45af9d9f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@269ef642, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@35ddc79b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@bf1edfa, org.springframework.security.web.session.SessionManagementFilter@65006be, org.springframework.security.web.access.ExceptionTranslationFilter@4b46c5d4, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@76e6f0f1]
+2024-06-09 10:23:32.122  WARN 11604 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-06-09 10:23:32.132 DEBUG 11604 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-06-09 10:23:32.135  INFO 11604 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2024-06-09 10:23:32.142 DEBUG 11604 --- [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 5 mappings in 'requestMappingHandlerMapping'
+2024-06-09 10:23:32.146 DEBUG 11604 --- [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2024-06-09 10:23:32.149 DEBUG 11604 --- [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-06-09 10:23:32.178  INFO 11604 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-06-09 10:23:32.187  INFO 11604 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-06-09 10:23:32.189  INFO 11604 --- [restartedMain] s.a.ScheduledAnnotationBeanPostProcessor : No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+2024-06-09 10:23:32.189  INFO 11604 --- [restartedMain] com.example.demo.Demo1Application        : Started Demo1Application in 2.111 seconds (JVM running for 569.636)
+2024-06-09 10:23:32.190  INFO 11604 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2024-06-09 10:23:33.607  INFO 11604 --- [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 15 class path changes (1 addition, 0 deletions, 14 modifications)
+2024-06-09 10:23:33.611  INFO 11604 --- [Thread-11] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2024-06-09 10:23:33.613  INFO 11604 --- [Thread-11] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-06-09 10:23:33.613  INFO 11604 --- [Thread-11] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown initiated...
+2024-06-09 10:23:34.621  INFO 11604 --- [Thread-11] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown completed.
