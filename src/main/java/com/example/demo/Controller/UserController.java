@@ -62,7 +62,6 @@ public class UserController {
     @GetMapping("/webtoon")
     public String webtoon(Model model) {
         List<TestDTO> keywords = testService.findAllByTagOrderByDesc("webtoon");
-
         model.addAttribute("keyword", keywords);
         return "webtoon";
     }
@@ -70,7 +69,6 @@ public class UserController {
     @GetMapping("/actor")
     public String actor(Model model) {
         List<TestDTO> keywords = testService.findAllByTagOrderByDesc("actor");
-
         model.addAttribute("keyword", keywords);
         return "actor";
     }
