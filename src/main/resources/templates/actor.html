@@ -15,7 +15,10 @@
         <button type="button" class="btn btn-light" id="menu-button">
             <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/list.svg" />
         </button>
-        <button class="issue-market-title btn btn-link" id="issue-market-title">&nbsp;Issue Market</button>
+        <button class="issue-market-title btn btn-link d-flex align-items-center" id="issue-market-title">
+            <img src="/css/image/logo_black.png" alt="Logo" style="height: 60px; width: 110px; margin-left: 5px">
+            <span>&nbsp;Issue Market</span>
+        </button>
     </div>
     <div class="items">
         <button type="button" class="btn btn-dark" sec:authorize="isAuthenticated()" onclick="location.href='/logout'">
@@ -46,7 +49,7 @@
                 <div class="element-tables">
                     <!-- 1~5위 데이터 -->
                     <div class="element-table">
-                        <div class="title">실시간 인기순위</div>
+                        <div class="title">실시간 인기순위(Total)</div>
                         <div class="table-header">
                             <div class="text-wrapper">키워드</div>
                             <div class="div">검색량</div>
