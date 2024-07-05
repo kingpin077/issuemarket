@@ -77,13 +77,18 @@ public class SeverController2 {
     public ResponseEntity<Map<String, Object>> getKeywordRatio(String keyword){
         RestTemplate restTemplate = new RestTemplate();
 
-        String q, from, to, device;
+        LocalDate endDate = LocalDate.now().minusDays(1);
+        LocalDate startDate = endDate.minusMonths(1);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String formattedEndDate = endDate.format(formatter);
+        String formattedStartDate = startDate.format(formatter);
+
+        String q, device;
         q = keyword;
-        from = "20240422";
-        to = "20240522";
         device = "m";
 
-        String url = String.format("https://datatrend.kakao.com/api/search/trend?q=%s&from=%s&to=%s&device=%s", q, from, to, device);
+        String url = String.format("https://datatrend.kakao.com/api/search/trend?q=%s&from=%s&to=%s&device=%s", q, formattedStartDate, formattedEndDate, device);
 
         @SuppressWarnings("unchecked")
         Map<String, Object> response = restTemplate.getForObject(url, Map.class);
