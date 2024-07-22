@@ -80,7 +80,7 @@
 </div>
 
 <div class="element-input-field-with">
-    <form id="keywordForm" method="get" class="d-flex">
+    <form id="keywordForm" action="/index" method="post" class="d-flex">
         <div class="form-group mr-2" style="flex: 1;">
             <input type="text" id="keyword_search" name="keyword_search" class="form-control" placeholder="Placeholder" required>
         </div>
@@ -225,81 +225,81 @@
         });
     });
 
-    document.getElementById('keywordForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const keyword_s = document.getElementById('keyword_search').value;
-        fetch(`/search?groupName=${keyword_s}&keywords=${keyword_s}`, {
-            method: 'POST', // POST 메소드 사용
-        })
-            .then(response => response.json())
-            .then(data => {
-                const keywordDataDiv = document.getElementById('keywordData');
-                const pcCount = data.monthlyPcQcCnt;
-                const mobileCount = data.monthlyMobileQcCnt;
-                const totalCount = pcCount + mobileCount;
-
-                keywordDataDiv.innerHTML = `
-                <div class="keyword-stats">
-                    <div class="stat-item">
-                        <span class="device-icon">💻</span>
-                        <span class="stat-value">${pcCount.toLocaleString()}</span>
-                        <span>PC</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="device-icon">📱</span>
-                        <span class="stat-value">${mobileCount.toLocaleString()}</span>
-                        <span>Mobile</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="device-icon">➕</span>
-                        <span class="stat-value">${totalCount.toLocaleString()}</span>
-                        <span>Total</span>
-                    </div>
-                </div>
-                <div class="keyword-stats">
-                    <span class="stat-value">네이버 검색: <a href="https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=${keyword_s}">${keyword_s}</a></span>
-                    <span class="stat-value">구글 검색: <a href="https://www.google.com/search?q=${keyword_s}">${keyword_s}</a></span>
-                </div>
-            `;
-
-                const genderData = data.kakaoData.gender;
-                const ageData = data.kakaoData.age;
-
-                if (genderChart) {
-                    genderChart.destroy();
-                }
-                const genderCtx = document.getElementById('genderChart').getContext('2d');
-                genderChart = new Chart(genderCtx, {
-                    type: 'pie',
-                    data: {
-                        labels: ['Male', 'Female'],
-                        datasets: [{
-                            data: [genderData.male, genderData.female],
-                            backgroundColor: ['#36A2EB', '#FF6384']
-                        }]
-                    },options:{
-                        responsive: false
-                    }
-                });
-
-                if (ageChart) {
-                    ageChart.destroy();
-                }
-                const ageCtx = document.getElementById('ageChart').getContext('2d');
-                ageChart = new Chart(ageCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['10대', '20대', '30대', '40대', '50대', '60대'],
-                        datasets: [{
-                            label: '나이 비율',
-                            data: [ageData['10'], ageData['20'], ageData['30'], ageData['40'], ageData['50'], ageData['60']],
-                            backgroundColor: '#4BC0C0'
-                        }]
-                    }
-                });
-            })
-            .catch(error => console.error('Error:', error));
-    });
+    // document.getElementById('keywordForm').addEventListener('submit', function(event) {
+    //     event.preventDefault();
+    //     const keyword_s = document.getElementById('keyword_search').value;
+    //     fetch(`/search?groupName=${keyword_s}&keywords=${keyword_s}`, {
+    //         method: 'POST', // POST 메소드 사용
+    //     })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             const keywordDataDiv = document.getElementById('keywordData');
+    //             const pcCount = data.monthlyPcQcCnt;
+    //             const mobileCount = data.monthlyMobileQcCnt;
+    //             const totalCount = pcCount + mobileCount;
+    //
+    //             keywordDataDiv.innerHTML = `
+    //             <div class="keyword-stats">
+    //                 <div class="stat-item">
+    //                     <span class="device-icon">💻</span>
+    //                     <span class="stat-value">${pcCount.toLocaleString()}</span>
+    //                     <span>PC</span>
+    //                 </div>
+    //                 <div class="stat-item">
+    //                     <span class="device-icon">📱</span>
+    //                     <span class="stat-value">${mobileCount.toLocaleString()}</span>
+    //                     <span>Mobile</span>
+    //                 </div>
+    //                 <div class="stat-item">
+    //                     <span class="device-icon">➕</span>
+    //                     <span class="stat-value">${totalCount.toLocaleString()}</span>
+    //                     <span>Total</span>
+    //                 </div>
+    //             </div>
+    //             <div class="keyword-stats">
+    //                 <span class="stat-value">네이버 검색: <a href="https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=${keyword_s}">${keyword_s}</a></span>
+    //                 <span class="stat-value">구글 검색: <a href="https://www.google.com/search?q=${keyword_s}">${keyword_s}</a></span>
+    //             </div>
+    //         `;
+    //
+    //             const genderData = data.kakaoData.gender;
+    //             const ageData = data.kakaoData.age;
+    //
+    //             if (genderChart) {
+    //                 genderChart.destroy();
+    //             }
+    //             const genderCtx = document.getElementById('genderChart').getContext('2d');
+    //             genderChart = new Chart(genderCtx, {
+    //                 type: 'pie',
+    //                 data: {
+    //                     labels: ['Male', 'Female'],
+    //                     datasets: [{
+    //                         data: [genderData.male, genderData.female],
+    //                         backgroundColor: ['#36A2EB', '#FF6384']
+    //                     }]
+    //                 },options:{
+    //                     responsive: false
+    //                 }
+    //             });
+    //
+    //             if (ageChart) {
+    //                 ageChart.destroy();
+    //             }
+    //             const ageCtx = document.getElementById('ageChart').getContext('2d');
+    //             ageChart = new Chart(ageCtx, {
+    //                 type: 'bar',
+    //                 data: {
+    //                     labels: ['10대', '20대', '30대', '40대', '50대', '60대'],
+    //                     datasets: [{
+    //                         label: '나이 비율',
+    //                         data: [ageData['10'], ageData['20'], ageData['30'], ageData['40'], ageData['50'], ageData['60']],
+    //                         backgroundColor: '#4BC0C0'
+    //                     }]
+    //                 }
+    //             });
+    //         })
+    //         .catch(error => console.error('Error:', error));
+    // });
 
 </script>
 </body>

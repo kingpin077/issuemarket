@@ -65,7 +65,6 @@
     <div>
         <h3>Keyword Data</h3>
         <pre id="keywordData"></pre>
-        <p  th:text="${keyword_search}"></p>
     </div>
     <div>
         <h3>Gender Ratio</h3>
@@ -76,19 +75,12 @@
         <canvas id="ageChart"></canvas>
     </div>
 </div>
-
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    const keyword_search = /*[[${keyword_search}]]*/ 'defaultKeyword';
-    console.log(keyword_search);
-    /*]]>*/
-</script>
-<script >
+<script>
     document.addEventListener('DOMContentLoaded', function() {
-        //urlParams = new URLSearchParams(window.location.search);
-        //const keyword_s = urlParams.get('keyword_search');
-        //console.log(${keyword_search});
-        fetch(`/search?groupName=${keyword_search}&keywords=${keyword_search}`, {
+        const urlParams = new URLSearchParams(window.location.search);
+        const keyword_s = urlParams.get('keyword_search');
+        console.log(keyword_s);
+        fetch(`/search?groupName=${keyword_s}&keywords=${keyword_s}`, {
             method: 'POST'
         })
             .then(response => response.json())

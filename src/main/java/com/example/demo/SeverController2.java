@@ -3,6 +3,7 @@ package com.example.demo;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.*;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,7 +26,7 @@ public class SeverController2 {
     String sa;
 
     //https://datatrend.kakao.com/api/search/trend?q=고혼진&from=20240422&to=20240522&device=m
-    // http://localhost:8888/api/server/naver?startDate=2024-05-07&endDate=2024-05-08&groupName=범죄도시&keywords=범죄도시&device=mo&gender=f
+    //http://localhost:8888/api/server/naver?startDate=2024-05-07&endDate=2024-05-08&groupName=범죄도시&keywords=범죄도시&device=mo&gender=f
     //http://localhost:8080/naver2?startDate=2024-03-07&endDate=2024-05-08&groupName=%EB%B2%94%EC%A3%84%EB%8F%84%EC%8B%9C&keywords=%EB%B2%94%EC%A3%84%EB%8F%84%EC%8B%9C
     @PostMapping("/search")
     public ResponseEntity<Map<String, Object>> search(
@@ -117,4 +118,6 @@ public class SeverController2 {
 
         return ResponseEntity.ok(result);
     }
+
+
 }
