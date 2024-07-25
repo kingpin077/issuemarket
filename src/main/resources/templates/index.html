@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issue Market</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/globals.css">
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/substyle.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <title>Keyword Search</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -34,7 +34,7 @@
         }
         canvas {
             max-width: 100%;
-            height: auto !important;
+            height: auto !important; /* 높이를 고정하여 차트가 넘치지 않게 설정 */
         }
         pre {
             white-space: pre-wrap;
@@ -56,26 +56,103 @@
             font-size: 20px;
             font-weight: bold;
         }
+        .chart-container {
+            display: flex;
+            justify-content: center; /* 차트가 중앙에 오도록 설정 */
+            align-items: center;
+        }
+        .sidebar-visible {
+            transform: translateX(0);
+        }
+        .overlay-visible {
+            display: block;
+        }
     </style>
 </head>
 <body>
+<div class="header-wrapper" id="header-wrapper">
+    <div class="menu-button-wrapper">
+        <button type="button" class="btn btn-light" id="menu-button">
+            <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/list.svg" />
+        </button>
+        <button class="issue-market-title btn btn-link d-flex align-items-center" id="issue-market-title">
+            <img src="/css/image/logo_black.png" alt="Logo" style="height: 60px; width: 110px; margin-left: 5px">
+            <span>&nbsp;Issue Market</span>
+        </button>
+    </div>
+    <div class="items">
+        <button type="button" class="btn btn-dark" sec:authorize="isAuthenticated()" onclick="location.href='/logout'">
+            <div class="text-wrapper-17">로그아웃</div>
+        </button>
+        <button type="button" class="btn btn-dark" sec:authorize="!isAuthenticated()" onclick="location.href='/login'">
+            <div class="text-wrapper-17">로그인</div>
+        </button>
+    </div>
+</div>
+
 <h1>Keyword Search Results</h1>
 <h2>Search Results</h2>
+
+<div class="element-header-navigation">
+    <div class="element-sidebar" id="sidebar">
+        <div class="top-divider"></div> <!-- 사이드바 맨 위에 추가된 검은 줄 -->
+        <div class="list-3">
+            <button class="menu-item" id="home-button">
+                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/home.svg" />
+                <div class="text-wrapper-14">Home</div>
+            </button>
+            <button class="menu-item">
+                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/search.svg" />
+                <div class="text-wrapper-14">영화</div>
+            </button>
+            <button class="menu-item">
+                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                <div class="text-wrapper-14">음악</div>
+            </button>
+            <button class="menu-item" id="actor-button">
+                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                <div class="text-wrapper-14">배우</div>
+            </button>
+            <button class="menu-item" id="webtoon-button">
+                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                <div class="text-wrapper-14">웹툰</div>
+            </button>
+        </div>
+        <div class="list-4" sec:authorize="isAuthenticated()">
+            <div class="library-header">Library</div>
+            <button class="menu-item">
+                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/list.svg" />
+                <div class="text-wrapper-14">필터링</div>
+            </button>
+            <button class="menu-item">
+                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/music.svg" />
+                <div class="text-wrapper-14">즐겨찾기</div>
+            </button>
+        </div>
+    </div>
+</div>
+
 <div id="results">
     <div>
         <h3>Keyword Data</h3>
         <pre id="keywordData"></pre>
-        <p  th:text="${keyword_search}"></p>
+        <p th:text="${keyword_search}"></p>
     </div>
     <div>
         <h3>Gender Ratio</h3>
-        <canvas id="genderChart" width="500" height="350"></canvas>
+        <div class="chart-container">
+            <canvas id="genderChart" width="500" height="350"></canvas>
+        </div>
     </div>
     <div>
         <h3>Age Ratio</h3>
-        <canvas id="ageChart"></canvas>
+        <div class="chart-container">
+            <canvas id="ageChart" width="500" height="350"></canvas>
+        </div>
     </div>
 </div>
+
+<div id="overlay" class="overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:999;"></div>
 
 <script th:inline="javascript">
     /*<![CDATA[*/
@@ -83,69 +160,121 @@
     console.log(keyword_search);
     /*]]>*/
 </script>
-<script >
+<script>
     document.addEventListener('DOMContentLoaded', function() {
-        //urlParams = new URLSearchParams(window.location.search);
-        //const keyword_s = urlParams.get('keyword_search');
-        //console.log(${keyword_search});
+        var menuButton = document.getElementById('menu-button');
+        var sidebar = document.getElementById('sidebar');
+        var overlay = document.getElementById('overlay');
+        var issueMarketTitle = document.getElementById('issue-market-title');
+        var homeButton = document.getElementById('home-button');
+
+        menuButton.addEventListener('click', function() {
+            sidebar.classList.toggle('sidebar-visible');
+            overlay.classList.toggle('overlay-visible');
+        });
+
+        overlay.addEventListener('click', function() {
+            sidebar.classList.remove('sidebar-visible');
+            overlay.classList.remove('overlay-visible');
+        });
+
+        document.getElementById('actor-button').addEventListener('click', function() {
+            window.location.href = '/actor'; // 배우 버튼 클릭 시 actor로 이동
+        });
+
+        document.getElementById('webtoon-button').addEventListener('click', function() {
+            window.location.href = '/webtoon'; // 웹툰 버튼 클릭 시 webtoon으로 이동
+        });
+
+        issueMarketTitle.addEventListener('click', function() {
+            window.location.href = 'main'; // 홈 버튼을 클릭하면 메인 화면으로 이동
+        });
+
+        homeButton.addEventListener('click', function() {
+            window.location.href = 'main'; // 홈 버튼을 클릭하면 메인 화면으로 이동
+        });
+
         fetch(`/search?groupName=${keyword_search}&keywords=${keyword_search}`, {
             method: 'POST'
         })
             .then(response => response.json())
             .then(data => {
+                console.log(data); // 데이터를 콘솔에 출력하여 확인
                 const keywordDataDiv = document.getElementById('keywordData');
                 const pcCount = data.monthlyPcQcCnt;
                 const mobileCount = data.monthlyMobileQcCnt;
                 const totalCount = pcCount + mobileCount;
 
                 keywordDataDiv.innerHTML = `
-                <div class="keyword-stats">
-                    <div class="stat-item">
-                        <span class="device-icon">💻</span>
-                        <span class="stat-value">${pcCount}</span>
-                        <span>PC Searches</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="device-icon">📱</span>
-                        <span class="stat-value">${mobileCount}</span>
-                        <span>Mobile Searches</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="device-icon">🔍</span>
-                        <span class="stat-value">${totalCount}</span>
-                        <span>Total Searches</span>
-                    </div>
+            <div class="keyword-stats">
+                <div class="stat-item">
+                    <span class="device-icon">💻</span>
+                    <span class="stat-value">${pcCount.toLocaleString()}</span>
+                    <span>PC</span>
                 </div>
+                <div class="stat-item">
+                    <span class="device-icon">📱</span>
+                    <span class="stat-value">${mobileCount.toLocaleString()}</span>
+                    <span>Mobile</span>
+                </div>
+                <div class="stat-item">
+                    <span class="device-icon">🔍</span>
+                    <span class="stat-value">${totalCount.toLocaleString()}</span>
+                    <span>Total</span>
+                </div>
+            </div>
             `;
 
                 const genderData = data.kakaoData.gender;
-                const genderCtx = document.getElementById('genderChart').getContext('2d');
-                new Chart(genderCtx, {
-                    type: 'pie',
-                    data: {
-                        labels: ['Male', 'Female'],
-                        datasets: [{
-                            data: [genderData.male, genderData.female],
-                            backgroundColor: ['#36A2EB', '#FF6384']
-                        }]
-                    }
-                });
+                if (genderData) {
+                    const genderChart = new Chart(document.getElementById('genderChart'), {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Male', 'Female'],
+                            datasets: [{
+                                data: [genderData.male, genderData.female],
+                                backgroundColor: ['#36A2EB', '#FF6384']
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: true
+                        }
+                    });
+                } else {
+                    console.error('Gender data is missing or invalid.');
+                }
 
                 const ageData = data.kakaoData.age;
-                const ageCtx = document.getElementById('ageChart').getContext('2d');
-                new Chart(ageCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: Object.keys(ageData),
-                        datasets: [{
-                            label: 'Age Distribution',
-                            data: Object.values(ageData),
-                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            borderWidth: 1
-                        }]
-                    }
-                });
+                if (ageData) {
+                    const ageChart = new Chart(document.getElementById('ageChart'), {
+                        type: 'bar',
+                        data: {
+                            labels: Object.keys(ageData),
+                            datasets: [{
+                                label: 'Age Distribution',
+                                data: Object.values(ageData),
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    console.error('Age data is missing or invalid.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
             });
     });
 </script>
