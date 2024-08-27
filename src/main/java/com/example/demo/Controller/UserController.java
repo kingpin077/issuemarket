@@ -2,16 +2,26 @@ package com.example.demo.Controller;
 
 import com.example.demo.DTO.SearchDTO;
 import com.example.demo.DTO.UserDTO;
+import com.example.demo.NewsApi;
 import com.example.demo.TestDTO;
 import com.example.demo.TestService;
 import com.example.demo.Service.UserService;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
+import java.net.URLEncoder;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Controller
@@ -19,6 +29,8 @@ public class UserController {
     @Autowired
     private TestService testService;
     private final UserService userService;
+    @Autowired
+    private NewsApi newsApi;
 
     @GetMapping("/login")
     public String login_page(){
@@ -71,9 +83,37 @@ public class UserController {
     @GetMapping("/actor")
     public String actor(Model model) {
         List<TestDTO> keywords = testService.findAllByTagOrderByDesc("actor");
+
+        // NewsApi를 통해 기사 정보를 가져옴
+        for (TestDTO keyword : keywords) {
+            try {
+                // NewsApi의 search 메서드를 통해 데이터를 가져옴
+                ResponseEntity<Map<String, Object>> responseEntity = newsApi.search(keyword.getKeyword(), "1", "1", "sim");
+
+                // API 응답에서 데이터 파싱
+                String jsonResponse = (String) responseEntity.getBody().get("naverData");
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode rootNode = mapper.readTree(jsonResponse);
+                JsonNode itemsNode = rootNode.path("items");
+
+                if (itemsNode.isArray() && itemsNode.size() > 0) {
+                    JsonNode firstArticle = itemsNode.get(0);
+                    String title = firstArticle.path("title").asText().replaceAll("<.*?>", "");
+                    String link = firstArticle.path("link").asText().replace("\\", "");
+
+                    keyword.setArticleUrl(link);
+                    keyword.setArticleTitle(title);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         model.addAttribute("keyword", keywords);
         return "actor";
     }
+
+
 
     @PostMapping("/index")
     public String index(@RequestParam("keyword_search") String keyword_search, Model model) {

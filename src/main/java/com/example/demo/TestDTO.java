@@ -7,6 +7,10 @@ public class TestDTO {
     private int pc;
     private int total;
 
+    // 추가된 필드
+    private String articleUrl;   // 기사 URL
+    private String articleTitle; // 기사 제목
+
     // 생성자, 게터, 세터 등 필요한 메서드 추가
     public TestDTO() {
         // 기본 생성자
@@ -52,9 +56,34 @@ public class TestDTO {
         this.total = total;
     }
 
+    // 새로 추가된 필드의 게터와 세터
+    public String getArticleUrl() {
+        return articleUrl;
+    }
+
+    public void setArticleUrl(String articleUrl) {
+        this.articleUrl = articleUrl;
+    }
+
+    public String getArticleTitle() {
+        return articleTitle;
+    }
+
+    public void setArticleTitle(String articleTitle) {
+        this.articleTitle = articleTitle;
+    }
+
     // toString 등 필요한 메서드 추가
     @Override
     public String toString() {
-        return "keyword='" + keyword;
+        return "TestDTO{" +
+                "no=" + no +
+                ", keyword='" + keyword + '\'' +
+                ", mobile=" + mobile +
+                ", pc=" + pc +
+                ", total=" + total +
+                ", articleUrl='" + articleUrl + '\'' +
+                ", articleTitle='" + articleTitle + '\'' +
+                '}';
     }
 }
