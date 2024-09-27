@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.DTO;
 
 public class TestDTO {
     private Long no;

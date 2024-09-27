@@ -1,25 +1,19 @@
 package com.example.demo.Controller;
 
-import com.example.demo.DTO.SearchDTO;
 import com.example.demo.DTO.UserDTO;
 import com.example.demo.NewsApi;
-import com.example.demo.TestDTO;
-import com.example.demo.TestService;
+import com.example.demo.DTO.TestDTO;
+import com.example.demo.Service.TestService;
 import com.example.demo.Service.UserService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.*;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +45,7 @@ public class UserController {
 
 
     @PostMapping("/signup")
-    public String jogin(@ModelAttribute UserDTO userDTO, Model model) {
+    public String login(@ModelAttribute UserDTO userDTO, Model model) {
         try {
             userService.createUser(userDTO);
         } catch (Exception e) {
