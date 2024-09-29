@@ -63,6 +63,11 @@
                                     </div>
                                     <div class="divider"></div>   
                                     <div class="article-url" style="display: none;">기사 URL: <a href="기사 URL 주소">기사 제목</a></div>
+                                    <button class="btn btn-primary filter-button"
+                                            th:data-keyword="${keywordItem.getKeyword()}"
+                                            onclick="saveKeyword(this)">
+                                        필터링
+                                    </button>
                                 </button>
                             </div>
                         </div>
@@ -165,6 +170,26 @@
             button.querySelector('.article-url').style.display = 'block';
             button.classList.add('expanded');
         }
+    }
+
+    function saveKeyword(button) {
+        // 버튼의 data-keyword 속성에서 키워드를 추출
+        var keyword = button.getAttribute("data-keyword");
+
+        // Ajax를 사용하여 서버로 키워드 전송
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/api/keywords", true); // 키워드 인코딩
+        xhr.setRequestHeader("Content-Type", "application/json");
+        var data = JSON.stringify({keyword:keyword});
+
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+
+            } else {
+
+            }
+        };
+        xhr.send(data);  // 요청 전송
     }
 </script>
 </body>
