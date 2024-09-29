@@ -1,6 +1,5 @@
-package com.example.demo;
+package com.example.demo.Controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-public class NewsApi {
+public class NewsApiController {
 
     private final String NAVER_API_ID = "SaxdyV1a_KAviNQhXO5Z";
     private final String NAVER_API_SECRET = "21k6H8Ga3k";

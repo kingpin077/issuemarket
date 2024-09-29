@@ -1,6 +1,9 @@
-package com.example.demo;
+package com.example.demo.Service;
 
 
+import com.example.demo.DTO.TestDTO;
+import com.example.demo.Entity.TestEntity;
+import com.example.demo.TestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;

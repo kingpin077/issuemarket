@@ -6,69 +6,58 @@
     <title>Issue Market</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/globals.css">
-    <link rel="stylesheet" href="/css/substyle.css">
+    <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        #results {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            max-width: 1450px;
-            margin: 0 auto;
-            overflow-y: auto;
-            max-height: 80vh;
-        }
-        #results > div {
-            flex: 1;
-            min-width: 300px;
-            margin: 10px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        canvas {
-            max-width: 100%;
-            height: auto !important; /* 높이를 고정하여 차트가 넘치지 않게 설정 */
-        }
-        pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-        .keyword-stats {
-            display: flex;
-            justify-content: space-around;
-        }
-        .stat-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .device-icon {
-            font-size: 24px;
-        }
-        .stat-value {
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .chart-container {
-            display: flex;
-            justify-content: center; /* 차트가 중앙에 오도록 설정 */
-            align-items: center;
-        }
-        .sidebar-visible {
-            transform: translateX(0);
-        }
-        .overlay-visible {
-            display: block;
-        }
-    </style>
 </head>
+<style>
+    #results {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        max-width: 1450px; /* 최대 너비 설정 */
+        margin: 0 auto; /* 중앙 정렬 */
+        overflow-y: auto; /* 수직 스크롤 허용 */
+        max-height: 80vh; /* 최대 높이 설정 */
+    }
+
+    #results > div {
+        flex: 1;
+        min-width: 300px;
+        margin: 10px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center; /* 텍스트 중앙 정렬 */
+    }
+
+    canvas {
+        max-width: 100%; /* 그래프 최대 너비 설정 */
+        height: auto !important;
+    }
+    pre {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    .keyword-stats {
+        display: flex;
+        justify-content: space-around;
+    }
+    .stat-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .device-icon {
+        font-size: 24px;
+    }
+    .stat-value {
+        font-size: 20px;
+        font-weight: bold;
+    }
+</style>
+
 <body>
 <div class="header-wrapper" id="header-wrapper">
     <div class="menu-button-wrapper">
@@ -90,83 +79,118 @@
     </div>
 </div>
 
-<h1>Keyword Search Results</h1>
-<h2>Search Results</h2>
-
-<div class="element-header-navigation">
-    <div class="element-sidebar" id="sidebar">
-        <div class="top-divider"></div> <!-- 사이드바 맨 위에 추가된 검은 줄 -->
-        <div class="list-3">
-            <button class="menu-item" id="home-button">
-                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/home.svg" />
-                <div class="text-wrapper-14">Home</div>
-            </button>
-            <button class="menu-item">
-                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/search.svg" />
-                <div class="text-wrapper-14">영화</div>
-            </button>
-            <button class="menu-item">
-                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
-                <div class="text-wrapper-14">음악</div>
-            </button>
-            <button class="menu-item" id="actor-button">
-                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
-                <div class="text-wrapper-14">배우</div>
-            </button>
-            <button class="menu-item" id="webtoon-button">
-                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
-                <div class="text-wrapper-14">웹툰</div>
-            </button>
+<div class="element-input-field-with">
+    <form id="keywordForm" action="/index" method="post" class="d-flex">
+        <div class="form-group mr-2" style="flex: 1;">
+            <input type="text" id="keyword_search" name="keyword_search" class="form-control" placeholder="Placeholder" required>
         </div>
-        <div class="list-4" sec:authorize="isAuthenticated()">
-            <div class="library-header">Library</div>
-            <button class="menu-item">
-                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/list.svg" />
-                <div class="text-wrapper-14">필터링</div>
-            </button>
-            <button class="menu-item">
-                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/music.svg" />
-                <div class="text-wrapper-14">즐겨찾기</div>
-            </button>
+        <button type="submit" class="btn btn-dark bigbutton">
+            <div class="text-wrapper-12">Submit</div>
+        </button>
+    </form>
+</div>
+
+<div class="box">
+    <div class="group">
+        <div class="overlap-group">
+            <div class="homepage">
+                <div class="element-tables">
+                    <!-- 1~5위 데이터 -->
+                    <div class="element-table">
+                        <div class="title">실시간 인기순위(Total)</div>
+                        <div class="table-header">
+                            <div class="text-wrapper">키워드</div>
+                            <div class="div">검색량</div>
+                        </div>
+                        <div class="list">
+                            <div th:each="keywordItem, iterStat : ${keyword}" th:if="${iterStat.index < 5}">
+                                <div class="frame">
+                                    <div class="text-wrapper-3" th:text="(${iterStat.index} + 1 + '. ') + ${keywordItem.getKeyword()}"></div>
+                                    <div class="text-wrapper-4" th:text="${keywordItem.getTotal()}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 6~10위 데이터 -->
+                    <div class="element-table-2">
+                        <div class="title">기간별 인기순위(PC)</div>
+                        <div class="table-header">
+                            <div class="text-wrapper">키워드</div>
+                            <div class="div">검색량</div>
+                        </div>
+                        <div class="list">
+                            <div th:each="keywordItem2, iterStat : ${keyword2}" th:if="${iterStat.index < 5}">
+                                <div class="frame">
+                                    <div class="text-wrapper-5" th:text="(${iterStat.index} + 1 + '. ') +${keywordItem2.getKeyword()}"></div>
+                                    <div class="text-wrapper-6" th:text="${keywordItem2.getPc()}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="results">
+                    <div>
+                        <h3>Keyword Data</h3>
+                        <pre id="keywordData"></pre>
+                    </div>
+                    <div>
+                        <h3>Gender Ratio</h3>
+                        <canvas id="genderChart" width="500" height="350"></canvas>
+                    </div>
+                    <div>
+                        <h3>Age Ratio</h3>
+                        <canvas id="ageChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="element-header-navigation">
+                    <div class="element-sidebar" id="sidebar">
+                        <div class="top-divider"></div> <!-- 사이드바 맨 위에 추가된 검은 줄 -->
+                        <div class="list-3">
+                            <button class="menu-item" id="home-button">
+                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/home.svg" />
+                                <div class="text-wrapper-14">Home</div>
+                            </button>
+                            <button class="menu-item">
+                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/search.svg" />
+                                <div class="text-wrapper-14">영화</div>
+                            </button>
+                            <button class="menu-item">
+                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                                <div class="text-wrapper-14">음악</div>
+                            </button>
+                            <button class="menu-item" id="actor-button">
+                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                                <div class="text-wrapper-14">배우</div>
+                            </button>
+                            <button class="menu-item" id="webtoon-button">
+                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                                <div class="text-wrapper-14">웹툰</div>
+                            </button>
+                        </div>
+                        <div class="list-4" sec:authorize="isAuthenticated()">
+                            <div class="library-header" >Library</div>
+                            <button class="menu-item"  >
+                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/list.svg" />
+                                <div class="text-wrapper-14">필터링</div>
+                            <button class="menu-item">
+                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/music.svg" />
+                                <div class="text-wrapper-14" >즐겨찾기</div>
+                            </button>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
-<div id="results">
-    <div>
-        <h3>Keyword Data</h3>
-        <pre id="keywordData"></pre>
-        <p th:text="${keyword_search}"></p>
-    </div>
-    <div>
-        <h3>Gender Ratio</h3>
-        <div class="chart-container">
-            <canvas id="genderChart" width="500" height="350"></canvas>
-        </div>
-    </div>
-    <div>
-        <h3>Age Ratio</h3>
-        <div class="chart-container">
-            <canvas id="ageChart" width="500" height="350"></canvas>
-        </div>
-    </div>
-</div>
-
-<div id="newsResults">
-    <h3>News Articles</h3>
-    <div id="newsContainer"></div>
-</div>
-
-
-<div id="overlay" class="overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:999;"></div>
-
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    const keyword_search = /*[[${keyword_search}]]*/ 'defaultKeyword';
-    console.log(keyword_search);
-    /*]]>*/
-</script>
+<div class="overlay" id="overlay"></div>
 <script>
+    let genderChart = null;
+    let ageChart = null;
+
     document.addEventListener('DOMContentLoaded', function() {
         var menuButton = document.getElementById('menu-button');
         var sidebar = document.getElementById('sidebar');
@@ -185,140 +209,97 @@
         });
 
         document.getElementById('actor-button').addEventListener('click', function() {
-            window.location.href = '/actor'; // 배우 버튼 클릭 시 actor로 이동
+            window.location.href = 'actor'; // 배우 버튼 클릭 시 actor로 이동
         });
 
         document.getElementById('webtoon-button').addEventListener('click', function() {
-            window.location.href = '/webtoon'; // 웹툰 버튼 클릭 시 webtoon으로 이동
+            window.location.href = 'webtoon'; // 웹툰 버튼 클릭 시 webtoon으로 이동
         });
 
         issueMarketTitle.addEventListener('click', function() {
-            window.location.href = 'main'; // 홈 버튼을 클릭하면 메인 화면으로 이동
+            location.reload(); // 새로고침
         });
 
         homeButton.addEventListener('click', function() {
-            window.location.href = 'main'; // 홈 버튼을 클릭하면 메인 화면으로 이동
+            location.reload(); // 새로고침구글 검색 url
         });
-
-        fetch(`/search?groupName=${keyword_search}&keywords=${keyword_search}`, {
-            method: 'POST'
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data); // 데이터를 콘솔에 출력하여 확인
-                const keywordDataDiv = document.getElementById('keywordData');
-                const pcCount = data.monthlyPcQcCnt;
-                const mobileCount = data.monthlyMobileQcCnt;
-                const totalCount = pcCount + mobileCount;
-
-                keywordDataDiv.innerHTML = `
-            <div class="keyword-stats">
-                <div class="stat-item">
-                    <span class="device-icon">💻</span>
-                    <span class="stat-value">${pcCount.toLocaleString()}</span>
-                    <span>PC</span>
-                </div>
-                <div class="stat-item">
-                    <span class="device-icon">📱</span>
-                    <span class="stat-value">${mobileCount.toLocaleString()}</span>
-                    <span>Mobile</span>
-                </div>
-                <div class="stat-item">
-                    <span class="device-icon">🔍</span>
-                    <span class="stat-value">${totalCount.toLocaleString()}</span>
-                    <span>Total</span>
-                </div>
-            </div>
-            `;
-
-                const genderData = data.kakaoData.gender;
-                if (genderData) {
-                    const genderChart = new Chart(document.getElementById('genderChart'), {
-                        type: 'doughnut',
-                        data: {
-                            labels: ['Male', 'Female'],
-                            datasets: [{
-                                data: [genderData.male, genderData.female],
-                                backgroundColor: ['#36A2EB', '#FF6384']
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: true
-                        }
-                    });
-                } else {
-                    console.error('Gender data is missing or invalid.');
-                }
-
-                const ageData = data.kakaoData.age;
-                if (ageData) {
-                    const ageChart = new Chart(document.getElementById('ageChart'), {
-                        type: 'bar',
-                        data: {
-                            labels: Object.keys(ageData),
-                            datasets: [{
-                                label: 'Age Distribution',
-                                data: Object.values(ageData),
-                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                borderColor: 'rgba(75, 192, 192, 1)',
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: true,
-                            scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
-                            }
-                        }
-                    });
-                } else {
-                    console.error('Age data is missing or invalid.');
-                }
-
-                // 뉴스 API 호출
-                fetch(`/news?query=${keyword_search}`)
-                    .then(newsResponse => newsResponse.json())
-                    .then(newsData => {
-                        const newsContainer = document.getElementById('newsContainer');
-
-                        // JSON 파싱
-                        let naverData = null;
-                        if (newsData.naverData) {
-                            try {
-                                naverData = JSON.parse(newsData.naverData);
-                            } catch (error) {
-                                console.error('Error parsing naverData:', error);
-                            }
-                        }
-
-                        // 뉴스 데이터 표시
-                        if (naverData && naverData.items && Array.isArray(naverData.items)) {
-                            naverData.items.forEach(article => {
-                                const newsItem = document.createElement('div');
-                                newsItem.classList.add('news-item');
-                                newsItem.innerHTML = `
-                            <h4><a href="${article.link}" target="_blank">${article.title}</a></h4>
-                            <p>${article.description}</p>
-                        `;
-                                newsContainer.appendChild(newsItem);
-                            });
-                        } else {
-                            console.error('News data is missing or invalid.');
-                        }
-                    })
-                    .catch(newsError => {
-                        console.error('Error fetching news:', newsError);
-                    });
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
     });
 
+    // document.getElementById('keywordForm').addEventListener('submit', function(event) {
+    //     event.preventDefault();
+    //     const keyword_s = document.getElementById('keyword_search').value;
+    //     fetch(`/search?groupName=${keyword_s}&keywords=${keyword_s}`, {
+    //         method: 'POST', // POST 메소드 사용
+    //     })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             const keywordDataDiv = document.getElementById('keywordData');
+    //             const pcCount = data.monthlyPcQcCnt;
+    //             const mobileCount = data.monthlyMobileQcCnt;
+    //             const totalCount = pcCount + mobileCount;
+    //
+    //             keywordDataDiv.innerHTML = `
+    //             <div class="keyword-stats">
+    //                 <div class="stat-item">
+    //                     <span class="device-icon">💻</span>
+    //                     <span class="stat-value">${pcCount.toLocaleString()}</span>
+    //                     <span>PC</span>
+    //                 </div>
+    //                 <div class="stat-item">
+    //                     <span class="device-icon">📱</span>
+    //                     <span class="stat-value">${mobileCount.toLocaleString()}</span>
+    //                     <span>Mobile</span>
+    //                 </div>
+    //                 <div class="stat-item">
+    //                     <span class="device-icon">➕</span>
+    //                     <span class="stat-value">${totalCount.toLocaleString()}</span>
+    //                     <span>Total</span>
+    //                 </div>
+    //             </div>
+    //             <div class="keyword-stats">
+    //                 <span class="stat-value">네이버 검색: <a href="https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=${keyword_s}">${keyword_s}</a></span>
+    //                 <span class="stat-value">구글 검색: <a href="https://www.google.com/search?q=${keyword_s}">${keyword_s}</a></span>
+    //             </div>
+    //         `;
+    //
+    //             const genderData = data.kakaoData.gender;
+    //             const ageData = data.kakaoData.age;
+    //
+    //             if (genderChart) {
+    //                 genderChart.destroy();
+    //             }
+    //             const genderCtx = document.getElementById('genderChart').getContext('2d');
+    //             genderChart = new Chart(genderCtx, {
+    //                 type: 'pie',
+    //                 data: {
+    //                     labels: ['Male', 'Female'],
+    //                     datasets: [{
+    //                         data: [genderData.male, genderData.female],
+    //                         backgroundColor: ['#36A2EB', '#FF6384']
+    //                     }]
+    //                 },options:{
+    //                     responsive: false
+    //                 }
+    //             });
+    //
+    //             if (ageChart) {
+    //                 ageChart.destroy();
+    //             }
+    //             const ageCtx = document.getElementById('ageChart').getContext('2d');
+    //             ageChart = new Chart(ageCtx, {
+    //                 type: 'bar',
+    //                 data: {
+    //                     labels: ['10대', '20대', '30대', '40대', '50대', '60대'],
+    //                     datasets: [{
+    //                         label: '나이 비율',
+    //                         data: [ageData['10'], ageData['20'], ageData['30'], ageData['40'], ageData['50'], ageData['60']],
+    //                         backgroundColor: '#4BC0C0'
+    //                     }]
+    //                 }
+    //             });
+    //         })
+    //         .catch(error => console.error('Error:', error));
+    // });
 
 </script>
 </body>
