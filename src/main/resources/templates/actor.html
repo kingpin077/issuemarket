@@ -31,7 +31,7 @@
 </div>
 
 <div class="element-input-field-with">
-    <form id="keywordForm" method="get" class="d-flex">
+    <form id="keywordForm" action="/index" method="post" class="d-flex">
         <div class="form-group mr-2" style="flex: 1;">
             <input type="text" id="keyword_search" name="keyword_search" class="form-control" placeholder="Placeholder" required>
         </div>
@@ -62,7 +62,12 @@
                                         <div class="text-wrapper-4" th:text="${keywordItem.getTotal()}"></div>
                                     </div>
                                     <div class="divider"></div>
-                                    <div class="article-url" style="display: none;">기사 URL: <a href="기사 URL 주소">기사 제목</a></div>
+                                    <div th:each="keyword : ${keywords}">
+                                        <div class="article-url" th:if="${keyword.articleUrl}">
+                                            기사 URL: <a th:href="${keyword.articleUrl}" th:text="${keyword.articleTitle}">기사 제목</a>
+                                        </div>
+                                    </div>
+
                                 </button>
                             </div>
                         </div>
@@ -158,14 +163,62 @@
     function expandButton(button) {
         if (button.style.height === '198px') {
             button.style.height = '48px';
-            button.querySelector('.article-url').style.display = 'none';
+            const articleUrlElement = button.querySelector('.article-url');
+            if (articleUrlElement) {
+                articleUrlElement.style.display = 'none';
+            }
             button.classList.remove('expanded');
         } else {
             button.style.height = '198px';
-            button.querySelector('.article-url').style.display = 'block';
+            const articleUrlElement = button.querySelector('.article-url');
+            if (articleUrlElement) {
+                articleUrlElement.style.display = 'block';
+            }
             button.classList.add('expanded');
         }
     }
+
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     // 예시 키워드 리스트
+    //     const keywords = ['강동원', '고윤정', '김유정', '김지영', '김지훈', '김소현', '유재석', '박보검', '송혜교', '전지현'];
+    //
+    //     // 뉴스 데이터는 이제 사용하지 않으므로 빈 객체로 남겨둡니다
+    //     let newsData = {};
+    //
+    //     // 각 키워드에 대해 API 호출 (네이버 데이터 제거)
+    //     keywords.forEach(keyword => {
+    //         fetch(`/news?query=${encodeURIComponent(keyword)}`)
+    //             .then(response => {
+    //                 if (!response.ok) {
+    //                     throw new Error(`Network response was not ok for keyword: ${keyword}`);
+    //                 }
+    //                 return response.json();
+    //             })
+    //             .then(data => {
+    //                 if (data && Array.isArray(data.items) && data.items.length > 0) {
+    //                     const firstArticle = data.items[0];
+    //                     let title = firstArticle.title.replace(/<\/?[^>]+(>|$)/g, ""); // 태그 제거
+    //                     let link = firstArticle.link.replace(/\\/g, ""); // 역슬래시 제거
+    //
+    //                     const articleUrlDiv = document.querySelector('.article-url');
+    //                     const anchorTag = articleUrlDiv.querySelector('a');
+    //                     anchorTag.href = link;
+    //                     anchorTag.textContent = title;
+    //
+    //                     articleUrlDiv.style.display = 'block'; // URL과 제목 표시
+    //                 } else {
+    //                     console.error('No articles found or invalid response structure');
+    //                 }
+    //             })
+    //             .catch(error => {
+    //                 console.error(`Error fetching news for keyword: ${keyword}`, error);
+    //             });
+    //     });
+    //
+    //     // updateNewsLinks 함수도 필요하지 않으므로 제거합니다.
+    // });
+
+
 </script>
 </body>
 </html>
