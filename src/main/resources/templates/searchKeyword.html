@@ -2,12 +2,16 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  <!-- 반응형 웹을 위한 뷰포트 설정 -->
     <title>Issue Market</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/globals.css">
     <link rel="stylesheet" href="/css/substyle.css">
+
+    <!-- Chart.js 라이브러리 불러오기 (차트 렌더링을 위해 사용) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- 내부 스타일 정의 -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -80,6 +84,8 @@
             <span>&nbsp;Issue Market</span>
         </button>
     </div>
+
+    <!-- 로그인/로그아웃 버튼 설정 -->
     <div class="items">
         <button type="button" class="btn btn-dark" sec:authorize="isAuthenticated()" onclick="location.href='/logout'">
             <div class="text-wrapper-17">로그아웃</div>
@@ -118,6 +124,8 @@
                 <div class="text-wrapper-14">웹툰</div>
             </button>
         </div>
+
+        <!-- 라이브러리 섹션 (인증된 사용자만 접근 가능) -->
         <div class="list-4" sec:authorize="isAuthenticated()">
             <div class="library-header">Library</div>
             <button class="menu-item">
@@ -132,6 +140,7 @@
     </div>
 </div>
 
+<!-- 검색 결과를 출력하는 영역 -->
 <div id="results">
     <div>
         <h3>Keyword Data</h3>
@@ -141,33 +150,36 @@
     <div>
         <h3>Gender Ratio</h3>
         <div class="chart-container">
-            <canvas id="genderChart" width="500" height="350"></canvas>
+            <canvas id="genderChart" width="500" height="350"></canvas> <!-- 성별 비율 차트 -->
         </div>
     </div>
     <div>
         <h3>Age Ratio</h3>
         <div class="chart-container">
-            <canvas id="ageChart" width="500" height="350"></canvas>
+            <canvas id="ageChart" width="500" height="350"></canvas>    <!-- 연령대 비율 차트 -->
         </div>
     </div>
 </div>
 
+<!-- 뉴스 결과를 출력하는 영역 -->
 <div id="newsResults">
     <h3>News Articles</h3>
-    <div id="newsContainer"></div>
+    <div id="newsContainer"></div>  <!-- 뉴스 기사를 담는 컨테이너 -->
 </div>
 
 
 <div id="overlay" class="overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:999;"></div>
 
+<!-- 자바스크립트 코드 -->
 <script th:inline="javascript">
     /*<![CDATA[*/
-    const keyword_search = /*[[${keyword_search}]]*/ 'defaultKeyword';
+    const keyword_search = /*[[${keyword_search}]]*/ 'defaultKeyword';  // Thymeleaf로 전달된 키워드 변수 설정
     console.log(keyword_search);
     /*]]>*/
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // 요소 참조 및 이벤트 리스너 설정
         var menuButton = document.getElementById('menu-button');
         var sidebar = document.getElementById('sidebar');
         var overlay = document.getElementById('overlay');
@@ -200,37 +212,42 @@
             window.location.href = 'main'; // 홈 버튼을 클릭하면 메인 화면으로 이동
         });
 
+        // 검색어를 기반으로 데이터 호출
         fetch(`/search?groupName=${keyword_search}&keywords=${keyword_search}`, {
             method: 'POST'
         })
-            .then(response => response.json())
-            .then(data => {
+            .then(response => response.json())   // JSON 응답을 파싱
+                .then(data => {
                 console.log(data); // 데이터를 콘솔에 출력하여 확인
+
+                // 키워드 데이터 출력
                 const keywordDataDiv = document.getElementById('keywordData');
                 const pcCount = data.monthlyPcQcCnt;
                 const mobileCount = data.monthlyMobileQcCnt;
                 const totalCount = pcCount + mobileCount;
 
+                // 키워드 통계 데이터를 화면에 표시
                 keywordDataDiv.innerHTML = `
-            <div class="keyword-stats">
-                <div class="stat-item">
-                    <span class="device-icon">💻</span>
-                    <span class="stat-value">${pcCount.toLocaleString()}</span>
-                    <span>PC</span>
-                </div>
-                <div class="stat-item">
-                    <span class="device-icon">📱</span>
-                    <span class="stat-value">${mobileCount.toLocaleString()}</span>
-                    <span>Mobile</span>
-                </div>
-                <div class="stat-item">
-                    <span class="device-icon">🔍</span>
-                    <span class="stat-value">${totalCount.toLocaleString()}</span>
-                    <span>Total</span>
-                </div>
-            </div>
+                    <div class="keyword-stats">
+                        <div class="stat-item">
+                            <span class="device-icon">💻</span>
+                            <span class="stat-value">${pcCount.toLocaleString()}</span>
+                            <span>PC</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="device-icon">📱</span>
+                            <span class="stat-value">${mobileCount.toLocaleString()}</span>
+                            <span>Mobile</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="device-icon">🔍</span>
+                            <span class="stat-value">${totalCount.toLocaleString()}</span>
+                            <span>Total</span>
+                        </div>
+                    </div>
             `;
 
+                // 성별 비율 차트 렌더링
                 const genderData = data.kakaoData.gender;
                 if (genderData) {
                     const genderChart = new Chart(document.getElementById('genderChart'), {
@@ -251,6 +268,7 @@
                     console.error('Gender data is missing or invalid.');
                 }
 
+                // 연령대 비율 차트 렌더링
                 const ageData = data.kakaoData.age;
                 if (ageData) {
                     const ageChart = new Chart(document.getElementById('ageChart'), {
@@ -285,7 +303,7 @@
                     .then(newsData => {
                         const newsContainer = document.getElementById('newsContainer');
 
-                        // JSON 파싱
+                        // JSON 파싱 및 데이터 출력
                         let naverData = null;
                         if (newsData.naverData) {
                             try {

@@ -16,19 +16,22 @@ import java.net.URLEncoder;
 @RequiredArgsConstructor
 public class KeywordService {
 
+    // 네이버 광고 API 호출에 필요한 기본 정보들
     private String baseUrl = "https://api.searchad.naver.com";
     private String path = "/keywordstool";
     private String accessKey = "0100000000458559f27d45c631ea18a06d587bc58247a208a31ccd22352409b08ee7e87df8"; // 액세스키
     private String secretKey = "AQAAAAASXKsydy3KucAlNHgUvjLtT4XLHQUbTt8FRoT4kwRl/A==";  // 시크릿키
     private String customerId = "3196241";  // ID
 
+    // 특정 키워드에 대한 네이버 광고 API 요청을 처리하는 메서드
     public String requestKeyword(String keyword) {
 
         String parameter = "hintKeywords=";
-        long timeStamp = System.currentTimeMillis();
-        URL url = null;
-        String times = String.valueOf(timeStamp);
+        long timeStamp = System.currentTimeMillis();     // 현재 시간을 타임스탬프로 가져옴
+        URL url = null;     // URL 객체 초기화
+        String times = String.valueOf(timeStamp);   // 타임스탬프를 문자열로 변환
 
+        // 키워드를 URL 인코딩 처리 (특수 문자를 안전하게 변환)
         try {
             keyword = URLEncoder.encode(keyword, "UTF-8");
             //keyword = URLEncoder.encode(keyword, "EUC-KR");
@@ -37,12 +40,19 @@ public class KeywordService {
             throw new RuntimeException("인코딩 실패.");
         }
 
+        // API 호출 URL 생성 및 요청 처리
         try {
+            // 네이버 광고 API 요청 URL 생성
             url = new URL(baseUrl+path+"?"+parameter+keyword);
             System.out.println("url : "+url);
+
+            // 요청 서명을 생성 (API 보안 요구 사항에 맞게 서명 생성)
             String signature = Signatures.of(times,  "GET", path, secretKey);
+
+            // HTTP 연결 객체 생성
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
+            // HTTP 요청 설정
             con.setRequestMethod("GET");
             con.setRequestProperty("X-Timestamp", times);
             con.setRequestProperty("X-API-KEY", accessKey);
@@ -71,22 +81,30 @@ public class KeywordService {
         }
         return "";
     }
+
+    // 키워드 데이터를 가져오는 메서드
     public String getKeywordData(String keyword) {
+        // API로부터 받은 JSON 응답을 가져옴
         String jsonResponse = requestKeyword(keyword);
         if (jsonResponse == null) {
             return "{}";
         }
 
+        // JSON 데이터를 처리하기 위한 ObjectMapper 객체 생성
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            JsonNode rootNode = objectMapper.readTree(jsonResponse);
-            JsonNode keywordList = rootNode.get("keywordList");
+            JsonNode rootNode = objectMapper.readTree(jsonResponse);    // JSON 응답을 파싱하여 JsonNode 객체로 변환
+            JsonNode keywordList = rootNode.get("keywordList"); // keywordList 노드 추출
+
+            // keywordList가 배열일 경우 각 항목을 순회
             if (keywordList.isArray()) {
                 for (JsonNode keywordNode : keywordList) {
-                    String relKeyword = keywordNode.get("relKeyword").asText();
+                    String relKeyword = keywordNode.get("relKeyword").asText();      // 관련 키워드 추출
+                    // 해당 키워드가 요청한 키워드와 일치하는지 확인
                     if (keyword.equals(relKeyword)) {
-                        int monthlyPcQcCnt = keywordNode.get("monthlyPcQcCnt").asInt();
-                        int monthlyMobileQcCnt = keywordNode.get("monthlyMobileQcCnt").asInt();
+                        int monthlyPcQcCnt = keywordNode.get("monthlyPcQcCnt").asInt();     // 월간 PC 검색량
+                        int monthlyMobileQcCnt = keywordNode.get("monthlyMobileQcCnt").asInt(); // 월간 모바일 검색량
+                        // 관련 키워드와 검색량을 포함한 JSON 문자열 반환
                         return String.format("{\"relKeyword\":\"%s\",\"monthlyPcQcCnt\":%d,\"monthlyMobileQcCnt\":%d}", relKeyword, monthlyPcQcCnt, monthlyMobileQcCnt);
                     }
                 }
