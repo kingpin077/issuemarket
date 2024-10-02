@@ -69,8 +69,10 @@ public class PageController {
             }
         }
 
-        model.addAttribute("keyword", keywords);
-        return "actor";
+        // 키워드 리스트를 모델에 추가
+        model.addAttribute("keywords", keywords); // 여기에 키워드를 추가해야 함
+
+        return "actor"; // Thymeleaf HTML 템플릿을 반환
     }
 
 
