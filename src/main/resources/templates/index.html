@@ -88,17 +88,16 @@
                         </div>
                         <div class="list">
                             <div th:each="keywordItem, iterStat : ${keyword}" th:if="${iterStat.index < 5}">
-                                <div class="frame">
-                                    <!-- 버튼 클릭 시 키워드를 data-attribute로 설정 -->
-                                    <button class="btn btn-primary btn-lg" type="button"
-                                            th:data-keyword="${keywordItem.getKeyword()}">
-                                        <div class="text-wrapper-3" th:text="${keywordItem.getKeyword()}"></div>
-                                    </button>
+                                <button class="btn btn-primary btn-lg frame" type="button"
+                                        th:data-keyword="${keywordItem.getKeyword()}"
+                                        onclick="submitKeyword('${keywordItem.getKeyword()}')">
+                                    <div class="text-wrapper-3" th:text="${iterStat.index + 1} + '. ' + ${keywordItem.getKeyword()}"></div>
                                     <div class="text-wrapper-4" th:text="${keywordItem.getTotal()}"></div>
-                                </div>
+                                </button>
                             </div>
                         </div>
                     </div>
+
 
                     <!-- 6~10위 데이터 -->
                     <div class="element-table-2">
@@ -109,10 +108,12 @@
                         </div>
                         <div class="list">
                             <div th:each="keywordItem2, iterStat : ${keyword2}" th:if="${iterStat.index < 5}">
-                                <div class="frame">
-                                    <div class="text-wrapper-5" th:text="(${iterStat.index + 1} + '. ') + ${keywordItem2.getKeyword()}"></div>
-                                    <div class="text-wrapper-6" th:text="${keywordItem2.getPc()}"></div>
-                                </div>
+                                <button class="btn btn-primary btn-lg frame" type="button"
+                                        th:data-keyword="${keywordItem2.getKeyword()}"
+                                        onclick="submitKeyword('${keywordItem.getKeyword()}')">
+                                    <div class="text-wrapper-3" th:text="${iterStat.index + 1} + '. ' + ${keywordItem2.getKeyword()}"></div>
+                                    <div class="text-wrapper-4" th:text="${keywordItem2.getPc()}"></div>
+                                </button>
                             </div>
                         </div>
                     </div>

@@ -165,16 +165,18 @@
     });
 
     function expandButton(button) {
-        if (button.style.height === '198px') {
+        // 버튼의 현재 높이를 확인하여 확장/축소 동작 결정
+        if (button.classList.contains('expanded')) {
             button.style.height = '48px';
-            button.querySelector('.article-url').style.display = 'none';
+            button.querySelector('.article-url').style.display = 'none'; // 기사 숨김
             button.classList.remove('expanded');
         } else {
             button.style.height = '198px';
-            button.querySelector('.article-url').style.display = 'block';
+            button.querySelector('.article-url').style.display = 'block'; // 기사 보이기
             button.classList.add('expanded');
         }
     }
+
 
     function saveKeyword(button) {
         // 버튼의 data-keyword 속성에서 키워드를 추출

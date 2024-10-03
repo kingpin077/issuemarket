@@ -353,3 +353,7 @@ body, html {
     font-weight: 600;
     margin: 0; /* 텍스트 여백 제거 */
 }
+
+.article-url {
+    display: none; /* 처음에 숨김 */
+}
