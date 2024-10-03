@@ -55,14 +55,18 @@
                             <div class="div">검색량</div>
                         </div>
                         <div class="list">
-                            <div th:each="keywordItem, iterStat : ${keyword}" th:if="${iterStat.index < 10}">
+                            <div th:each="keywordItem, iterStat : ${keywords}" th:if="${iterStat.index < 10}">
                                 <button class="keyword-button frame" onclick="expandButton(this)">
                                     <div class="keyword-wrapper">
-                                        <div class="text-wrapper-3" th:text="(${iterStat.index} + 1 + '. ') + ${keywordItem.getKeyword()}"></div>
-                                        <div class="text-wrapper-4" th:text="${keywordItem.getTotal()}"></div>
+                                        <div class="text-wrapper-3" th:text="(${iterStat.index + 1} + '. ') + ${keywordItem.keyword}"></div>
+                                        <div class="text-wrapper-4" th:text="${keywordItem.total}"></div>
                                     </div>
-                                    <div class="divider"></div>   
-                                    <div class="article-url" style="display: none;">기사 URL: <a href="기사 URL 주소">기사 제목</a></div>
+                                    <div class="divider"></div>
+
+                                    <!-- 기사 URL이 있는 경우에만 기사 제목을 표시 -->
+                                    <div class="article-url" th:if="${keywordItem.articleUrl}">
+                                        기사 URL: <a th:href="${keywordItem.articleUrl}" th:text="${keywordItem.articleTitle}" target="_blank">기사 제목</a>
+                                    </div>
                                     <button class="btn btn-primary filter-button"
                                             th:data-keyword="${keywordItem.getKeyword()}"
                                             onclick="saveKeyword(this)">

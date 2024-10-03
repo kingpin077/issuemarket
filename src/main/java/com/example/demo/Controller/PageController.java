@@ -36,7 +36,33 @@ public class PageController {
     @GetMapping("/webtoon")
     public String webtoon(Model model) {
         List<TestDTO> keywords = testService.findAllByTagOrderByDesc("webtoon");
-        model.addAttribute("keyword", keywords);
+
+        // NewsApi를 통해 기사 정보를 가져옴
+        for (TestDTO keyword : keywords) {
+            try {
+                // NewsApi의 search 메서드를 통해 데이터를 가져옴
+                ResponseEntity<Map<String, Object>> responseEntity = newsApiController.search(keyword.getKeyword(), "1", "1", "sim");
+
+                // API 응답에서 데이터 파싱
+                String jsonResponse = (String) responseEntity.getBody().get("naverData");
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode rootNode = mapper.readTree(jsonResponse);
+                JsonNode itemsNode = rootNode.path("items");
+
+                if (itemsNode.isArray() && itemsNode.size() > 0) {
+                    JsonNode firstArticle = itemsNode.get(0);
+                    String title = firstArticle.path("title").asText().replaceAll("<.*?>", "").replaceAll("&quot;", "");
+                    String link = firstArticle.path("link").asText().replace("\\", "");
+
+                    keyword.setArticleUrl(link);
+                    keyword.setArticleTitle(title);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        model.addAttribute("keywords", keywords);
         return "webtoon";
     }
 
@@ -58,7 +84,7 @@ public class PageController {
 
                 if (itemsNode.isArray() && itemsNode.size() > 0) {
                     JsonNode firstArticle = itemsNode.get(0);
-                    String title = firstArticle.path("title").asText().replaceAll("<.*?>", "");
+                    String title = firstArticle.path("title").asText().replaceAll("<.*?>", "").replaceAll("&quot;", "");
                     String link = firstArticle.path("link").asText().replace("\\", "");
 
                     keyword.setArticleUrl(link);
