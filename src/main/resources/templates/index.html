@@ -14,10 +14,10 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
-        max-width: 1450px; /* 최대 너비 설정 */
-        margin: 0 auto; /* 중앙 정렬 */
-        overflow-y: auto; /* 수직 스크롤 허용 */
-        max-height: 80vh; /* 최대 높이 설정 */
+        max-width: 1450px;
+        margin: 0 auto;
+        overflow-y: auto;
+        max-height: 80vh;
     }
 
     #results > div {
@@ -28,33 +28,17 @@
         border: 1px solid #ddd;
         border-radius: 8px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        text-align: center; /* 텍스트 중앙 정렬 */
+        text-align: center;
     }
 
     canvas {
-        max-width: 100%; /* 그래프 최대 너비 설정 */
+        max-width: 100%;
         height: auto !important;
     }
+
     pre {
         white-space: pre-wrap;
         word-wrap: break-word;
-    }
-
-    .keyword-stats {
-        display: flex;
-        justify-content: space-around;
-    }
-    .stat-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .device-icon {
-        font-size: 24px;
-    }
-    .stat-value {
-        font-size: 20px;
-        font-weight: bold;
     }
 </style>
 
@@ -105,7 +89,11 @@
                         <div class="list">
                             <div th:each="keywordItem, iterStat : ${keyword}" th:if="${iterStat.index < 5}">
                                 <div class="frame">
-                                    <div class="text-wrapper-3" th:text="(${iterStat.index} + 1 + '. ') + ${keywordItem.getKeyword()}"></div>
+                                    <!-- 버튼 클릭 시 키워드를 data-attribute로 설정 -->
+                                    <button class="btn btn-primary btn-lg" type="button"
+                                            th:data-keyword="${keywordItem.getKeyword()}">
+                                        <div class="text-wrapper-3" th:text="${keywordItem.getKeyword()}"></div>
+                                    </button>
                                     <div class="text-wrapper-4" th:text="${keywordItem.getTotal()}"></div>
                                 </div>
                             </div>
@@ -122,13 +110,15 @@
                         <div class="list">
                             <div th:each="keywordItem2, iterStat : ${keyword2}" th:if="${iterStat.index < 5}">
                                 <div class="frame">
-                                    <div class="text-wrapper-5" th:text="(${iterStat.index} + 1 + '. ') +${keywordItem2.getKeyword()}"></div>
+                                    <div class="text-wrapper-5" th:text="(${iterStat.index + 1} + '. ') + ${keywordItem2.getKeyword()}"></div>
                                     <div class="text-wrapper-6" th:text="${keywordItem2.getPc()}"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- 차트 및 데이터 출력 영역 -->
                 <div id="results">
                     <div>
                         <h3>Keyword Data</h3>
@@ -146,7 +136,7 @@
 
                 <div class="element-header-navigation">
                     <div class="element-sidebar" id="sidebar">
-                        <div class="top-divider"></div> <!-- 사이드바 맨 위에 추가된 검은 줄 -->
+                        <div class="top-divider"></div>
                         <div class="list-3">
                             <button class="menu-item" id="home-button">
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/home.svg" />
@@ -170,14 +160,14 @@
                             </button>
                         </div>
                         <div class="list-4" sec:authorize="isAuthenticated()">
-                            <div class="library-header" >Library</div>
-                            <button class="menu-item"  >
+                            <div class="library-header">Library</div>
+                            <button class="menu-item">
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/list.svg" />
                                 <div class="text-wrapper-14">필터링</div>
+                            </button>
                             <button class="menu-item">
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/music.svg" />
-                                <div class="text-wrapper-14" >즐겨찾기</div>
-                            </button>
+                                <div class="text-wrapper-14">즐겨찾기</div>
                             </button>
                         </div>
                     </div>
@@ -187,10 +177,7 @@
     </div>
 </div>
 <div class="overlay" id="overlay"></div>
-<script>
-    let genderChart = null;
-    let ageChart = null;
-
+<script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', function() {
         var menuButton = document.getElementById('menu-button');
         var sidebar = document.getElementById('sidebar');
@@ -209,11 +196,11 @@
         });
 
         document.getElementById('actor-button').addEventListener('click', function() {
-            window.location.href = 'actor'; // 배우 버튼 클릭 시 actor로 이동
+            window.location.href = '/actor'; // 배우 버튼 클릭 시 actor로 이동
         });
 
         document.getElementById('webtoon-button').addEventListener('click', function() {
-            window.location.href = 'webtoon'; // 웹툰 버튼 클릭 시 webtoon으로 이동
+            window.location.href = '/webtoon'; // 웹툰 버튼 클릭 시 webtoon으로 이동
         });
 
         issueMarketTitle.addEventListener('click', function() {
@@ -221,86 +208,25 @@
         });
 
         homeButton.addEventListener('click', function() {
-            location.reload(); // 새로고침구글 검색 url
+            location.reload(); // 새로고침
         });
+
+        // 모든 버튼에 대해 클릭 이벤트 추가
+        document.querySelectorAll('button[data-keyword]').forEach(function(button) {
+            button.addEventListener('click', function() {
+                var keyword = button.getAttribute('data-keyword');
+                submitKeyword(keyword);
+            });
+        });
+
+        // submitKeyword 함수 정의
+        window.submitKeyword = function(keyword) {
+            // 입력 필드에 키워드를 채움
+            document.getElementById('keyword_search').value = keyword;
+            // 폼 제출
+            document.getElementById('keywordForm').submit();
+        };
     });
-
-    // document.getElementById('keywordForm').addEventListener('submit', function(event) {
-    //     event.preventDefault();
-    //     const keyword_s = document.getElementById('keyword_search').value;
-    //     fetch(`/search?groupName=${keyword_s}&keywords=${keyword_s}`, {
-    //         method: 'POST', // POST 메소드 사용
-    //     })
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             const keywordDataDiv = document.getElementById('keywordData');
-    //             const pcCount = data.monthlyPcQcCnt;
-    //             const mobileCount = data.monthlyMobileQcCnt;
-    //             const totalCount = pcCount + mobileCount;
-    //
-    //             keywordDataDiv.innerHTML = `
-    //             <div class="keyword-stats">
-    //                 <div class="stat-item">
-    //                     <span class="device-icon">💻</span>
-    //                     <span class="stat-value">${pcCount.toLocaleString()}</span>
-    //                     <span>PC</span>
-    //                 </div>
-    //                 <div class="stat-item">
-    //                     <span class="device-icon">📱</span>
-    //                     <span class="stat-value">${mobileCount.toLocaleString()}</span>
-    //                     <span>Mobile</span>
-    //                 </div>
-    //                 <div class="stat-item">
-    //                     <span class="device-icon">➕</span>
-    //                     <span class="stat-value">${totalCount.toLocaleString()}</span>
-    //                     <span>Total</span>
-    //                 </div>
-    //             </div>
-    //             <div class="keyword-stats">
-    //                 <span class="stat-value">네이버 검색: <a href="https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=${keyword_s}">${keyword_s}</a></span>
-    //                 <span class="stat-value">구글 검색: <a href="https://www.google.com/search?q=${keyword_s}">${keyword_s}</a></span>
-    //             </div>
-    //         `;
-    //
-    //             const genderData = data.kakaoData.gender;
-    //             const ageData = data.kakaoData.age;
-    //
-    //             if (genderChart) {
-    //                 genderChart.destroy();
-    //             }
-    //             const genderCtx = document.getElementById('genderChart').getContext('2d');
-    //             genderChart = new Chart(genderCtx, {
-    //                 type: 'pie',
-    //                 data: {
-    //                     labels: ['Male', 'Female'],
-    //                     datasets: [{
-    //                         data: [genderData.male, genderData.female],
-    //                         backgroundColor: ['#36A2EB', '#FF6384']
-    //                     }]
-    //                 },options:{
-    //                     responsive: false
-    //                 }
-    //             });
-    //
-    //             if (ageChart) {
-    //                 ageChart.destroy();
-    //             }
-    //             const ageCtx = document.getElementById('ageChart').getContext('2d');
-    //             ageChart = new Chart(ageCtx, {
-    //                 type: 'bar',
-    //                 data: {
-    //                     labels: ['10대', '20대', '30대', '40대', '50대', '60대'],
-    //                     datasets: [{
-    //                         label: '나이 비율',
-    //                         data: [ageData['10'], ageData['20'], ageData['30'], ageData['40'], ageData['50'], ageData['60']],
-    //                         backgroundColor: '#4BC0C0'
-    //                     }]
-    //                 }
-    //             });
-    //         })
-    //         .catch(error => console.error('Error:', error));
-    // });
-
 </script>
 </body>
 </html>
