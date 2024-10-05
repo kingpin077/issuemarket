@@ -1,3 +1,5 @@
+/** 사용자 역할 관리 **/
+
 package com.example.demo;
 
 import lombok.Getter;

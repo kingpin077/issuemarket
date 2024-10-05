@@ -1,6 +1,7 @@
+/** 사용자 회원가입 시 요청을 위한 DTO **/
+
 package com.example.demo.DTO;
 import lombok.*;
-import com.example.demo.Entity.UserEntity;
 
 @Getter
 @Setter
@@ -13,14 +14,4 @@ public class UserDTO {
     private String userName;
     private boolean gender;
 
-    public static UserDTO toUserDTO(UserEntity userEntity) {
-        UserDTO userDTO = new UserDTO();
-
-        userDTO.setUserId(userEntity.getUserId());
-        userDTO.setUserPwd(userEntity.getUserPwd());
-        userDTO.setUserName(userEntity.getUserName());
-        userDTO.setGender(userEntity.isGender());
-
-        return userDTO;
-    }
 }

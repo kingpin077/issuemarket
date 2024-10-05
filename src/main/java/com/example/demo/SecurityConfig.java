@@ -1,3 +1,5 @@
+/** Spring Security 설정을 위한 클래스 **/
+
 package com.example.demo;
 
 import com.example.demo.Handler.CustomAccessDeniedHandler;
@@ -5,45 +7,26 @@ import com.example.demo.Handler.CustomAuthenticationFailureHandler;
 import com.example.demo.Repository.UserRepository;
 import com.example.demo.Service.UserSecurityService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
     private final CustomAuthenticationFailureHandler failureHandler;
-
     private final CustomAccessDeniedHandler accessDeniedHandler;
-
     private final UserSecurityService userSecurityService;
     private final UserRepository userRepository;
-
-
-    public SecurityConfig(CustomAuthenticationFailureHandler failureHandler, CustomAccessDeniedHandler accessDeniedHandler, UserSecurityService userSecurityService,UserRepository userRepository) {
-        this.failureHandler = failureHandler;
-        this.accessDeniedHandler = accessDeniedHandler;
-        this.userSecurityService = userSecurityService;
-        this.userRepository = userRepository;
-    }
-
-
 
 
     @Bean
@@ -60,7 +43,7 @@ public class SecurityConfig {
                         )))
                 .formLogin(formLogin->formLogin
                         .loginPage("/login")
-                        .defaultSuccessUrl("/main",true)
+                        .defaultSuccessUrl("/index",true)
                         .permitAll()
                         .failureHandler(failureHandler)
                         .usernameParameter("userId")
@@ -71,7 +54,7 @@ public class SecurityConfig {
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/main")
+                        .logoutSuccessUrl("/index")
                         .permitAll()
                 )
         ;

@@ -1,10 +1,11 @@
+/** 사용자 정보 조회, 권한 부여 클래스**/
+
 package com.example.demo.Service;
 
 import com.example.demo.Entity.UserEntity;
 import com.example.demo.Repository.UserRepository;
 import com.example.demo.UserRole;
 import lombok.RequiredArgsConstructor;
-import org.springframework.expression.spel.support.ReflectivePropertyAccessor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,10 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import reactor.core.Exceptions;
-
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor

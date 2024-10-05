@@ -1,3 +1,5 @@
+/** 사용자 인증을 위한 로직 Service **/
+
 package com.example.demo.Service;
 
 import com.example.demo.DTO.UserDTO;
@@ -9,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserAuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder  passwordEncoder;
 

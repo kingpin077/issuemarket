@@ -1,3 +1,5 @@
+/** 접근 거부 핸들러(사용자가 권한이 없는 리소스에 접근을 시도했을 때 **/
+
 package com.example.demo.Handler;
 
 import org.springframework.security.access.AccessDeniedException;
