@@ -8,11 +8,13 @@ import java.util.List;
 
 @Repository
 public interface TestRepository extends JpaRepository<TestEntity, Long> {
-    // pc 필드를 기준으로 내림차순으로 데이터를 가져오는 메소드
+    // pc검색량 순위에 따라서 상위 10개의 데이터를 내림차순으로 가져옴
     List<TestEntity> findTop10ByOrderByPcDesc();
 
+    //총 검색량 순위에 따라서 상위 10개의 데이터를 내림차순으로 가져옴
     List<TestEntity> findTop10ByOrderByTotalDesc();
 
+    //태그에 따라서 상위 10개의 데이터를 내림차순으로 가져옴
     List<TestEntity> findTop10ByTagOrderByTotalDesc(String tag);
 
 }

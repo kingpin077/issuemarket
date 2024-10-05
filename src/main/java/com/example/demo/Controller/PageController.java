@@ -24,10 +24,13 @@ public class PageController {
 
     @GetMapping("/index")
     public String mainPage(Model model, Model model2) {
+        //키워드의 총 검색량 순위를 내림차순으로 가져옴
         List<TestDTO> keywords = testService.findAllByTotalOrderByDesc();
         System.out.println("Keywords: " + keywords); // 데이터 확인
+        //키워드의 PC검색량순위를 내림차순으로 가져옴
         List<TestDTO> keywords2 = testService.findAllByPcOrderByDesc();
         System.out.println("Keywords2: " + keywords2); // 데이터 확인
+        //총검색량 순위와 PC검색량 순위를 model객체에 담아서 저장 - index.html의 순위표시에 이용
         model.addAttribute("keyword", testService.findAllByTotalOrderByDesc());
         model2.addAttribute("keyword2", testService.findAllByPcOrderByDesc());
         return "index";
@@ -35,6 +38,7 @@ public class PageController {
 
     @GetMapping("/webtoon")
     public String webtoon(Model model) {
+        //'webtoon' 태그를 가진 키워드를 내림차순으로 정렬해서 가져옴
         List<TestDTO> keywords = testService.findAllByTagOrderByDesc("webtoon");
 
         // NewsApi를 통해 기사 정보를 가져옴
@@ -61,13 +65,14 @@ public class PageController {
                 e.printStackTrace();
             }
         }
-
+        // 위에서 저장한 키워드를 model객체에 담아 webtoon페이지로 전송
         model.addAttribute("keywords", keywords);
         return "webtoon";
     }
 
     @GetMapping("/actor")
     public String actor(Model model) {
+        //'actor' 태그를 가진 키워드를 내림차순으로 정렬해서 가져옴
         List<TestDTO> keywords = testService.findAllByTagOrderByDesc("actor");
 
         // NewsApi를 통해 기사 정보를 가져옴
@@ -106,7 +111,6 @@ public class PageController {
     @PostMapping("/searchKeyword")
     public String index(@RequestParam("keyword_search") String keyword_search, Model model) {
         model.addAttribute("keyword_search", keyword_search);
-        //System.out.println(keyword);
         return "searchKeyword";
     }
 }
