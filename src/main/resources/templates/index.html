@@ -54,6 +54,9 @@
         </button>
     </div>
     <div class="items">
+        <button type="button" class="btn btn-danger" sec:authorize="hasAuthority('ROLE_ADMIN')" onclick="location.href='/admin'">
+            <div class="text-wrapper-17">관리자 페이지</div>
+        </button>
         <button type="button" class="btn btn-dark" sec:authorize="isAuthenticated()" onclick="location.href='/logout'">
             <div class="text-wrapper-17">로그아웃</div>
         </button>

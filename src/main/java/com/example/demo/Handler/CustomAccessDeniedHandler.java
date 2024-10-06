@@ -17,7 +17,26 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
                        AccessDeniedException accessDeniedException) throws IOException, ServletException {
+
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
+
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        response.getWriter().write("Access Denied: " + accessDeniedException.getMessage());
+
+
+        String htmlResponse = "<html>" +
+                "<head>" +
+                "<style>" +
+                "body { font-family: Arial, sans-serif; font-size: 30px; text-align: center; margin-top: 50px; }" +
+                ".error-message { color: red; font-weight: bold; }" +
+                "</style>" +
+                "</head>" +
+                "<body>" +
+                "<div class='error-message'>접근할 수 있는 권한이 없습니다.</div>" +
+                "<p>" + accessDeniedException.getMessage() + "</p>" +
+                "</body>" +
+                "</html>";
+
+        response.getWriter().write(htmlResponse);
     }
 }

@@ -36,6 +36,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeRequests((authorizeHttpRequests) -> authorizeHttpRequests
                         .antMatchers("/", "/login", "/signup", "/css/**").permitAll()
+                        .antMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll())
                 .headers((headers)-> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
