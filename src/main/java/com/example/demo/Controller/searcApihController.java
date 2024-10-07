@@ -24,33 +24,28 @@ public class searcApihController {      //키워드 검색을 다루는 컨트�
     KeywordService ks = new KeywordService();   // 키워드 서비스 객체 생성
 
     // POST 요청으로 키워드를 입력받아 검색 처리
-    @PostMapping("/search")     //검색 키워드를 입력받음
+    @PostMapping("/search")  // 검색 키워드를 입력받음
     public ResponseEntity<Map<String, Object>> search(
             @RequestParam(required = false) String groupName,
             @RequestParam(required = false) String keywords
     ) {
         // 현재 날짜 기준으로 한 달 전부터 오늘까지의 날짜 범위 설정
-        LocalDate endDate = LocalDate.now();                        //오늘 날짜를 받아옴
-        LocalDate startDate = endDate.minusMonths(1);// 한 달 전 날짜
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusMonths(6);
 
-        // 날짜 포맷 지정 (yyyy-MM-dd 형식)
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedEndDate = endDate.format(formatter);
         String formattedStartDate = startDate.format(formatter);
 
-        String requestBody = String.format("{\"startDate\":\"%s\",\"endDate\":\"%s\",\"timeUnit\":\"month\",\"keywordGroups\":[{\"groupName\":\"%s\",\"keywords\":[\"%s\"]}],\"device\":\"mo\",\"gender\":\"f\"}",
-                formattedStartDate, formattedEndDate, groupName, keywords);     //api 호출 body
+        String requestBody = String.format("{\"startDate\":\"%s\",\"endDate\":\"%s\",\"timeUnit\":\"month\",\"keywordGroups\":[{\"groupName\":\"%s\",\"keywords\":[\"%s\"]}],\"gender\":\"f\"}",
+                formattedStartDate, formattedEndDate, groupName, keywords);
 
-        // HTTP 헤더 설정 (JSON 형식 및 네이버 API 인증 정보)
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("X-Naver-Client-Id", NAVER_API_ID);
         headers.set("X-Naver-Client-Secret", NAVER_API_SECRET);
 
-        // HTTP 요청 엔티티 생성 (요청 본문과 헤더 포함)
         HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
-
-        // RestTemplate 객체 생성 (HTTP 요청을 보낼 수 있는 객체)
         RestTemplate restTemplate = new RestTemplate();
 
         // 네이버 데이터랩 검색 API 호출 (POST 요청)
@@ -60,7 +55,6 @@ public class searcApihController {      //키워드 검색을 다루는 컨트�
                 requestEntity,
                 String.class);
 
-        // 결과를 저장할 Map 생성
         Map<String, Object> result = new HashMap<>();
         result.put("naverData", response.getBody());
         result.put("kakaoData", getKeywordRatio(keywords).getBody());
@@ -69,16 +63,45 @@ public class searcApihController {      //키워드 검색을 다루는 컨트�
         String keywordData = ks.getKeywordData(keywords);
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            // 가져온 데이터 파싱 및 결과에 추가
             JsonNode keywordJson = objectMapper.readTree(keywordData);
-            result.put("monthlyPcQcCnt", keywordJson.get("monthlyPcQcCnt").asInt());    // PC 검색량
-            result.put("monthlyMobileQcCnt", keywordJson.get("monthlyMobileQcCnt").asInt());    // 모바일 검색량
+            int monthlyPcQcCnt = keywordJson.get("monthlyPcQcCnt").asInt();  // PC 검색량
+            int monthlyMobileQcCnt = keywordJson.get("monthlyMobileQcCnt").asInt();  // 모바일 검색량
+            int total = monthlyPcQcCnt + monthlyMobileQcCnt;  // Total 계산
+
+            // 네이버 데이터 (JSON)을 파싱하여 ratio 값 계산
+            JsonNode naverDataJson = objectMapper.readTree(response.getBody());
+            JsonNode results = naverDataJson.get("results").get(0).get("data");
+            if (results != null && results.isArray()) {
+                // 이번 달 ratio
+                double currentMonthRatio = results.get(results.size() - 1).get("ratio").asDouble();
+                double x = total * currentMonthRatio / 100;  // x 계산
+
+                // 각 달의 ratio * x 값 계산
+                ArrayList<Map<String, Object>> ratioResults = new ArrayList<>();
+                for (JsonNode resultNode : results) {
+                    String period = resultNode.get("period").asText();
+                    double ratio = resultNode.get("ratio").asDouble();
+                    double estimatedValue =Math.round((ratio * x / currentMonthRatio) * 10.0) / 10.0;  // 소수점 첫째 자리에서 반올림
+
+                    Map<String, Object> ratioResult = new HashMap<>();
+                    ratioResult.put("period", period);
+                    ratioResult.put("estimatedValue", estimatedValue);
+                    ratioResults.add(ratioResult);
+                }
+
+                result.put("ratioResults", ratioResults);  // 계산된 값 추가
+            }
+
+            result.put("monthlyPcQcCnt", monthlyPcQcCnt);
+            result.put("monthlyMobileQcCnt", monthlyMobileQcCnt);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return ResponseEntity.ok(result);   // 결과 반환
+        return ResponseEntity.ok(result);
     }
+
 
     // 카카오 검색 트렌드 데이터를 가져오는 메서드
     public ResponseEntity<Map<String, Object>> getKeywordRatio(String keyword){
