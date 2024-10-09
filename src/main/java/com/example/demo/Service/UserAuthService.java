@@ -22,6 +22,7 @@ public class UserAuthService {
         }
         userDTO.setUserPwd(passwordEncoder.encode(userDTO.getUserPwd()));
         UserEntity userEntity = UserEntity.toUserEntity(userDTO);
+
         userRepository.save(userEntity);
     }
 }
