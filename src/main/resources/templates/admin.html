@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 페이지</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/globals.css">
+    <link rel="stylesheet" href="/css/admin_style.css"> <!-- CSS 파일 링크 -->
+</head>
+<body>
+<div class="header-wrapper" id="header-wrapper">
+    <div class="menu-button-wrapper">
+        <button type="button" class="btn btn-light" id="menu-button">
+            <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/list.svg" />
+        </button>
+        <button class="issue-market-title btn btn-link d-flex align-items-center" id="issue-market-title" onclick="window.location.href='/index'">
+            <img src="/css/image/logo_black.png" alt="Logo" style="height: 60px; width: 110px; margin-left: 5px">
+            <span>&nbsp;Issue Market</span>
+        </button>
+    </div>
+    <div class="items">
+        <button type="button" class="btn btn-danger" sec:authorize="hasAuthority('ROLE_ADMIN')" onclick="location.href='/admin'">
+            <div class="text-wrapper-17">관리자 페이지</div>
+        </button>
+        <button type="button" class="btn btn-dark" sec:authorize="isAuthenticated()" onclick="location.href='/logout'">
+            <div class="text-wrapper-17">로그아웃</div>
+        </button>
+        <button type="button" class="btn btn-dark" sec:authorize="!isAuthenticated()" onclick="location.href='/login'">
+            <div class="text-wrapper-17">로그인</div>
+        </button>
+    </div>
+</div>
+
+<main>
+    <!-- 회원 조회 버튼 추가 -->
+    <div class="add-user">
+        <button type="button" id="fetch-users-btn">회원 조회</button>
+    </div>
+
+
+</main>
+
+<!-- JavaScript 추가 -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const fetchUsersBtn = document.getElementById('fetch-users-btn');
+
+        // 회원 조회 버튼 클릭 시 사용자 목록 페이지로 이동
+        fetchUsersBtn.addEventListener('click', function () {
+            window.location.href = '/admin/users'; // 회원 목록 페이지로 리다이렉트
+        });
+    });
+</script>
+</body>
+</html>
