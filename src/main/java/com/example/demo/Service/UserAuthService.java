@@ -12,7 +12,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -40,5 +42,4 @@ public class UserAuthService {
         Pageable pageable = PageRequest.of(page, 10); // 한 페이지에 10명씩 표시
         return userRepository.findAll(pageable);
     }
-
 }
