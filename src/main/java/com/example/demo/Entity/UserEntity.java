@@ -28,6 +28,9 @@ public class UserEntity {
     @Column(name="gender")
     private boolean gender;
 
+    @Column(name="role")
+    private String role;
+
     @Builder
     public static UserEntity toUserEntity(UserDTO userDTO) {
         UserEntity userEntity = new UserEntity();
@@ -36,6 +39,7 @@ public class UserEntity {
         userEntity.userPwd = userDTO.getUserPwd();
         userEntity.userName = userDTO.getUserName();
         userEntity.gender = userDTO.isGender();
+        userEntity.role = userDTO.getRole();
 
         return userEntity;
     }

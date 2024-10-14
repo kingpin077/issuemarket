@@ -13,5 +13,12 @@ public class UserDTO {
     private String userPwd;
     private String userName;
     private boolean gender;
+    private String role;
+
+    {
+        this.role = "USER";
+    }
 
 }
+
+

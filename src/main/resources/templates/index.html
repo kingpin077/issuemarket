@@ -54,7 +54,7 @@
         </button>
     </div>
     <div class="items">
-        <button type="button" class="btn btn-danger" sec:authorize="hasAuthority('ROLE_ADMIN')" onclick="location.href='/admin'">
+        <button type="button" class="btn btn-danger" sec:authorize="hasAuthority('ADMIN')" onclick="location.href='/admin'">
             <div class="text-wrapper-17">관리자 페이지</div>
         </button>
         <button type="button" class="btn btn-dark" sec:authorize="isAuthenticated()" onclick="location.href='/logout'">
@@ -225,12 +225,12 @@
 
         // submitKeyword 함수 정의
         window.submitKeyword = function(keyword) {
-            // 입력 필드에 키워드를 채움
+
             document.getElementById('keyword_search').value = keyword;
-            // 폼 제출
             document.getElementById('keywordForm').submit();
         };
     });
+
 </script>
 </body>
 </html>
