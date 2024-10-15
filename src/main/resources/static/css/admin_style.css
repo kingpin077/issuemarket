@@ -1,0 +1,200 @@
+.header-wrapper {
+    position: fixed;
+    width: 100%;
+    height: 60px;
+    background: #fff;
+    box-shadow: 0px 4px 12px #0000001a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    top: 0;
+    z-index: 1000;
+}
+
+.menu-button-wrapper {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+#menu-button {
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.issue-market-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+    border: none;
+    background: none;
+    color: #000;
+    padding: 0;
+    cursor: pointer;
+}
+
+.issue-market-title:hover,
+.issue-market-title:focus,
+.issue-market-title:active {
+    text-decoration: none;
+    color: inherit;
+}
+
+.items {
+    display: flex;
+    align-items: center;
+}
+
+.items .btn {
+    margin: 0 10px;
+    transition: background-color 0.3s, height 0.3s, width 0.3s;
+}
+
+.items .btn:hover {
+    background-color: #f0f0f0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #2c2c2c; /* 어두운 배경색 */
+    color: #f1f1f1; /* 글자 색상 */
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #1f1f1f; /* 어두운 헤더 색상 */
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    margin: 0;
+    font-size: 2.5em;
+}
+
+main {
+    padding: 20px;
+}
+
+h2 {
+    border-bottom: 2px solid #444; /* 섹션 구분선 */
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse; /* 테이블 경계 합치기 */
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+}
+
+th {
+    background-color: #1f1f1f; /* 테이블 헤더 배경 */
+    color: #f1f1f1; /* 헤더 글자 색상 */
+}
+
+tr:nth-child(even) {
+    background-color: #333; /* 짝수 행의 배경색 */
+}
+
+tr:hover {
+    background-color: #444; /* 마우스 오버 시 배경색 */
+}
+
+td {
+    border-bottom: 1px solid #444; /* 테이블 행 경계 */
+}
+
+.add-user {
+    position: fixed; /* 화면의 고정 위치 */
+    left: 20px; /* 왼쪽 여백 */
+    top: 80px; /* 상단에서 헤더 아래로 위치 조정 */
+    z-index: 1000; /* 다른 요소들 위에 나타나도록 설정 */
+}
+
+#fetch-users-btn {
+    background-color: #007bff; /* 버튼 색상 */
+    color: white; /* 글자 색상 */
+    padding: 10px 15px; /* 버튼 내부 여백 */
+    border: none; /* 테두리 제거 */
+    border-radius: 5px; /* 버튼 모서리 둥글게 */
+    transition: background-color 0.3s; /* 호버 효과 */
+    cursor: pointer; /* 커서 포인터로 변경 */
+}
+
+#fetch-users-btn:hover {
+    background-color: #0056b3; /* 호버 시 버튼 색상 */
+}
+
+input[type="text"] {
+    padding: 10px;
+    border: 1px solid #555; /* 입력창 테두리 색상 */
+    border-radius: 5px; /* 입력창 모서리 둥글게 */
+    background-color: #333; /* 입력창 배경 색상 */
+    color: #f1f1f1; /* 입력창 글자 색상 */
+    width: calc(100% - 22px); /* 입력창 너비 조정 */
+}
+
+input[type="text"]::placeholder {
+    color: #999; /* 입력창 플레이스홀더 색상 */
+}
+
+.search-bar {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center; /* 수직 중앙 정렬 */
+}
+
+.search-bar label {
+    margin-right: 10px; /* 레이블과 입력창 사이의 간격 */
+    color: #f1f1f1; /* 텍스트 색상 */
+}
+
+/* 추가된 페이지 네비게이션 스타일 */
+.pagination {
+    margin: 20px 0; /* 위아래 간격 */
+    text-align: center; /* 가운데 정렬 */
+}
+
+.pagination ul {
+    list-style-type: none; /* 불릿 제거 */
+    padding: 0;
+    margin: 0;
+    display: inline-block; /* 가운데 정렬을 위해 */
+}
+
+.pagination li {
+    display: inline; /* 페이지 번호를 수평으로 나열 */
+    margin: 0 5px; /* 페이지 번호 간격 */
+}
+
+.pagination a {
+    color: #f1f1f1; /* 링크 글자 색상 */
+    text-decoration: none; /* 밑줄 제거 */
+    background-color: #444; /* 페이지 번호 배경 색상 */
+    padding: 10px 15px; /* 내부 여백 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    transition: background-color 0.3s; /* 배경색 변화 애니메이션 */
+}
+
+.pagination a:hover {
+    background-color: #555; /* 마우스 오버 시 배경 색상 */
+}
+
+.pagination .active a {
+    background-color: #f39c12; /* 현재 페이지 배경색 */
+    color: #fff; /* 현재 페이지 글자 색상 */
+    pointer-events: none; /* 클릭 불가 */
+}

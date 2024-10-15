@@ -7,3 +7,4 @@ public interface Serch_infoRepository extends JpaRepository<Serch_infoEntity, Lo
 
 }
 
+

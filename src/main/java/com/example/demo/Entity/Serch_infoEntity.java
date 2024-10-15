@@ -20,6 +20,11 @@ public class Serch_infoEntity {
 
     private String keyword;
     private LocalDateTime date;
+    private String userId;
+    private boolean gender;
+
+
+
 
 
 }

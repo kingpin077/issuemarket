@@ -186,6 +186,26 @@
     /*<![CDATA[*/
     const keyword_search = /*[[${keyword_search}]]*/ 'defaultKeyword';  // Thymeleaf로 전달된 키워드 변수 설정
     console.log(keyword_search);
+
+    function saveKeyword(keyword) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/api/keywords", true); // 키워드 인코딩
+        xhr.setRequestHeader("Content-Type", "application/json");
+        var data = JSON.stringify({ keyword: keyword });
+
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                console.log("Keyword saved successfully:", xhr.responseText);
+            } else {
+                console.error("Error saving keyword:", xhr.statusText);
+            }
+        };
+        xhr.send(data);  // 요청 전송
+    }
+    // 페이지가 로드될 때 saveKeyword 호출
+    document.addEventListener('DOMContentLoaded', function() {
+        saveKeyword(keyword_search); // 기본 키워드를 저장
+    });
     /*]]>*/
 </script>
 <script>
