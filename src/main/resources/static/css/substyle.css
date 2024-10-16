@@ -264,7 +264,7 @@ body, html {
 .element-input-field-with form {
     display: flex;
     justify-content: center;
-    width: 50%;
+    width: 52%;
 }
 
 .element-input-field-with .form-group,

@@ -34,11 +34,11 @@
 </div>
 
 <div class="element-input-field-with">
-    <form id="keywordForm" action="/index" method="post" class="d-flex">
+    <form id="keywordForm" action="/searchKeyword" method="post" class="d-flex">
         <div class="form-group mr-2" style="flex: 1;">
             <input type="text" id="keyword_search" name="keyword_search" class="form-control" placeholder="Placeholder" required>
         </div>
-        <button type="submit" class="btn btn-dark bigbutton">  
+        <button type="submit" class="btn btn-dark bigbutton">
             <div class="text-wrapper-12">Submit</div>
         </button>
     </form>
@@ -58,17 +58,22 @@
                             <div class="div">검색량</div>
                         </div>
                         <div class="list">
-                            <!-- keywords는 모델에서 넘긴 List<TestDTO> -->
                             <div th:each="keywordItem, iterStat : ${keywords}" th:if="${iterStat.index < 10}">
                                 <button class="keyword-button frame" onclick="expandButton(this)">
-                                    <div class="keyword-wrapper">
-                                        <div class="text-wrapper-3" th:text="(${iterStat.index + 1} + '. ') + ${keywordItem.keyword}"></div>
-                                        <div class="text-wrapper-4" th:text="${keywordItem.total}"></div>
-                                    </div>
-                                    <div class="divider"></div>
+                                    <div class="keyword-wrapper d-flex justify-content-between align-items-center">
+                                        <!-- 키워드 부분: 클릭 시 SearchKeyword 페이지로 이동 -->
+                                        <div class="text-wrapper-3" th:text="${iterStat.index + 1} + '. ' + ${keywordItem.keyword}"
+                                             style="cursor: pointer;"
+                                             onclick="submitKeyword('${keywordItem.keyword}'); event.stopPropagation();"></div>
 
-                                    <!-- 기사 URL이 있는 경우에만 기사 제목을 표시 -->
-                                    <div class="article-url" th:if="${keywordItem.articleUrl}">
+                                        <!-- 검색량 부분: 클릭 시 SearchKeyword 페이지로 이동하지 않음 -->
+                                        <div class="text-wrapper-4 ml-2" th:text="${keywordItem.total}"></div>
+                                    </div>
+
+                                    <div class="divider"></div> <!-- 구분선 -->
+
+                                    <!-- 확장된 기사 내용 영역 -->
+                                    <div class="article-url" th:if="${keywordItem.articleUrl}" style="display: none;">
                                         기사 URL: <a th:href="${keywordItem.articleUrl}" th:text="${keywordItem.articleTitle}" target="_blank">기사 제목</a>
                                     </div>
                                 </button>
@@ -155,30 +160,39 @@
         document.getElementById('webtoon-button').addEventListener('click', function() {
             window.location.href = 'webtoon'; // 웹툰 버튼 클릭 시 webtoon으로 이동
         });
-
-        function expandButton(element) {
-            element.classList.toggle('expanded');
-        }
-
     });
 
     function expandButton(button) {
-        if (button.style.height === '198px') {
+        // 확장 여부 확인
+        if (button.classList.contains('expanded')) {
             button.style.height = '48px';
-            const articleUrlElement = button.querySelector('.article-url');
-            if (articleUrlElement) {
-                articleUrlElement.style.display = 'none';
-            }
+            button.querySelector('.article-url').style.display = 'none'; // 기사 숨김
             button.classList.remove('expanded');
         } else {
             button.style.height = '198px';
-            const articleUrlElement = button.querySelector('.article-url');
-            if (articleUrlElement) {
-                articleUrlElement.style.display = 'block';
-            }
+            button.querySelector('.article-url').style.display = 'block'; // 기사 보이기
             button.classList.add('expanded');
         }
     }
+
+    function submitKeyword(keyword) {
+        // 키워드 값으로 폼 필드 업데이트
+        document.getElementById('keyword_search').value = keyword; // 키워드 필드에 키워드 채움
+        document.getElementById('keywordForm').submit(); // 폼 제출
+    }
+
+    // 클릭 이벤트를 추가하여 detail 페이지로 이동하도록 설정
+    document.querySelectorAll('.keyword-button .text-wrapper-3').forEach(wrapper => {
+        wrapper.addEventListener('click', function(event) {
+            const button = this.closest('.keyword-button'); // 부모 버튼 요소를 찾기
+            const keyword = this.innerText.split('. ')[1]; // 키워드 가져오기 (형식: "1. 키워드")
+            submitKeyword(keyword); // 키워드 전송
+            event.stopPropagation(); // 부모 클릭 이벤트 방지
+
+
+        });
+    });
+
 </script>
 </body>
 </html>
