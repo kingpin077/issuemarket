@@ -22,6 +22,38 @@
                     <label for="female"><input type="radio" id="female" name="gender" value="0"/>여성</label>
                 </div><br><br>
             </div>
+
+            <div class="birthdate-container">
+                <span>생년월일  &nbsp;</span>
+                <select id="birthYear" name="birthYear" required>
+                    <option value="">년도</option>
+                    <script>
+                        for (let i = new Date().getFullYear(); i >= 1900; i--) {
+                            document.write('<option value="' + i + '">' + i + '</option>');
+                        }
+                    </script>
+                </select>
+
+                <select id="birthMonth" name="birthMonth" required>
+                    <option value="">월</option>
+                    <script>
+                        for (let i = 1; i <= 12; i++) {
+                            document.write('<option value="' + i + '">' + i + '</option>');
+                        }
+                    </script>
+                </select>
+
+                <select id="birthDay" name="birthDay" required>
+                    <option value="">일</option>
+                    <script>
+                        for (let i = 1; i <= 31; i++) {
+                            document.write('<option value="' + i + '">' + i + '</option>');
+                        }
+                    </script>
+                </select>
+            </div>
+            <br>
+            <input type="hidden" id="userBirth" name="userBirth" />
             <button type="submit">가입하기</button>
             <p th:if="${errorMessage}" style="color: red;" th:text="${errorMessage}"></p>
         </form>
@@ -48,7 +80,7 @@
             <div class="overlay-panel overlay-right">
                 <h1>환영합니다 !</h1>
                 <p>아직 IssueMarket 계정이 없으신가요?</p>
-                    <button class="ghost" id="signUp">회원가입</button>
+                <button class="ghost" id="signUp">회원가입</button>
             </div>
         </div>
     </div>
@@ -60,6 +92,9 @@
         const userId = document.getElementById("userId").value.trim();
         const userPwd = document.getElementById("userPwd").value.trim();
         const userName = document.getElementById("userName").value.trim();
+        const birthYear = document.getElementById("birthYear").value;
+        const birthMonth = document.getElementById("birthMonth").value;
+        const birthDay = document.getElementById("birthDay").value;
 
 
         if (!userId) {
@@ -74,7 +109,11 @@
             alert("사용자의 이름을 입력해주세요");
             return false;
         }
-
+        else if (!birthYear || !birthMonth || !birthDay) {
+            alert("생년월일을 입력해주세요");
+            return false;
+        }
+        document.getElementById("userBirth").value = birthYear + "-" + birthMonth.padStart(2, '0') + "-" + birthDay.padStart(2, '0');
         return true;
 
     }
@@ -83,11 +122,11 @@
         const loginId = document.getElementById("loginId").value.trim();
         const loginPwd = document.getElementById("loginPwd").value.trim();
 
-    if (!loginId) {
+        if (!loginId) {
             alert("아이디를 입력해주세요");
             return false;
         }
-    else if (!loginPwd) {
+        else if (!loginPwd) {
             alert("패스워드를 입력해주세요");
             return false;
         }

@@ -1,3 +1,5 @@
+/** 사용자의 인증 관련 조작에 대한 Controller **/
+
 package com.example.demo.Controller;
 
 import com.example.demo.DTO.UserDTO;
