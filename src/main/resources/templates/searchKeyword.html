@@ -7,71 +7,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/globals.css">
     <link rel="stylesheet" href="/css/substyle.css">
+    <link rel="stylesheet" href="/css/searchKeyword.css">
 
     <!-- Chart.js 라이브러리 불러오기 (차트 렌더링을 위해 사용) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- 내부 스타일 정의 -->
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        #results {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            max-width: 1450px;
-            margin: 0 auto;
-            overflow-y: auto;
-            max-height: 80vh;
-        }
-        #results > div {
-            flex: 1;
-            min-width: 300px;
-            margin: 10px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        canvas {
-            max-width: 100%;
-            height: auto !important; /* 높이를 고정하여 차트가 넘치지 않게 설정 */
-        }
-        pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-        .keyword-stats {
-            display: flex;
-            justify-content: space-around;
-        }
-        .stat-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .device-icon {
-            font-size: 24px;
-        }
-        .stat-value {
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .chart-container {
-            display: flex;
-            justify-content: center; /* 차트가 중앙에 오도록 설정 */
-            align-items: center;
-        }
-        .sidebar-visible {
-            transform: translateX(0);
-        }
-        .overlay-visible {
-            display: block;
-        }
-    </style>
 </head>
 <body>
 <div class="header-wrapper" id="header-wrapper">
@@ -98,9 +38,6 @@
         </button>
     </div>
 </div>
-
-<h1>Keyword Search Results</h1>
-<h2>Search Results</h2>
 
 <div class="element-header-navigation">
     <div class="element-sidebar" id="sidebar">
@@ -162,7 +99,6 @@
             <canvas id="ageChart" width="500" height="350"></canvas>    <!-- 연령대 비율 차트 -->
         </div>
     </div>
-    <!-- Ratio Results Line Chart -->
     <div>
         <h3>Ratio Results (Estimated Value by Date)</h3>
         <div class="chart-container">
@@ -172,9 +108,10 @@
 </div>
 
 
+
 <!-- 뉴스 결과를 출력하는 영역 -->
 <div id="newsResults">
-    <h3>News Articles</h3>
+
     <div id="newsContainer"></div>  <!-- 뉴스 기사를 담는 컨테이너 -->
 </div>
 
@@ -248,7 +185,7 @@
             method: 'POST'
         })
             .then(response => response.json())   // JSON 응답을 파싱
-                .then(data => {
+            .then(data => {
                 console.log(data); // 데이터를 콘솔에 출력하여 확인
 
                 // 키워드 데이터 출력
@@ -344,69 +281,72 @@
                             }
                         }
 
-                        // 뉴스 데이터 표시
+                        // 뉴스 데이터 표시 부분 수정
                         if (naverData && naverData.items && Array.isArray(naverData.items)) {
                             naverData.items.forEach(article => {
                                 const newsItem = document.createElement('div');
                                 newsItem.classList.add('news-item');
                                 newsItem.innerHTML = `
-                            <h4><a href="${article.link}" target="_blank">${article.title}</a></h4>
-                            <p>${article.description}</p>
-                        `;
+                                <div class="news-content">
+                                    <a href="${article.link}" target="_blank">${article.title}</a>
+                                    <p>${article.description}</p>
+                                </div>
+                            `;
                                 newsContainer.appendChild(newsItem);
                             });
                         } else {
                             console.error('News data is missing or invalid.');
                         }
+
                     })
                     .catch(newsError => {
                         console.error('Error fetching news:', newsError);
                     });
 
-                    // ratioResults 꺾은선 그래프 렌더링
-                    const ratioResults = data.ratioResults; // 서버에서 가져온 ratioResults 데이터
+                // ratioResults 꺾은선 그래프 렌더링
+                const ratioResults = data.ratioResults; // 서버에서 가져온 ratioResults 데이터
 
-                    if (ratioResults && Array.isArray(ratioResults)) {
-                        const labels = ratioResults.map(item => item.period);  // x축에 표시할 날짜들 (period)
-                        const values = ratioResults.map(item => item.estimatedValue);  // y축에 표시할 estimatedValue 값들
+                if (ratioResults && Array.isArray(ratioResults)) {
+                    const labels = ratioResults.map(item => item.period);  // x축에 표시할 날짜들 (period)
+                    const values = ratioResults.map(item => item.estimatedValue);  // y축에 표시할 estimatedValue 값들
 
-                        const ratioResultsChart = new Chart(document.getElementById('ratioResultsChart'), {
-                            type: 'line',
-                            data: {
-                                labels: labels, // 날짜를 x축에 사용
-                                datasets: [{
-                                    label: 'Estimated Value',
-                                    data: values, // estimatedValue를 y축에 사용
-                                    borderColor: 'rgba(75, 192, 192, 1)',
-                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                    fill: true
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: true,
-                                scales: {
-                                    x: {
+                    const ratioResultsChart = new Chart(document.getElementById('ratioResultsChart'), {
+                        type: 'line',
+                        data: {
+                            labels: labels, // 날짜를 x축에 사용
+                            datasets: [{
+                                label: 'Estimated Value',
+                                data: values, // estimatedValue를 y축에 사용
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                fill: true
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            scales: {
+                                x: {
+                                    display: true,
+                                    title: {
                                         display: true,
-                                        title: {
-                                            display: true,
-                                            text: 'Date'
-                                        }
-                                    },
-                                    y: {
-                                        beginAtZero: true,
+                                        text: 'Date'
+                                    }
+                                },
+                                y: {
+                                    beginAtZero: true,
+                                    display: true,
+                                    title: {
                                         display: true,
-                                        title: {
-                                            display: true,
-                                            text: 'Estimated Value'
-                                        }
+                                        text: 'Estimated Value'
                                     }
                                 }
                             }
-                        });
-                    } else {
-                        console.error('Ratio results data is missing or invalid.');
-                    }
+                        }
+                    });
+                } else {
+                    console.error('Ratio results data is missing or invalid.');
+                }
             })
             .catch(error => {
                 console.error('Error:', error);

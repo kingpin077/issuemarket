@@ -7,11 +7,19 @@ import lombok.Setter;
 @Setter
 public class KeywordCount {
     private String keyword;
-    private Long count;
+    private Long total;
 
     public KeywordCount(String keyword, Long count) {
         this.keyword = keyword;
-        this.count = count;
+        this.total = count;
     }
+    @Override
+    public String toString() {
+        return "KeywordCount{" +
+                "keyword='" + keyword + '\'' +
+                ", count=" + total +
+                '}';
+    }
+
 
 }

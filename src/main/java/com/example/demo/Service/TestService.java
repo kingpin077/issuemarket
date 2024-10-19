@@ -3,7 +3,7 @@ package com.example.demo.Service;
 
 import com.example.demo.DTO.TestDTO;
 import com.example.demo.Entity.TestEntity;
-import com.example.demo.TestRepository;
+import com.example.demo.Repository.TestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -53,6 +53,17 @@ public class TestService {
     }
 
 
+    // 총 검색량 상위 30개의 데이터를 가져오는 메서드
+    public List<TestDTO> findTop50ByTotalOrderByDesc() {
+        List<TestEntity> entities = testRepository.findTop50ByOrderByTotalDesc();
+
+        return entities.stream().map(entity -> {
+            TestDTO dto = new TestDTO();
+            dto.setKeyword(entity.getKeyword());
+            dto.setTotal(entity.getTotal());
+            return dto;
+        }).collect(Collectors.toList());
+    }
 
 
 }

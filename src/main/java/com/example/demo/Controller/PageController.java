@@ -106,7 +106,16 @@ public class PageController {
         return "actor"; // Thymeleaf HTML 템플릿을 반환
     }
 
+    @GetMapping("/wordCloud")
+    public String wordCloudPage(Model model) {
+        // 키워드의 총 검색량 순위를 내림차순으로 가져옴
+        List<TestDTO> keywords = testService.findTop50ByTotalOrderByDesc();
+        System.out.println("Keywords: " + keywords); // 데이터 확인
 
+        // 모델에 키워드 데이터를 저장
+        model.addAttribute("keywordCloudData", keywords);
+        return "wordCloud"; // wordCloud.html로 데이터를 보냄
+    }
 
     @PostMapping("/searchKeyword")
     public String index(@RequestParam("keyword_search") String keyword_search, Model model) {

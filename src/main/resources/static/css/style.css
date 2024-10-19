@@ -278,3 +278,35 @@ body, html {
 .element-input-field-with button.bigbutton {
   height: 80px; /* 동일한 높이 설정 */
 }
+
+ #results {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: space-around;
+   max-width: 1450px;
+   margin: 0 auto;
+   overflow-y: auto;
+   max-height: 80vh;
+ }
+
+#results > div {
+  flex: 1;
+  min-width: 300px;
+  margin: 10px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+canvas {
+  max-width: 100%;
+  height: auto !important;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
