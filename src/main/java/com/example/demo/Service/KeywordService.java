@@ -3,6 +3,8 @@ package com.example.demo.Service;
 import com.example.demo.Signatures;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -95,24 +97,43 @@ public class KeywordService {
         try {
             JsonNode rootNode = objectMapper.readTree(jsonResponse);    // JSON 응답을 파싱하여 JsonNode 객체로 변환
             JsonNode keywordList = rootNode.get("keywordList"); // keywordList 노드 추출
+            ArrayNode relatedKeywordsArray = objectMapper.createArrayNode();  // 여러 키워드를 담기 위한 배열
+            ObjectNode result = objectMapper.createObjectNode();
+
+            // 검색량 초기화
+            int monthlyPcQcCnt = 0;
+            int monthlyMobileQcCnt = 0;
 
             // keywordList가 배열일 경우 각 항목을 순회
             if (keywordList.isArray()) {
+                int count = 0;
                 for (JsonNode keywordNode : keywordList) {
-                    String relKeyword = keywordNode.get("relKeyword").asText();      // 관련 키워드 추출
-                    // 해당 키워드가 요청한 키워드와 일치하는지 확인
+                    String relKeyword = keywordNode.get("relKeyword").asText(); // 관련 키워드 추출
+
+                    // 요청한 키워드와 일치하는 경우 검색량을 저장
                     if (keyword.equals(relKeyword)) {
-                        int monthlyPcQcCnt = keywordNode.get("monthlyPcQcCnt").asInt();     // 월간 PC 검색량
-                        int monthlyMobileQcCnt = keywordNode.get("monthlyMobileQcCnt").asInt(); // 월간 모바일 검색량
-                        // 관련 키워드와 검색량을 포함한 JSON 문자열 반환
-                        return String.format("{\"relKeyword\":\"%s\",\"monthlyPcQcCnt\":%d,\"monthlyMobileQcCnt\":%d}", relKeyword, monthlyPcQcCnt, monthlyMobileQcCnt);
+                        monthlyPcQcCnt = keywordNode.get("monthlyPcQcCnt").asInt();
+                        monthlyMobileQcCnt = keywordNode.get("monthlyMobileQcCnt").asInt();
+                    } else if (count < 10) {
+                        // 관련 검색어로 추가
+                        relatedKeywordsArray.add(relKeyword);
+                        count++;
                     }
                 }
             }
-        } catch (Exception e) {
-            System.out.println("JSON Parsing Error: " + e.getMessage());
-        }
 
-        return "{}";
+
+            // 최종 JSON 결과 생성
+            result.put("relKeyword", keyword);
+            result.put("monthlyPcQcCnt", monthlyPcQcCnt);
+            result.put("monthlyMobileQcCnt", monthlyMobileQcCnt);
+            result.set("relatedKeywords", relatedKeywordsArray);
+
+            return result.toString();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "{}";  // 에러 발생 시 빈 JSON 반환
+        }
     }
 }

@@ -74,14 +74,14 @@ public class searcApihController {      //키워드 검색을 다루는 컨트�
             if (results != null && results.isArray()) {
                 // 이번 달 ratio
                 double currentMonthRatio = results.get(results.size() - 1).get("ratio").asDouble();
-                double x = total * currentMonthRatio / 100;  // x 계산
+                double x = total / (currentMonthRatio / 100);  // x 계산 (수식 수정됨)
 
                 // 각 달의 ratio * x 값 계산
                 ArrayList<Map<String, Object>> ratioResults = new ArrayList<>();
                 for (JsonNode resultNode : results) {
                     String period = resultNode.get("period").asText();
                     double ratio = resultNode.get("ratio").asDouble();
-                    double estimatedValue =Math.round((ratio * x / currentMonthRatio) * 10.0) / 10.0;  // 소수점 첫째 자리에서 반올림
+                    double estimatedValue = Double.parseDouble(String.format("%.1f", (ratio * x / 100)));// 소수점 첫째 자리에서 반올림
 
                     Map<String, Object> ratioResult = new HashMap<>();
                     ratioResult.put("period", period);
@@ -94,6 +94,16 @@ public class searcApihController {      //키워드 검색을 다루는 컨트�
 
             result.put("monthlyPcQcCnt", monthlyPcQcCnt);
             result.put("monthlyMobileQcCnt", monthlyMobileQcCnt);
+
+            // 연관 검색어 추가
+            JsonNode relatedKeywords = keywordJson.get("relatedKeywords");
+            if (relatedKeywords != null && relatedKeywords.isArray()) {
+                ArrayList<String> relatedKeywordList = new ArrayList<>();
+                for (JsonNode relatedKeyword : relatedKeywords) {
+                    relatedKeywordList.add(relatedKeyword.asText());
+                }
+                result.put("relatedKeywords", relatedKeywordList);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

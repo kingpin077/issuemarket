@@ -90,20 +90,24 @@
     <div>
         <h3>Gender Ratio</h3>
         <div class="chart-container">
-            <canvas id="genderChart" width="500" height="350"></canvas> <!-- 성별 비율 차트 -->
+            <canvas id="genderChart" width="500" height="350"></canvas>
         </div>
     </div>
     <div>
         <h3>Age Ratio</h3>
         <div class="chart-container">
-            <canvas id="ageChart" width="500" height="350"></canvas>    <!-- 연령대 비율 차트 -->
+            <canvas id="ageChart" width="500" height="350"></canvas>
         </div>
     </div>
     <div>
         <h3>Ratio Results (Estimated Value by Date)</h3>
         <div class="chart-container">
-            <canvas id="ratioResultsChart" width="500" height="350"></canvas> <!-- 날짜별 추세를 나타낼 꺾은선 그래프 -->
+            <canvas id="ratioResultsChart" width="500" height="350"></canvas>
         </div>
+    </div>
+    <div>
+        <h3>Related Keywords</h3>
+        <div id="relatedKeywordsContainer" class="related-keywords"></div>
     </div>
 </div>
 
@@ -214,6 +218,23 @@
                         </div>
                     </div>
             `;
+                // 연관 검색어 데이터 표시
+                const relatedKeywordsContainer = document.getElementById('relatedKeywordsContainer');
+                const relatedKeywords = data.relatedKeywords;
+
+                if (relatedKeywords && Array.isArray(relatedKeywords)) {
+                    const ul = document.createElement('ul'); // <ul> 태그 생성
+
+                    relatedKeywords.forEach((keyword, index) => {
+                        const li = document.createElement('li'); // <li> 태그 생성
+                        li.textContent = `${index + 1}. ${keyword}`; // 번호와 키워드 추가
+                        ul.appendChild(li); // <li>를 <ul>에 추가
+                    });
+
+                    relatedKeywordsContainer.appendChild(ul); // <ul>을 컨테이너에 추가
+                } else {
+                    relatedKeywordsContainer.innerText = 'No related keywords available.';
+                }
 
                 // 성별 비율 차트 렌더링
                 const genderData = data.kakaoData.gender;
