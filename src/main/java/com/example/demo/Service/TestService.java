@@ -7,6 +7,7 @@ import com.example.demo.Repository.TestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,5 +66,18 @@ public class TestService {
         }).collect(Collectors.toList());
     }
 
+
+    // 워드 클라우드를 위한 리스트 생성 메서드
+    public List<Map<String, Object>> getWordCloudList() {
+        List<Object[]> data = testRepository.findKeywordsAndTotalByOrderByTotalDesc();
+
+        // 각 키워드와 total 값을 Map으로 변환하고 리스트로 반환
+        return data.stream()
+                .map(row -> Map.of(
+                        "keyword", row[0],  // keyword
+                        "total", row[1]     // total
+                ))
+                .collect(Collectors.toList());
+    }
 
 }

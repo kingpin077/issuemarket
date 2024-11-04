@@ -7,7 +7,6 @@
     <script src="https://cdn.anychart.com/releases/v8/js/anychart-bundle.min.js"></script>
 </head>
 <body>
-<h1>검색 키워드 워드 클라우드</h1>
 
 <!-- 워드 클라우드를 표시할 컨테이너 -->
 <div id="wordCloudContainer" style="width: 100%; height: 600px;"></div>
@@ -39,7 +38,6 @@
 </script>
 </body>
 </html>
-
 
 <!--<!DOCTYPE html>-->
 <!--<html lang="ko">-->
@@ -74,10 +72,10 @@
 
 <!--&lt;!&ndash; 워드 클라우드 모양을 변경할 버튼들 &ndash;&gt;-->
 <!--<div id="buttonContainer">-->
-<!--    <button onclick="drawWordCloud('circle')">원형</button>-->
-<!--    <button onclick="drawWordCloud('figure8')">8자 모양</button>-->
-<!--    <button onclick="drawWordCloud('diamond')">다이아몬드</button>-->
-<!--    <button onclick="drawWordCloud('star')">별 모양</button>-->
+<!--    <button onclick="drawWordCloud([0])">원형</button>-->
+<!--    <button onclick="drawWordCloud([0, 90])">8자 모양</button>-->
+<!--    <button onclick="drawWordCloud([45])">다이아몬드</button>-->
+<!--    <button onclick="drawWordCloud([0, 45, -45])">별 모양</button>-->
 <!--</div>-->
 
 <!--&lt;!&ndash; 워드 클라우드를 표시할 컨테이너 &ndash;&gt;-->
@@ -95,17 +93,16 @@
 <!--    }));-->
 
 <!--    // 워드 클라우드를 그리는 함수 (모양을 변경할 수 있도록 설정)-->
-<!--    function drawWordCloud(shape) {-->
+<!--    function drawWordCloud(angles) {-->
 <!--        const chart = anychart.tagCloud(formattedData);-->
 <!--        chart.title("키워드 워드 클라우드");-->
-<!--        chart.angles([0]); // 단어 회전 비율 설정 (0이면 회전 없음)-->
-<!--        chart.shape(shape); // 선택한 모양으로 워드 클라우드 그리기-->
+<!--        chart.angles(angles); // 선택한 각도로 워드 클라우드 그리기-->
 <!--        chart.container("wordCloudContainer"); // 차트를 표시할 컨테이너-->
 <!--        chart.draw(); // 차트 그리기-->
 <!--    }-->
 
 <!--    // 페이지가 로드되면 기본 모양(원형)으로 워드 클라우드를 그리기-->
-<!--    drawWordCloud('circle');-->
+<!--    drawWordCloud([0]);-->
 <!--</script>-->
 <!--</body>-->
 <!--</html>-->
