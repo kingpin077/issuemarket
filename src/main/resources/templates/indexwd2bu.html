@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issue Market</title>
+
+    <!-- 외부 스타일 시트 및 플러그인 CSS 연결 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/css/globals.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- 외부 JavaScript 라이브러리 및 플러그인 연결 -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-bundle.min.js"></script>
+</head>
+
+<body>
+<!-- 페이지 상단 헤더 -->
+<div class="header-wrapper" id="header-wrapper">
+    <div class="menu-button-wrapper">
+        <!-- 메뉴 버튼 -->
+        <button type="button" class="btn btn-light" id="menu-button">
+            <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/list.svg" />
+        </button>
+        <!-- 페이지 타이틀 및 로고 -->
+        <button class="issue-market-title btn btn-link d-flex align-items-center" id="issue-market-title">
+            <img src="/css/image/logo_black.png" alt="Logo" style="height: 60px; width: 110px; margin-left: 5px">
+            <span>&nbsp;Issue Market</span>
+        </button>
+    </div>
+    <div class="items">
+        <!-- 사용자 메뉴 (관리자 페이지, 로그인/로그아웃 버튼) -->
+        <button type="button" class="btn btn-danger" sec:authorize="hasAuthority('ADMIN')" onclick="location.href='/admin'">
+            <div class="text-wrapper-17">관리자 페이지</div>
+        </button>
+        <button type="button" class="btn btn-dark" sec:authorize="isAuthenticated()" onclick="location.href='/logout'">
+            <div class="text-wrapper-17">로그아웃</div>
+        </button>
+        <button type="button" class="btn btn-dark" sec:authorize="!isAuthenticated()" onclick="location.href='/login'">
+            <div class="text-wrapper-17">로그인</div>
+        </button>
+    </div>
+</div>
+
+<!-- 검색 키워드 입력 필드 및 제출 버튼 -->
+<div class="element-input-field-with">
+    <form id="keywordForm" action="/searchKeyword" method="post" class="d-flex">
+        <div class="form-group mr-2" style="flex: 1;">
+            <input type="text" id="keyword_search" name="keyword_search" class="form-control" placeholder="" required>
+        </div>
+        <button type="submit" class="btn btn-dark bigbutton search-icon">
+            <div class="material-icons">search</div>
+        </button>
+    </form>
+</div>
+
+<!-- 메인 콘텐츠 영역 -->
+<div class="homepage">
+    <div class="element-tables">
+        <!-- 실시간 인기순위 테이블 (Total) -->
+        <div class="element-table">
+            <div class="title">실시간 인기순위(Total)</div>
+            <div class="table-header">
+                <div class="text-wrapper">키워드</div>
+                <div class="div">검색량</div>
+            </div>
+            <div class="list">
+                <div th:each="keywordItem, iterStat : ${keyword}" th:if="${iterStat.index < 5}">
+                    <button class="btn btn-primary btn-lg frame" type="button"
+                            th:data-keyword="${keywordItem.getKeyword()}"
+                            onclick="submitKeyword('${keywordItem.getKeyword()}')">
+                        <div class="text-wrapper-3" th:text="${iterStat.index + 1} + '. ' + ${keywordItem.getKeyword()}"></div>
+                        <div class="text-wrapper-4" th:text="${keywordItem.getTotal()}"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 기간별 인기순위 테이블 (PC) -->
+        <div class="element-table-2">
+            <div class="title">기간별 인기순위(PC)</div>
+            <div class="table-header">
+                <div class="text-wrapper">키워드</div>
+                <div class="div">검색량</div>
+            </div>
+            <div class="list">
+                <div th:each="keywordItem2, iterStat : ${keyword2}" th:if="${iterStat.index < 5}">
+                    <button class="btn btn-primary btn-lg frame" type="button"
+                            th:data-keyword="${keywordItem2.getKeyword()}"
+                            onclick="submitKeyword('${keywordItem.getKeyword()}')">
+                        <div class="text-wrapper-3" th:text="${iterStat.index + 1} + '. ' + ${keywordItem2.getKeyword()}"></div>
+                        <div class="text-wrapper-4" th:text="${keywordItem2.getPc()}"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 워드 클라우드를 표시할 컨테이너 -->
+<div id="wordCloudContainer" style="width: 100%; height: 600px;"></div>
+
+<!-- JSON 형식으로 데이터를 Thymeleaf에서 전달 -->
+<script th:inline="javascript">
+    var keywordCloudData = /*[[${keywordCloudData}]]*/ [];
+    keywordCloudData = JSON.parse(keywordCloudData);  // JSON 형식으로 변환
+    console.log(keywordCloudData);  // 데이터 확인용
+</script>
+
+<script>
+    // 데이터를 AnyChart 형식으로 변환
+    const formattedData = keywordCloudData.map(item => ({
+        x: item.keyword,    // 키워드
+        value: item.total   // total 필드 (PC + Mobile의 합산)
+    }));
+
+    console.log(formattedData);  // 변환된 데이터 확인
+
+    // 워드 클라우드 그리기
+    anychart.onDocumentReady(function () {
+        const chart = anychart.tagCloud(formattedData);
+        chart.title("키워드 워드 클라우드");
+        chart.angles([0]); // 단어 회전 비율 설정 (0이면 회전 없음)
+        chart.container("wordCloudContainer"); // 차트를 표시할 컨테이너
+        chart.draw(); // 차트 그리기
+    });
+</script>
+
+<!-- 사이드바 내비게이션 메뉴 -->
+<div class="element-header-navigation">
+    <div class="element-sidebar" id="sidebar">
+        <div class="top-divider"></div>
+        <div class="list-3">
+            <button class="menu-item" id="home-button">
+                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/home.svg" />
+                <div class="text-wrapper-14">Home</div>
+            </button>
+            <button class="menu-item">
+                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/search.svg" />
+                <div class="text-wrapper-14">영화</div>
+            </button>
+            <button class="menu-item">
+                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                <div class="text-wrapper-14">음악</div>
+            </button>
+            <button class="menu-item" id="actor-button">
+                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                <div class="text-wrapper-14">배우</div>
+            </button>
+            <button class="menu-item" id="webtoon-button">
+                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                <div class="text-wrapper-14">웹툰</div>
+            </button>
+        </div>
+        <div class="list-4" sec:authorize="isAuthenticated()">
+            <div class="library-header">Library</div>
+            <button class="menu-item">
+                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/list.svg" />
+                <div class="text-wrapper-14">필터링</div>
+            </button>
+            <button class="menu-item">
+                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/music.svg" />
+                <div class="text-wrapper-14">즐겨찾기</div>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<!-- 외부 JavaScript 파일 연결 -->
+<script src="/js/main.js"></script>
+
+</body>
+</html>
