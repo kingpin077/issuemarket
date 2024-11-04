@@ -104,6 +104,9 @@
 <!-- 워드 클라우드를 표시할 컨테이너 -->
 <div id="wordCloudContainer" style="width: 100%; height: 600px;"></div>
 
+<!-- 외부 JavaScript 파일 연결 -->
+<script src="/js/main.js"></script>
+
 <!-- JSON 형식으로 데이터를 Thymeleaf에서 전달 -->
 <script th:inline="javascript">
     var keywordCloudData = /*[[${keywordCloudData}]]*/ [];
