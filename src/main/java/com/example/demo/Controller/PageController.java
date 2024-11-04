@@ -117,6 +117,35 @@ public class PageController {
         return "wordCloud"; // wordCloud.html로 데이터를 보냄
     }
 
+    // 워드 클라우드 리스트를 반환하는 API
+    @GetMapping("/wordCloud2")
+    public List<Map<String, Object>> getWordCloud() {
+        return testService.getWordCloudList();
+    }
+
+//    @GetMapping("/wordCloud2")
+//    public String wordCloud2Page(Model model) {
+//        // 키워드의 총 검색량 순위를 내림차순으로 가져옴
+//        List<TestDTO> keywords = testService.findTop50ByTotalOrderByDesc();
+//        System.out.println("Keywords: " + keywords); // 데이터 확인
+//
+//        // 모델에 키워드 데이터를 저장
+//        model.addAttribute("keywordCloudData", keywords);
+//        return "wordCloud2"; // wordCloud.html로 데이터를 보냄
+//    }
+
+//    @GetMapping("/wordCloud2")
+//    public String wordCloud2Page(Model model) throws Exception {
+//        // 키워드 데이터를 가져와서 JSON으로 변환
+//        List<TestDTO> keywords = testService.findTop50ByTotalOrderByDesc();
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        String keywordJson = objectMapper.writeValueAsString(keywords);
+//
+//        // 모델에 키워드 데이터를 저장 (JSON 형식)
+//        model.addAttribute("keywordCloudData", keywordJson);
+//        return "wordCloud2"; // wordCloud2.html로 전달
+//    }
+
     @PostMapping("/searchKeyword")
     public String index(@RequestParam("keyword_search") String keyword_search, Model model) {
         model.addAttribute("keyword_search", keyword_search);
