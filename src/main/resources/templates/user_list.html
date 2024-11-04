@@ -42,7 +42,6 @@
     <table>
         <thead>
         <tr>
-            <th>회원 코드</th>
             <th>아이디</th>
             <th>이름</th>
             <th>성별</th>
@@ -52,7 +51,6 @@
         <tbody id="user-table-body">
         <!-- 사용자 목록을 동적으로 생성 -->
         <tr th:each="user : ${users}">
-            <td th:text="${user.userCode}"></td>
             <td th:text="${user.userId}"></td>
             <td th:text="${user.userName}"></td>
             <td th:text="${user.gender ? '남' : '여'}"></td>
