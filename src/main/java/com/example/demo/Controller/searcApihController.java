@@ -21,6 +21,7 @@ public class searcApihController {      //키워드 검색을 다루는 컨트�
 
     private final String NAVER_API_ID = "SaxdyV1a_KAviNQhXO5Z";
     private final String NAVER_API_SECRET = "21k6H8Ga3k";
+    private final String YOUTUBE_API_KEY = "AIzaSyADzbIlMdc7CWn6NkzTttfh_FlSP1c3-TU"; // YouTube API 키
     KeywordService ks = new KeywordService();   // 키워드 서비스 객체 생성
 
     // POST 요청으로 키워드를 입력받아 검색 처리
@@ -105,11 +106,50 @@ public class searcApihController {      //키워드 검색을 다루는 컨트�
                 result.put("relatedKeywords", relatedKeywordList);
             }
 
+            // YouTube 데이터 추가
+            Map<String, Object> youtubeData = getYoutubeVideo(keywords);
+            result.put("youtubeData", youtubeData);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return ResponseEntity.ok(result);
+    }
+
+    // YouTube API를 호출하여 조회수가 가장 높은 영상 정보를 가져오는 메서드
+    public Map<String, Object> getYoutubeVideo(String keyword) {
+        String url = String.format("https://www.googleapis.com/youtube/v3/search?part=snippet&order=viewCount&type=video&q=%s&key=%s", keyword, YOUTUBE_API_KEY);
+
+        RestTemplate restTemplate = new RestTemplate();
+        Map<String, Object> result = new HashMap<>();
+
+        try {
+            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(response.getBody());
+
+            JsonNode items = rootNode.get("items");
+            if (items != null && items.isArray() && items.size() > 0) {
+                JsonNode video = items.get(0); // 조회수가 가장 높은 영상
+                String videoId = video.get("id").get("videoId").asText();
+                String videoUrl = "https://www.youtube.com/watch?v=" + videoId;
+
+                // 조회수 정보 가져오기
+                String videoDetailsUrl = String.format("https://www.googleapis.com/youtube/v3/videos?part=statistics&id=%s&key=%s", videoId, YOUTUBE_API_KEY);
+                ResponseEntity<String> videoDetailsResponse = restTemplate.getForEntity(videoDetailsUrl, String.class);
+                JsonNode videoDetailsRoot = objectMapper.readTree(videoDetailsResponse.getBody());
+                int viewCount = videoDetailsRoot.get("items").get(0).get("statistics").get("viewCount").asInt();
+
+                result.put("videoUrl", videoUrl);
+                result.put("viewCount", viewCount);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("error", "Failed to fetch YouTube video data");
+        }
+
+        return result;
     }
 
 

@@ -109,6 +109,14 @@
         <h3>Related Keywords</h3>
         <div id="relatedKeywordsContainer" class="related-keywords"></div>
     </div>
+    <div>
+        <h3>YouTube Video</h3>
+        <div id="youtubeData">
+            <!-- YouTube 동영상 재생용 iframe 추가 위치 -->
+            <iframe id="youtubeVideoFrame" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+            <p id="youtubeViewCount"></p>
+        </div>
+    </div>
 </div>
 
 
@@ -286,6 +294,24 @@
                     console.error('Age data is missing or invalid.');
                 }
 
+                // 유튜브 데이터 표시 로직 추가
+                const youtubeData = data.youtubeData;
+                if (youtubeData && !youtubeData.error) {
+                    const youtubeVideoFrame = document.getElementById('youtubeVideoFrame');
+                    const youtubeViewCountElement = document.getElementById('youtubeViewCount');
+
+                    // 유튜브 임베드 URL 설정
+                    const videoId = youtubeData.videoUrl.split("v=")[1];
+                    const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                    youtubeVideoFrame.src = embedUrl;
+
+                    // 조회수 표시
+                    youtubeViewCountElement.textContent = `View Count: ${youtubeData.viewCount.toLocaleString()}`;
+                } else {
+                    console.error('YouTube data is missing or invalid.');
+                    document.getElementById('youtubeData').textContent = 'Failed to load YouTube data.';
+                }
+
                 // 뉴스 API 호출
                 fetch(`/news?query=${keyword_search}`)
                     .then(newsResponse => newsResponse.json())
@@ -372,6 +398,7 @@
             .catch(error => {
                 console.error('Error:', error);
             });
+
 
     });
 
