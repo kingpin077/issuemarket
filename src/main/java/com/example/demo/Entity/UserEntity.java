@@ -5,6 +5,8 @@ import javax.persistence.*;
 import com.example.demo.DTO.UserDTO;
 import lombok.*;
 
+import java.time.LocalDate;
+
 
 @NoArgsConstructor
 @Entity
@@ -31,6 +33,9 @@ public class UserEntity {
     @Column(name="role")
     private String role;
 
+    @Column(name = "user_birth")
+    private LocalDate userBirth;
+
     @Builder
     public static UserEntity toUserEntity(UserDTO userDTO) {
         UserEntity userEntity = new UserEntity();
@@ -40,6 +45,7 @@ public class UserEntity {
         userEntity.userName = userDTO.getUserName();
         userEntity.gender = userDTO.isGender();
         userEntity.role = userDTO.getRole();
+        userEntity.userBirth = userDTO.getUserBirth();
 
         return userEntity;
     }

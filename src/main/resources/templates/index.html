@@ -9,38 +9,6 @@
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<style>
-    #results {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        max-width: 1450px;
-        margin: 0 auto;
-        overflow-y: auto;
-        max-height: 80vh;
-    }
-
-    #results > div {
-        flex: 1;
-        min-width: 300px;
-        margin: 10px;
-        padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        text-align: center;
-    }
-
-    canvas {
-        max-width: 100%;
-        height: auto !important;
-    }
-
-    pre {
-        white-space: pre-wrap;
-        word-wrap: break-word;
-    }
-</style>
 
 <body>
 <div class="header-wrapper" id="header-wrapper">
@@ -122,21 +90,7 @@
                     </div>
                 </div>
 
-                <!-- 차트 및 데이터 출력 영역 -->
-                <div id="results">
-                    <div>
-                        <h3>Keyword Data</h3>
-                        <pre id="keywordData"></pre>
-                    </div>
-                    <div>
-                        <h3>Gender Ratio</h3>
-                        <canvas id="genderChart" width="500" height="350"></canvas>
-                    </div>
-                    <div>
-                        <h3>Age Ratio</h3>
-                        <canvas id="ageChart"></canvas>
-                    </div>
-                </div>
+
 
                 <div class="element-header-navigation">
                     <div class="element-sidebar" id="sidebar">
