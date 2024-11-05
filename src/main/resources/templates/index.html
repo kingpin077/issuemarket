@@ -33,7 +33,6 @@
         </button>
     </div>
 </div>
-
 <div class="element-input-field-with">
     <form id="keywordForm" action="/searchKeyword" method="post" class="d-flex">
         <div class="form-group mr-2" style="flex: 1;">
@@ -44,7 +43,6 @@
         </button>
     </form>
 </div>
-
 <div class="box">
     <div class="group">
         <div class="overlap-group">
@@ -133,6 +131,13 @@
             </div>
         </div>
     </div>
+    <!-- 인기 급상승 동영상 섹션 -->
+    <div class="element-table-3">
+        <div class="title">YouTube 인기 급상승 동영상</div>
+        <ul id="trendingVideos" class="list-group">
+            <!-- 동영상 목록이 여기에 표시됩니다 -->
+        </ul>
+    </div>
 </div>
 <div class="overlay" id="overlay"></div>
 <script th:inline="javascript">
@@ -183,8 +188,21 @@
             document.getElementById('keyword_search').value = keyword;
             document.getElementById('keywordForm').submit();
         };
-    });
 
+        // 인기 급상승 동영상 목록 가져오기
+        fetch('/youtube/trending')
+            .then(response => response.json())
+            .then(data => {
+                const trendingList = document.getElementById('trendingVideos');
+                data.forEach(video => {
+                    const listItem = document.createElement('li');
+                    listItem.classList.add('list-group-item');
+                    listItem.innerHTML = `<a href="${video.url}" target="_blank">${video.title}</a>`;
+                    trendingList.appendChild(listItem);
+                });
+            })
+            .catch(error => console.error('Error fetching trending videos:', error));
+    });
 </script>
 </body>
 </html>
