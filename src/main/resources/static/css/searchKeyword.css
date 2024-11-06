@@ -1,15 +1,24 @@
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
+    overflow-y: auto;
+}
+
+#results {
+    position: relative;
+    margin-top: 50vh;
+}
+
+#newsResults {
+    margin-top: 5vh;
 }
 
 #results, #newsResults {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between; /* 박스 간 간격 균등하게 분배 */
     max-width: 1450px;
-    margin: 0 auto;
-    overflow-y: auto;
     max-height: 80vh;
 }
 
@@ -22,7 +31,7 @@ body {
     /* 기존 스타일 유지 */
     flex: 1;
     min-width: 300px;
-    max-width: 1305px; /* 기사 박스와 차트 박스 동일한 최대 크기 */
+    max-width: 1450px; /* 기사 박스와 차트 박스 동일한 최대 크기 */
     min-height: 150px; /* 최소 높이 설정 */
     margin: 10px;
     padding: 20px;
@@ -83,8 +92,6 @@ pre {
     align-items: center;
     padding: 10px; /* 안쪽 여백 추가 */
 }
-
-
 
 .device-icon {
     font-size: 24px;
