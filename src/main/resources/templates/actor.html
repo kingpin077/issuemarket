@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
@@ -58,29 +59,54 @@
                             <div class="div">검색량</div>
                         </div>
                         <div class="list">
-                            <div th:each="keywordItem, iterStat : ${keywords}" th:if="${iterStat.index < 10}">
+                            <div th:each="keywordItem, iterStat : ${keywords}">
                                 <button class="keyword-button frame" onclick="expandButton(this)">
                                     <div class="keyword-wrapper d-flex justify-content-between align-items-center">
-                                        <!-- 키워드 부분: 클릭 시 SearchKeyword 페이지로 이동 -->
-                                        <div class="text-wrapper-3" th:text="${iterStat.index + 1} + '. ' + ${keywordItem.keyword}"
+                                        <!-- 순위 번호 계산 수정 -->
+                                        <div class="text-wrapper-3"
+                                             th:with="rank=${(currentPage * 10) + iterStat.index + 1}"
+                                             th:text="${rank} + '. ' + ${keywordItem.keyword}"
                                              style="cursor: pointer;"
-                                             onclick="submitKeyword('${keywordItem.keyword}'); event.stopPropagation();"></div>
-
-                                        <!-- 검색량 부분: 클릭 시 SearchKeyword 페이지로 이동하지 않음 -->
+                                             onclick="submitKeyword(this.getAttribute('data-keyword')); event.stopPropagation();"
+                                             th:attr="data-keyword=${keywordItem.keyword}">
+                                        </div>
                                         <div class="text-wrapper-4 ml-2" th:text="${keywordItem.total}"></div>
                                     </div>
-
-                                    <div class="divider"></div> <!-- 구분선 -->
-
-                                    <!-- 확장된 기사 내용 영역 -->
+                                    <div class="divider"></div>
                                     <div class="article-url" th:if="${keywordItem.articleUrl}" style="display: none;">
                                         기사 URL: <a th:href="${keywordItem.articleUrl}" th:text="${keywordItem.articleTitle}" target="_blank">기사 제목</a>
                                     </div>
                                 </button>
                             </div>
                         </div>
+                        <!-- 페이지네이션 -->
+                        <div class="pagination-wrapper">
+                            <div class="pagination-dots">
+                                <th:block th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
+                                    <a th:href="@{${#httpServletRequest.requestURI}(page=${pageNum})}"
+                                       th:class="${pageNum == currentPage ? 'dot active' : 'dot'}"
+                                       th:onclick="'updateActiveDot(this); return true;'">
+                                    </a>
+                                </th:block>
+                            </div>
+                        </div>
                     </div>
+                    <script th:inline="javascript">
+                        function updateActiveDot(clickedDot) {
+                            document.querySelectorAll('.dot').forEach(dot => {
+                                dot.classList.remove('active');
+                            });
+                            clickedDot.classList.add('active');
+                        }
 
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const currentPage = [[${currentPage}]];
+                            const dots = document.querySelectorAll('.dot');
+                            if (dots[currentPage]) {
+                                dots[currentPage].classList.add('active');
+                            }
+                        });
+                    </script>
 
                 </div>
 

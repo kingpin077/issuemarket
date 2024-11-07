@@ -33,6 +33,7 @@
         </button>
     </div>
 </div>
+
 <div class="element-input-field-with">
     <form id="keywordForm" action="/searchKeyword" method="post" class="d-flex">
         <div class="form-group mr-2" style="flex: 1;">
@@ -43,12 +44,13 @@
         </button>
     </form>
 </div>
+
 <div class="box">
     <div class="group">
         <div class="overlap-group">
             <div class="homepage">
                 <div class="element-tables">
-                    <!-- 1~5위 데이터 -->
+                    <!-- 실시간 인기순위(Total) -->
                     <div class="element-table">
                         <div class="title">실시간 인기순위(Total)</div>
                         <div class="table-header">
@@ -56,19 +58,30 @@
                             <div class="div">검색량</div>
                         </div>
                         <div class="list">
-                            <div th:each="keywordItem, iterStat : ${keyword}" th:if="${iterStat.index < 5}">
+                            <div th:each="keywordItem, iterStat : ${keyword.content}">
                                 <button class="btn btn-primary btn-lg frame" type="button"
-                                        th:data-keyword="${keywordItem.getKeyword()}"
-                                        onclick="submitKeyword('${keywordItem.getKeyword()}')">
-                                    <div class="text-wrapper-3" th:text="${iterStat.index + 1} + '. ' + ${keywordItem.getKeyword()}"></div>
-                                    <div class="text-wrapper-4" th:text="${keywordItem.getTotal()}"></div>
+                                        th:data-keyword="${keywordItem.keyword}"
+                                        onclick="submitKeyword(this.getAttribute('data-keyword'))">
+                                    <div class="text-wrapper-3"
+                                         th:text="${iterStat.index + 1 + (currentPage * 5)} + '. ' + ${keywordItem.keyword}">
+                                    </div>
+                                    <div class="text-wrapper-4" th:text="${keywordItem.total}"></div>
                                 </button>
+                            </div>
+                        </div>
+                        <!-- Total 페이지네이션 -->
+                        <div class="pagination-wrapper">
+                            <div class="pagination-dots">
+                                <th:block th:each="pageNum : ${#numbers.sequence(0, 6)}">
+                                    <a th:href="@{/index(page=${pageNum})}"
+                                       th:class="${pageNum == currentPage ? 'dot active' : 'dot'}">
+                                    </a>
+                                </th:block>
                             </div>
                         </div>
                     </div>
 
-
-                    <!-- 6~10위 데이터 -->
+                    <!-- 기간별 인기순위(PC) -->
                     <div class="element-table-2">
                         <div class="title">기간별 인기순위(PC)</div>
                         <div class="table-header">
@@ -76,19 +89,29 @@
                             <div class="div">검색량</div>
                         </div>
                         <div class="list">
-                            <div th:each="keywordItem2, iterStat : ${keyword2}" th:if="${iterStat.index < 5}">
+                            <div th:each="keywordItem2, iterStat : ${keyword2.content}">
                                 <button class="btn btn-primary btn-lg frame" type="button"
-                                        th:data-keyword="${keywordItem2.getKeyword()}"
-                                        onclick="submitKeyword('${keywordItem.getKeyword()}')">
-                                    <div class="text-wrapper-3" th:text="${iterStat.index + 1} + '. ' + ${keywordItem2.getKeyword()}"></div>
-                                    <div class="text-wrapper-4" th:text="${keywordItem2.getPc()}"></div>
+                                        th:data-keyword="${keywordItem2.keyword}"
+                                        onclick="submitKeyword(this.getAttribute('data-keyword'))">
+                                    <div class="text-wrapper-3"
+                                         th:text="${iterStat.index + 1 + (currentPage * 5)} + '. ' + ${keywordItem2.keyword}">
+                                    </div>
+                                    <div class="text-wrapper-4" th:text="${keywordItem2.pc}"></div>
                                 </button>
+                            </div>
+                        </div>
+                        <!-- PC 페이지네이션 -->
+                        <div class="pagination-wrapper">
+                            <div class="pagination-dots">
+                                <th:block th:each="pageNum : ${#numbers.sequence(0, 6)}">
+                                    <a th:href="@{/index(page=${pageNum})}"
+                                       th:class="${pageNum == currentPage ? 'dot active' : 'dot'}">
+                                    </a>
+                                </th:block>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
 
                 <div class="element-header-navigation">
                     <div class="element-sidebar" id="sidebar">
@@ -98,11 +121,11 @@
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/home.svg" />
                                 <div class="text-wrapper-14">Home</div>
                             </button>
-                            <button class="menu-item"  id="movie-button">
+                            <button class="menu-item" id="movie-button">
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/search.svg" />
                                 <div class="text-wrapper-14">영화</div>
                             </button>
-                            <button class="menu-item"  id="music-button">
+                            <button class="menu-item" id="music-button">
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
                                 <div class="text-wrapper-14">음악</div>
                             </button>
@@ -120,6 +143,7 @@
             </div>
         </div>
     </div>
+
     <!-- 인기 급상승 동영상 섹션 -->
     <div class="element-table-3">
         <div class="title">YouTube 인기 급상승 동영상</div>
@@ -128,7 +152,9 @@
         </ul>
     </div>
 </div>
+
 <div class="overlay" id="overlay"></div>
+
 <script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', function() {
         var menuButton = document.getElementById('menu-button');
@@ -156,32 +182,22 @@
         });
 
         document.getElementById('actor-button').addEventListener('click', function() {
-            window.location.href = '/actor'; // 배우 버튼 클릭 시 actor로 이동
+            window.location.href = '/actor';
         });
 
         document.getElementById('webtoon-button').addEventListener('click', function() {
-            window.location.href = '/webtoon'; // 웹툰 버튼 클릭 시 webtoon으로 이동
+            window.location.href = '/webtoon';
         });
 
         issueMarketTitle.addEventListener('click', function() {
-            location.reload(); // 새로고침
+            location.reload();
         });
 
         homeButton.addEventListener('click', function() {
-            location.reload(); // 새로고침
+            location.reload();
         });
 
-        // 모든 버튼에 대해 클릭 이벤트 추가
-        document.querySelectorAll('button[data-keyword]').forEach(function(button) {
-            button.addEventListener('click', function() {
-                var keyword = button.getAttribute('data-keyword');
-                submitKeyword(keyword);
-            });
-        });
-
-        // submitKeyword 함수 정의
         window.submitKeyword = function(keyword) {
-
             document.getElementById('keyword_search').value = keyword;
             document.getElementById('keywordForm').submit();
         };

@@ -4,6 +4,7 @@ import com.example.demo.DTO.TestDTO;
 import com.example.demo.Service.TestService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,18 +24,23 @@ public class PageController {
     }
 
     @GetMapping("/index")
-    public String mainPage(Model model, Model model2) {
-        //키워드의 총 검색량 순위를 내림차순으로 가져옴
-        List<TestDTO> keywords = testService.findAllByTotalOrderByDesc();
-        System.out.println("Keywords: " + keywords); // 데이터 확인
-        //키워드의 PC검색량순위를 내림차순으로 가져옴
-        List<TestDTO> keywords2 = testService.findAllByPcOrderByDesc();
-        System.out.println("Keywords2: " + keywords2); // 데이터 확인
-        //총검색량 순위와 PC검색량 순위를 model객체에 담아서 저장 - index.html의 순위표시에 이용
-        model.addAttribute("keyword", testService.findAllByTotalOrderByDesc());
-        model2.addAttribute("keyword2", testService.findAllByPcOrderByDesc());
+    public String mainPage(@RequestParam(defaultValue = "0") int page, Model model) {
+        // 페이징된 데이터 가져오기
+        Page<TestDTO> totalRankings = testService.findAllByTotalOrderByDescPaged(page);
+        Page<TestDTO> pcRankings = testService.findAllByPcOrderByDescPaged(page);
+
+        // 모델에 데이터 추가
+        model.addAttribute("keyword", totalRankings);
+        model.addAttribute("keyword2", pcRankings);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalRankings.getTotalPages());
+
         return "index";
+
     }
+
+
+
 
     @GetMapping("/indexwd")
     public String mainPagewd(Model model) {
@@ -59,17 +65,15 @@ public class PageController {
     }
 
     @GetMapping("/webtoon")
-    public String webtoon(Model model) {
-        //'webtoon' 태그를 가진 키워드를 내림차순으로 정렬해서 가져옴
-        List<TestDTO> keywords = testService.findAllByTagOrderByDesc("webtoon");
+    public String webtoon(@RequestParam(defaultValue = "0") int page, Model model) {
+        Page<TestDTO> webtoons = testService.findAllByTagOrderByDescPaged("webtoon", page);
 
-        // NewsApi를 통해 기사 정보를 가져옴
-        for (TestDTO keyword : keywords) {
+        // NewsApi 호출 로직
+        for (TestDTO webtoon : webtoons.getContent()) {
             try {
-                // NewsApi의 search 메서드를 통해 데이터를 가져옴
-                ResponseEntity<Map<String, Object>> responseEntity = newsApiController.search(keyword.getKeyword(), "1", "1", "sim");
+                ResponseEntity<Map<String, Object>> responseEntity =
+                        newsApiController.search(webtoon.getKeyword(), "1", "1", "sim");
 
-                // API 응답에서 데이터 파싱
                 String jsonResponse = (String) responseEntity.getBody().get("naverData");
                 ObjectMapper mapper = new ObjectMapper();
                 JsonNode rootNode = mapper.readTree(jsonResponse);
@@ -77,33 +81,36 @@ public class PageController {
 
                 if (itemsNode.isArray() && itemsNode.size() > 0) {
                     JsonNode firstArticle = itemsNode.get(0);
-                    String title = firstArticle.path("title").asText().replaceAll("<.*?>", "").replaceAll("&quot;", "");
+                    String title = firstArticle.path("title").asText()
+                            .replaceAll("<.*?>", "").replaceAll("&quot;", "");
                     String link = firstArticle.path("link").asText().replace("\\", "");
 
-                    keyword.setArticleUrl(link);
-                    keyword.setArticleTitle(title);
+                    webtoon.setArticleUrl(link);
+                    webtoon.setArticleTitle(title);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        // 위에서 저장한 키워드를 model객체에 담아 webtoon페이지로 전송
-        model.addAttribute("keywords", keywords);
+
+        int totalPages = Math.min(webtoons.getTotalPages(), 7); // 최대 7페이지로 제한
+
+        model.addAttribute("keywords", webtoons.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
         return "webtoon";
     }
 
     @GetMapping("/actor")
-    public String actor(Model model) {
-        //'actor' 태그를 가진 키워드를 내림차순으로 정렬해서 가져옴
-        List<TestDTO> keywords = testService.findAllByTagOrderByDesc("actor");
+    public String actor(@RequestParam(defaultValue = "0") int page, Model model) {
+        Page<TestDTO> actors = testService.findAllByTagOrderByDescPaged("actor", page);
 
-        // NewsApi를 통해 기사 정보를 가져옴
-        for (TestDTO keyword : keywords) {
+        // NewsApi 호출 로직
+        for (TestDTO actor : actors.getContent()) {
             try {
-                // NewsApi의 search 메서드를 통해 데이터를 가져옴
-                ResponseEntity<Map<String, Object>> responseEntity = newsApiController.search(keyword.getKeyword(), "1", "1", "sim");
+                ResponseEntity<Map<String, Object>> responseEntity =
+                        newsApiController.search(actor.getKeyword(), "1", "1", "sim");
 
-                // API 응답에서 데이터 파싱
                 String jsonResponse = (String) responseEntity.getBody().get("naverData");
                 ObjectMapper mapper = new ObjectMapper();
                 JsonNode rootNode = mapper.readTree(jsonResponse);
@@ -111,21 +118,24 @@ public class PageController {
 
                 if (itemsNode.isArray() && itemsNode.size() > 0) {
                     JsonNode firstArticle = itemsNode.get(0);
-                    String title = firstArticle.path("title").asText().replaceAll("<.*?>", "").replaceAll("&quot;", "");
+                    String title = firstArticle.path("title").asText()
+                            .replaceAll("<.*?>", "").replaceAll("&quot;", "");
                     String link = firstArticle.path("link").asText().replace("\\", "");
 
-                    keyword.setArticleUrl(link);
-                    keyword.setArticleTitle(title);
+                    actor.setArticleUrl(link);
+                    actor.setArticleTitle(title);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        // 키워드 리스트를 모델에 추가
-        model.addAttribute("keywords", keywords); // 여기에 키워드를 추가해야 함
+        int totalPages = Math.min(actors.getTotalPages(), 7); // 최대 7페이지로 제한
 
-        return "actor"; // Thymeleaf HTML 템플릿을 반환
+        model.addAttribute("keywords", actors.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        return "actor";
     }
 
     @GetMapping("/wordCloud")
@@ -167,4 +177,6 @@ public class PageController {
         model.addAttribute("keyword_search", keyword_search);
         return "searchKeyword";
     }
+
+
 }

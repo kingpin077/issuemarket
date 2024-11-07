@@ -1,3 +1,4 @@
+
 body, html {
     height: 100%;
     margin: 0;
@@ -356,4 +357,31 @@ body, html {
 
 .article-url {
     display: none; /* 처음에 숨김 */
+}
+
+
+.pagination-wrapper {
+    text-align: center;
+    margin: 20px 0;
+}
+.pagination-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ccc;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+}
+.dot:hover {
+    background-color: #007bff;
+}
+.dot.active {
+    background-color: #007bff !important;
 }

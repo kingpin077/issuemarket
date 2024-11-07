@@ -1,14 +1,18 @@
-package com.example.demo.Service;
 
+package com.example.demo.Service;
 
 import com.example.demo.DTO.TestDTO;
 import com.example.demo.Entity.TestEntity;
 import com.example.demo.Repository.TestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 
 @Service
 public class TestService {
@@ -27,6 +31,30 @@ public class TestService {
             dto.setPc(entity.getPc());
             return dto;
         }).collect(Collectors.toList());
+    }
+    // 새로운 페이징 메서드
+    public Page<TestDTO> findAllByPcOrderByDescPaged(int page) {
+        PageRequest pageRequest = PageRequest.of(page, 5); // 5개씩 페이징
+        Page<TestEntity> entities = testRepository.findAllByOrderByPcDesc(pageRequest);
+
+        return entities.map(entity -> {
+            TestDTO dto = new TestDTO();
+            dto.setKeyword(entity.getKeyword());
+            dto.setPc(entity.getPc());
+            return dto;
+        });
+    }
+
+    public Page<TestDTO> findAllByTotalOrderByDescPaged(int page) {
+        PageRequest pageRequest = PageRequest.of(page, 5); // 5개씩 페이징
+        Page<TestEntity> entities = testRepository.findAllByOrderByTotalDesc(pageRequest);
+
+        return entities.map(entity -> {
+            TestDTO dto = new TestDTO();
+            dto.setKeyword(entity.getKeyword());
+            dto.setTotal(entity.getTotal());
+            return dto;
+        });
     }
 
 
@@ -78,6 +106,18 @@ public class TestService {
                         "total", row[1]     // total
                 ))
                 .collect(Collectors.toList());
+    }
+
+    // 태그별 페이징 조회 메서드 (수정)
+    public Page<TestDTO> findAllByTagOrderByDescPaged(String tag, int page) {
+        PageRequest pageRequest = PageRequest.of(page, 10); // 10개씩 페이징
+        Page<TestEntity> entities = testRepository.findAllByTagOrderByTotalDesc(tag, pageRequest);
+        return entities.map(entity -> {
+            TestDTO dto = new TestDTO();
+            dto.setKeyword(entity.getKeyword());
+            dto.setTotal(entity.getTotal());
+            return dto;
+        });
     }
 
 }

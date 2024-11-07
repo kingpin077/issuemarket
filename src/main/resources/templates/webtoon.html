@@ -1,3 +1,5 @@
+Webtoon.html
+
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
@@ -56,25 +58,34 @@
                             <div class="div">검색량</div>
                         </div>
                         <div class="list">
-                            <div th:each="keywordItem, iterStat : ${keywords}" th:if="${iterStat.index < 10}">
+                            <div th:each="keywordItem, iterStat : ${keywords}">
                                 <button class="keyword-button frame" onclick="expandButton(this)">
                                     <div class="keyword-wrapper d-flex justify-content-between align-items-center">
-                                        <!-- 키워드 부분: 클릭 시 SearchKeyword 페이지로 이동 -->
-                                        <div class="text-wrapper-3" th:text="${iterStat.index + 1} + '. ' + ${keywordItem.keyword}"
+                                        <div class="text-wrapper-3"
+                                             th:with="rank=${(currentPage * 10) + iterStat.index + 1}"
+                                             th:text="${rank} + '. ' + ${keywordItem.keyword}"
                                              style="cursor: pointer;"
-                                             onclick="submitKeyword('${keywordItem.keyword}'); event.stopPropagation();"></div>
-
-                                        <!-- 검색량 부분: 클릭 시 SearchKeyword 페이지로 이동하지 않음 -->
+                                             onclick="submitKeyword(this.getAttribute('data-keyword')); event.stopPropagation();"
+                                             th:attr="data-keyword=${keywordItem.keyword}">
+                                        </div>
                                         <div class="text-wrapper-4 ml-2" th:text="${keywordItem.total}"></div>
                                     </div>
-
-                                    <div class="divider"></div> <!-- 구분선 -->
-
-                                    <!-- 확장된 기사 내용 영역 -->
+                                    <div class="divider"></div>
                                     <div class="article-url" th:if="${keywordItem.articleUrl}" style="display: none;">
                                         기사 URL: <a th:href="${keywordItem.articleUrl}" th:text="${keywordItem.articleTitle}" target="_blank">기사 제목</a>
                                     </div>
                                 </button>
+                            </div>
+                        </div>
+
+                        <div class="pagination-wrapper">
+                            <div class="pagination-dots">
+                                <th:block th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
+                                    <a th:href="@{${#httpServletRequest.requestURI}(page=${pageNum})}"
+                                       th:class="${pageNum == currentPage ? 'dot active' : 'dot'}"
+                                       th:onclick="'updateActiveDot(this); return true;'">
+                                    </a>
+                                </th:block>
                             </div>
                         </div>
                     </div>
@@ -82,7 +93,7 @@
 
                 <div class="element-header-navigation">
                     <div class="element-sidebar" id="sidebar">
-                        <div class="top-divider"></div> <!-- 사이드바 맨 위에 추가된 검은 줄 -->
+                        <div class="top-divider"></div>
                         <div class="list-3">
                             <button class="menu-item" id="home-button">
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/home.svg" />
@@ -96,7 +107,7 @@
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
                                 <div class="text-wrapper-14">음악</div>
                             </button>
-                            <button class="menu-item" id="actor-button"> <!-- id를 추가해줍니다 -->
+                            <button class="menu-item" id="actor-button">
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
                                 <div class="text-wrapper-14">배우</div>
                             </button>
@@ -122,7 +133,31 @@
         </div>
     </div>
 </div>
+
 <div class="overlay" id="overlay"></div>
+
+<script th:inline="javascript">
+    function updateActiveDot(clickedDot) {
+        document.querySelectorAll('.dot').forEach(dot => {
+            dot.classList.remove('active');
+        });
+        clickedDot.classList.add('active');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentPage = [[${currentPage}]];
+        const dots = document.querySelectorAll('.dot');
+        if (dots[currentPage]) {
+            dots[currentPage].classList.add('active');
+        }
+    });
+
+    function submitKeyword(keyword) {
+        document.getElementById('keyword_search').value = keyword;
+        document.getElementById('keywordForm').submit();
+    }
+</script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var menuButton = document.getElementById('menu-button');
@@ -142,73 +177,50 @@
         });
 
         issueMarketTitle.addEventListener('click', function() {
-            window.location.href = 'index'; // 이슈 마켓 타이틀을 클릭하면 메인 화면으로 이동
+            window.location.href = 'index';
         });
 
         homeButton.addEventListener('click', function() {
-            window.location.href = 'index'; // 홈 버튼을 클릭하면 메인 화면으로 이동
+            window.location.href = 'index';
         });
 
         document.getElementById('actor-button').addEventListener('click', function() {
-            window.location.href = 'actor'; // 배우 버튼 클릭 시 actor로 이동
+            window.location.href = 'actor';
         });
 
         document.getElementById('webtoon-button').addEventListener('click', function() {
-            window.location.href = 'webtoon'; // 웹툰 버튼 클릭 시 webtoon으로 이동
+            window.location.href = 'webtoon';
         });
     });
 
     function expandButton(button) {
-        // 확장 여부 확인
         if (button.classList.contains('expanded')) {
             button.style.height = '48px';
-            button.querySelector('.article-url').style.display = 'none'; // 기사 숨김
+            button.querySelector('.article-url').style.display = 'none';
             button.classList.remove('expanded');
         } else {
             button.style.height = '198px';
-            button.querySelector('.article-url').style.display = 'block'; // 기사 보이기
+            button.querySelector('.article-url').style.display = 'block';
             button.classList.add('expanded');
         }
     }
 
-    function submitKeyword(keyword) {
-        // 키워드 값으로 폼 필드 업데이트
-        document.getElementById('keyword_search').value = keyword; // 키워드 필드에 키워드 채움
-        document.getElementById('keywordForm').submit(); // 폼 제출
-    }
-
-    // 클릭 이벤트를 추가하여 detail 페이지로 이동하도록 설정
     document.querySelectorAll('.keyword-button .text-wrapper-3').forEach(wrapper => {
         wrapper.addEventListener('click', function(event) {
-            const button = this.closest('.keyword-button'); // 부모 버튼 요소를 찾기
-            const keyword = this.innerText.split('. ')[1]; // 키워드 가져오기 (형식: "1. 키워드")
-            submitKeyword(keyword); // 키워드 전송
-            event.stopPropagation(); // 부모 클릭 이벤트 방지
-
-
+            const button = this.closest('.keyword-button');
+            const keyword = this.innerText.split('. ')[1];
+            submitKeyword(keyword);
+            event.stopPropagation();
         });
     });
 
-
-
     function saveKeyword(button) {
-        // 버튼의 data-keyword 속성에서 키워드를 추출
         var keyword = button.getAttribute("data-keyword");
-
-        // Ajax를 사용하여 서버로 키워드 전송
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "/api/keywords", true); // 키워드 인코딩
+        xhr.open("POST", "/api/keywords", true);
         xhr.setRequestHeader("Content-Type", "application/json");
         var data = JSON.stringify({keyword:keyword});
-
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-
-            } else {
-
-            }
-        };
-        xhr.send(data);  // 요청 전송
+        xhr.send(data);
     }
 </script>
 </body>
