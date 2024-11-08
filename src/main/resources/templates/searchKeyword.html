@@ -67,50 +67,54 @@
     </div>
 </div>
 
-<!-- 검색 결과를 출력하는 영역 -->
 <div id="results">
-    <div>
-        <h3>Keyword Data</h3>
-        <pre id="keywordData"></pre>
-        <p th:text="${keyword_search}"></p>
-    </div>
-    <div>
-        <h3>Gender Ratio</h3>
-        <div class="chart-container">
-            <canvas id="genderChart" width="500" height="350"></canvas>
+    <!-- 상단 가로 3개 영역 -->
+    <div class="row">
+        <div class="col">
+            <h3>Keyword Data</h3>
+            <pre id="keywordData"></pre>
+            <p th:text="${keyword_search}"></p>
+        </div>
+        <div class="col">
+            <h3>Gender Ratio</h3>
+            <div class="chart-container">
+                <canvas id="genderChart" width="500" height="350"></canvas>
+            </div>
+        </div>
+        <div class="col">
+            <h3>Age Ratio</h3>
+            <div class="chart-container">
+                <canvas id="ageChart" width="500" height="350"></canvas>
+            </div>
         </div>
     </div>
-    <div>
-        <h3>Age Ratio</h3>
-        <div class="chart-container">
-            <canvas id="ageChart" width="500" height="350"></canvas>
-        </div>
-    </div>
-    <div>
+
+    <!-- 중간에 1개 영역 -->
+    <div class="full-width">
         <h3>Ratio Results (Estimated Value by Date)</h3>
         <div class="chart-container">
-            <canvas id="ratioResultsChart" width="500" height="350"></canvas>
+            <canvas id="ratioResultsChart" width="1450" height="350"></canvas>
         </div>
     </div>
-    <div>
-        <h3>Related Keywords</h3>
-        <div id="relatedKeywordsContainer" class="related-keywords"></div>
-    </div>
-    <div>
-        <h3>YouTube Video</h3>
-        <div id="youtubeData">
-            <!-- YouTube 동영상 재생용 iframe 추가 위치 -->
-            <iframe id="youtubeVideoFrame" width="560" height="315" frameborder="0" allowfullscreen></iframe>
-            <p id="youtubeViewCount"></p>
+
+    <!-- 하단 가로 2개 영역 -->
+    <div class="row">
+        <div class="col">
+            <h3>Related Keywords</h3>
+            <div id="relatedKeywordsContainer" class="related-keywords"></div>
+        </div>
+        <div class="col">
+            <h3>YouTube Video</h3>
+            <div id="youtubeData">
+                <iframe id="youtubeVideoFrame" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+                <p id="youtubeViewCount"></p>
+            </div>
         </div>
     </div>
 </div>
 
-
-
 <!-- 뉴스 결과를 출력하는 영역 -->
 <div id="newsResults">
-
     <div id="newsContainer"></div>  <!-- 뉴스 기사를 담는 컨테이너 -->
 </div>
 
