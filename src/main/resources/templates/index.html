@@ -23,13 +23,13 @@
     </div>
     <div class="items">
         <button type="button" class="btn btn-danger" sec:authorize="hasAuthority('ADMIN')" onclick="location.href='/admin'">
-            <div class="text-wrapper-17">관리자 페이지</div>
+            <div class="text-wrapper-17" th:text="#{admin_page}">관리자 페이지</div>
         </button>
         <button type="button" class="btn btn-dark" sec:authorize="isAuthenticated()" onclick="location.href='/logout'">
-            <div class="text-wrapper-17">로그아웃</div>
+            <div class="text-wrapper-17" th:text="#{logout}">로그아웃</div>
         </button>
         <button type="button" class="btn btn-dark" sec:authorize="!isAuthenticated()" onclick="location.href='/login'">
-            <div class="text-wrapper-17">로그인</div>
+            <div class="text-wrapper-17" th:text="#{login}">로그인</div>
         </button>
     </div>
 </div>
@@ -37,10 +37,10 @@
 <div class="element-input-field-with">
     <form id="keywordForm" action="/searchKeyword" method="post" class="d-flex">
         <div class="form-group mr-2" style="flex: 1;">
-            <input type="text" id="keyword_search" name="keyword_search" class="form-control" placeholder="검색할 키워드를 입력하세요" required>
+            <input type="text" id="keyword_search" name="keyword_search" class="form-control" th:placeholder="#{search_placeholder}" required>
         </div>
         <button type="submit" class="btn btn-dark bigbutton">
-            <div class="text-wrapper-12">Submit</div>
+            <div class="text-wrapper-12" th:text="#{submit}">Submit</div>
         </button>
     </form>
 </div>
@@ -52,10 +52,10 @@
                 <div class="element-tables">
                     <!-- 실시간 인기순위(Total) -->
                     <div class="element-table">
-                        <div class="title">실시간 인기순위(Total)</div>
+                        <div class="title" th:text="#{real_time_popularity}">실시간 인기순위(Total)</div>
                         <div class="table-header">
-                            <div class="text-wrapper">키워드</div>
-                            <div class="div">검색량</div>
+                            <div class="text-wrapper" th:text="#{keyword}">키워드</div>
+                            <div class="div" th:text="#{Searchvolume}">검색량</div>
                         </div>
                         <div class="list">
                             <div th:each="keywordItem, iterStat : ${keyword.content}">
@@ -83,10 +83,10 @@
 
                     <!-- 기간별 인기순위(PC) -->
                     <div class="element-table-2">
-                        <div class="title">기간별 인기순위(PC)</div>
+                        <div class="title" th:text="#{period_popularity}">기간별 인기순위(PC)</div>
                         <div class="table-header">
-                            <div class="text-wrapper">키워드</div>
-                            <div class="div">검색량</div>
+                            <div class="text-wrapper" th:text="#{keyword}">키워드</div>
+                            <div class="div" th:text="#{Searchvolume}">검색량</div>
                         </div>
                         <div class="list">
                             <div th:each="keywordItem2, iterStat : ${keyword2.content}">
@@ -119,23 +119,23 @@
                         <div class="list-3">
                             <button class="menu-item" id="home-button">
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/home.svg" />
-                                <div class="text-wrapper-14">Home</div>
+                                <div class="text-wrapper-14" th:text="#{home}">Home</div>
                             </button>
                             <button class="menu-item" id="movie-button">
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/search.svg" />
-                                <div class="text-wrapper-14">영화</div>
+                                <div class="text-wrapper-14" th:text="#{movie}">영화</div>
                             </button>
                             <button class="menu-item" id="music-button">
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
-                                <div class="text-wrapper-14">음악</div>
+                                <div class="text-wrapper-14" th:text="#{music}">음악</div>
                             </button>
                             <button class="menu-item" id="actor-button">
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
-                                <div class="text-wrapper-14">배우</div>
+                                <div class="text-wrapper-14" th:text="#{actor}">배우</div>
                             </button>
                             <button class="menu-item" id="webtoon-button">
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
-                                <div class="text-wrapper-14">웹툰</div>
+                                <div class="text-wrapper-14" th:text="#{webtoon}">웹툰</div>
                             </button>
                         </div>
                     </div>
@@ -146,7 +146,7 @@
 
     <!-- 인기 급상승 동영상 섹션 -->
     <div class="element-table-3">
-        <div class="title">YouTube 인기 급상승 동영상</div>
+        <div class="title" th:text="#{trending_videos}">YouTube 인기 급상승 동영상</div>
         <ul id="trendingVideos" class="list-group">
             <!-- 동영상 목록이 여기에 표시됩니다 -->
         </ul>

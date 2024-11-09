@@ -24,13 +24,13 @@ Webtoon.html
     </div>
     <div class="items">
         <button type="button" class="btn btn-danger" sec:authorize="hasAuthority('ADMIN')" onclick="location.href='/admin'">
-            <div class="text-wrapper-17">관리자 페이지</div>
+            <div class="text-wrapper-17" th:text="#{admin_page}">관리자 페이지</div>
         </button>
         <button type="button" class="btn btn-dark" sec:authorize="isAuthenticated()" onclick="location.href='/logout'">
-            <div class="text-wrapper-17">로그아웃</div>
+            <div class="text-wrapper-17" th:text="#{logout}">로그아웃</div>
         </button>
         <button type="button" class="btn btn-dark" sec:authorize="!isAuthenticated()" onclick="location.href='/login'">
-            <div class="text-wrapper-17">로그인</div>
+            <div class="text-wrapper-17" th:text="#{login}">로그인</div>
         </button>
     </div>
 </div>
@@ -41,7 +41,7 @@ Webtoon.html
             <input type="text" id="keyword_search" name="keyword_search" class="form-control" placeholder="Placeholder" required>
         </div>
         <button type="submit" class="btn btn-dark bigbutton">
-            <div class="text-wrapper-12">Submit</div>
+            <div class="text-wrapper-12" th:text="#{submit}">Submit</div>
         </button>
     </form>
 </div>
@@ -52,10 +52,10 @@ Webtoon.html
             <div class="homepage">
                 <div class="element-tables">
                     <div class="element-table">
-                        <div class="title">실시간 인기순위(Total)</div>
+                        <div class="title" th:text="#{real_time_popularity}">실시간 인기순위(Total)</div>
                         <div class="table-header">
-                            <div class="text-wrapper">키워드</div>
-                            <div class="div">검색량</div>
+                            <div class="text-wrapper" th:text="#{keyword}">키워드</div>
+                            <div class="div" th:text="#{Searchvolume}">검색량</div>
                         </div>
                         <div class="list">
                             <div th:each="keywordItem, iterStat : ${keywords}">
@@ -97,23 +97,23 @@ Webtoon.html
                         <div class="list-3">
                             <button class="menu-item" id="home-button">
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/home.svg" />
-                                <div class="text-wrapper-14">Home</div>
+                                <div class="text-wrapper-14" th:text="#{home}">Home</div>
                             </button>
                             <button class="menu-item">
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/search.svg" />
-                                <div class="text-wrapper-14">영화</div>
+                                <div class="text-wrapper-14" th:text="#{movie}">영화</div>
                             </button>
                             <button class="menu-item">
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
-                                <div class="text-wrapper-14">음악</div>
+                                <div class="text-wrapper-14" th:text="#{music}">음악</div>
                             </button>
                             <button class="menu-item" id="actor-button">
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
-                                <div class="text-wrapper-14">배우</div>
+                                <div class="text-wrapper-14" th:text="#{actor}">배우</div>
                             </button>
                             <button class="menu-item" id="webtoon-button">
                                 <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
-                                <div class="text-wrapper-14">웹툰</div>
+                                <div class="text-wrapper-14" th:text="#{webtoon}">웹툰</div>
                             </button>
                         </div>
                         <div class="list-4" sec:authorize="isAuthenticated()">
