@@ -5,11 +5,15 @@ import com.example.demo.Service.TestService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -176,6 +180,17 @@ public class PageController {
     public String index(@RequestParam("keyword_search") String keyword_search, Model model) {
         model.addAttribute("keyword_search", keyword_search);
         return "searchKeyword";
+    }
+
+    /** 엑셀 다운로드 **/
+    @PostMapping("/exportExcel")
+    public ResponseEntity<byte[]> exportToExcel(@RequestBody Map<String, Object> data) throws IOException {
+        byte[] excelData = testService.generateExcelFile(data);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=exported_data.xlsx")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(excelData);
     }
 
 

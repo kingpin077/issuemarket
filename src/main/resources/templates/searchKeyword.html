@@ -113,6 +113,7 @@
 
     <div id="newsContainer"></div>  <!-- 뉴스 기사를 담는 컨테이너 -->
 </div>
+<button id="excelButton" class="btn btn-primary">엑셀로 내려받기</button>
 
 
 <div id="overlay" class="overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:999;"></div>
@@ -145,6 +146,8 @@
     /*]]>*/
 </script>
 <script>
+    let data = null;
+
     document.addEventListener('DOMContentLoaded', function() {
         // 요소 참조 및 이벤트 리스너 설정
         var menuButton = document.getElementById('menu-button');
@@ -184,7 +187,8 @@
             method: 'POST'
         })
             .then(response => response.json())   // JSON 응답을 파싱
-            .then(data => {
+            .then(fetchedData => {
+                data = fetchedData; // 전역 변수에 데이터 저장
                 console.log(data); // 데이터를 콘솔에 출력하여 확인
 
                 // 키워드 데이터 출력
@@ -388,6 +392,33 @@
 
 
     });
+
+    //엑셀 다운로드 버튼 클릭 이벤트
+    document.getElementById('excelButton').addEventListener('click',function (){
+        if (!data) { // data가 로드되었는지 확인
+            alert("데이터가 아직 로드되지 않았습니다. 잠시 후 다시 시도해주세요");
+            return;
+        }
+
+        //엑셀 파일 다운로드 요청
+        fetch('/exportExcel', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data) // 전체 data 전송
+        })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'data_export.xlsx';
+                a.click();
+                a.remove();
+            })
+            .catch(error => console.error('엑셀 내보내기 중 오류',error));
+    })
 
 
 </script>
