@@ -40,6 +40,32 @@ public class PageController {
     }
 
 
+    @GetMapping("/test_index")
+    public String testIndexPage(@RequestParam(defaultValue = "0") int page, Model model) {
+        // 페이징된 총 검색량 및 PC 검색량 순위 데이터 가져오기
+        Page<TestDTO> totalRankings = testService.findAllByTotalOrderByDescPaged(page);
+        Page<TestDTO> pcRankings = testService.findAllByPcOrderByDescPaged(page);
+
+        // 전체 키워드 데이터 (총 검색량 순위와 PC 검색량 순위) 가져오기
+        List<TestDTO> allTotalRankings = testService.findAllByTotalOrderByDesc();
+        List<TestDTO> allPcRankings = testService.findAllByPcOrderByDesc();
+
+        // 상위 50개의 키워드 데이터 가져오기 (워드클라우드 용)
+        List<TestDTO> topKeywords = testService.findTop50ByTotalOrderByDesc();
+
+        // 모델에 데이터 추가
+        model.addAttribute("keyword", totalRankings);       // 페이징된 총 검색량 데이터
+        model.addAttribute("keyword2", pcRankings);         // 페이징된 PC 검색량 데이터
+        model.addAttribute("allKeywords", allTotalRankings); // 전체 총 검색량 데이터
+        model.addAttribute("allKeywords2", allPcRankings);   // 전체 PC 검색량 데이터
+        model.addAttribute("keywordCloudData", topKeywords); // 워드클라우드 데이터
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalRankings.getTotalPages());
+
+        return "test_index";
+    }
+
+
 
 
     @GetMapping("/indexwd")
