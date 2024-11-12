@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Issue Market</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="/css/globals.css">
     <link rel="stylesheet" href="/css/test_style.css">
@@ -33,7 +34,9 @@
         </button>
     </div>
 </div>
+<div class="horizontal-divider"></div>
 
+<h2 class="input-header"><strong>이슈마켓,</strong><br><br>검색 엔진 마케팅을 위한 가장 쉽고 강력한 데이터 분석 툴</h2>
 <div class="element-input-field-with">
     <form id="keywordForm" action="/searchKeyword" method="post" class="d-flex">
         <div class="form-group mr-2" style="flex: 1;">
@@ -49,72 +52,9 @@
     <div class="group">
         <div class="overlap-group">
             <div class="homepage">
-                <div class="element-tables">
-                    <!-- 실시간 인기순위(Total) -->
-                    <div class="element-table">
-                        <div class="title" th:text="#{real_time_popularity}">실시간 인기순위(Total)</div>
-                        <div class="table-header">
-                            <div class="text-wrapper" th:text="#{keyword}">키워드</div>
-                            <div class="div" th:text="#{Searchvolume}">검색량</div>
-                        </div>
-                        <div class="list">
-                            <div th:each="keywordItem, iterStat : ${keyword.content}">
-                                <button class="btn btn-primary btn-lg frame" type="button"
-                                        th:data-keyword="${keywordItem.keyword}"
-                                        onclick="submitKeyword(this.getAttribute('data-keyword'))">
-                                    <div class="text-wrapper-3"
-                                         th:text="${iterStat.index + 1 + (currentPage * 5)} + '. ' + ${keywordItem.keyword}">
-                                    </div>
-                                    <div class="text-wrapper-4" th:text="${keywordItem.total}"></div>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- Total 페이지네이션 -->
-                        <div class="pagination-wrapper">
-                            <div class="pagination-dots">
-                                <th:block th:each="pageNum : ${#numbers.sequence(0, 6)}">
-                                    <a th:href="@{/index(page=${pageNum})}"
-                                       th:class="${pageNum == currentPage ? 'dot active' : 'dot'}">
-                                    </a>
-                                </th:block>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 기간별 인기순위(PC) -->
-                    <div class="element-table-2">
-                        <div class="title" th:text="#{period_popularity}">기간별 인기순위(PC)</div>
-                        <div class="table-header">
-                            <div class="text-wrapper" th:text="#{keyword}">키워드</div>
-                            <div class="div" th:text="#{Searchvolume}">검색량</div>
-                        </div>
-                        <div class="list">
-                            <div th:each="keywordItem2, iterStat : ${keyword2.content}">
-                                <button class="btn btn-primary btn-lg frame" type="button"
-                                        th:data-keyword="${keywordItem2.keyword}"
-                                        onclick="submitKeyword(this.getAttribute('data-keyword'))">
-                                    <div class="text-wrapper-3"
-                                         th:text="${iterStat.index + 1 + (currentPage * 5)} + '. ' + ${keywordItem2.keyword}">
-                                    </div>
-                                    <div class="text-wrapper-4" th:text="${keywordItem2.pc}"></div>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- PC 페이지네이션 -->
-                        <div class="pagination-wrapper">
-                            <div class="pagination-dots">
-                                <th:block th:each="pageNum : ${#numbers.sequence(0, 6)}">
-                                    <a th:href="@{/index(page=${pageNum})}"
-                                       th:class="${pageNum == currentPage ? 'dot active' : 'dot'}">
-                                    </a>
-                                </th:block>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="element-header-navigation">
                     <div class="element-sidebar" id="sidebar">
+                        <div class="top-divider"></div>
                         <div class="list-3">
                             <button class="menu-item" id="home-button">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg>
@@ -138,20 +78,88 @@
                             </button>
                         </div>
                     </div>
+                    <div class="vertical-divider"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- 인기 급상승 동영상 섹션 -->
+
+</div>
+<div class="scroll-box">
+    <div class="element-tables">
+        <!-- 실시간 인기순위(Total) -->
+        <div class="element-table">
+            <div class="title" th:text="#{real_time_popularity}">실시간 인기순위(Total)</div>
+            <div class="table-header">
+                <div class="text-wrapper" th:text="#{keyword}">키워드</div>
+                <div class="div" th:text="#{Searchvolume}">검색량</div>
+            </div>
+            <div class="list">
+                <div th:each="keywordItem, iterStat : ${keyword.content}">
+                    <button class="btn btn-primary btn-lg frame" type="button"
+                            th:data-keyword="${keywordItem.keyword}"
+                            onclick="submitKeyword(this.getAttribute('data-keyword'))">
+                        <div class="text-wrapper-3"
+                             th:text="${iterStat.index + 1 + (currentPage * 5)} + '. ' + ${keywordItem.keyword}">
+                        </div>
+                        <div class="text-wrapper-4" th:text="${keywordItem.total}"></div>
+                    </button>
+                </div>
+            </div>
+            <!-- Total 페이지네이션 -->
+            <div class="pagination-wrapper">
+                <div class="pagination-dots">
+                    <th:block th:each="pageNum : ${#numbers.sequence(0, 6)}">
+                        <a th:href="@{/index(page=${pageNum})}"
+                           th:class="${pageNum == currentPage ? 'dot active' : 'dot'}">
+                        </a>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+
+        <!-- 기간별 인기순위(PC) -->
+        <div class="element-table-2">
+            <div class="title" th:text="#{period_popularity}">기간별 인기순위(PC)</div>
+            <div class="table-header">
+                <div class="text-wrapper" th:text="#{keyword}">키워드</div>
+                <div class="div" th:text="#{Searchvolume}">검색량</div>
+            </div>
+            <div class="list">
+                <div th:each="keywordItem2, iterStat : ${keyword2.content}">
+                    <button class="btn btn-primary btn-lg frame" type="button"
+                            th:data-keyword="${keywordItem2.keyword}"
+                            onclick="submitKeyword(this.getAttribute('data-keyword'))">
+                        <div class="text-wrapper-3"
+                             th:text="${iterStat.index + 1 + (currentPage * 5)} + '. ' + ${keywordItem2.keyword}">
+                        </div>
+                        <div class="text-wrapper-4" th:text="${keywordItem2.pc}"></div>
+                    </button>
+                </div>
+            </div>
+            <!-- PC 페이지네이션 -->
+            <div class="pagination-wrapper">
+                <div class="pagination-dots">
+                    <th:block th:each="pageNum : ${#numbers.sequence(0, 6)}">
+                        <a th:href="@{/index(page=${pageNum})}"
+                           th:class="${pageNum == currentPage ? 'dot active' : 'dot'}">
+                        </a>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="element-table-3">
         <div class="title" th:text="#{trending_videos}">YouTube 인기 급상승 동영상</div>
         <ul id="trendingVideos" class="list-group">
             <!-- 동영상 목록이 여기에 표시됩니다 -->
         </ul>
     </div>
-</div>
 
+</div>
 <div class="overlay" id="overlay"></div>
 
 <script th:inline="javascript">
