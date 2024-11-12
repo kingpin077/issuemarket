@@ -17,7 +17,7 @@
 <div class="header-wrapper" id="header-wrapper">
     <div class="menu-button-wrapper">
         <button type="button" class="btn btn-light" id="menu-button">
-            <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/list.svg" />
+            <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/list.svg"/>
         </button>
         <button class="issue-market-title btn btn-link d-flex align-items-center" id="issue-market-title">
             <img src="/css/image/logo_black.png" alt="Logo" style="height: 60px; width: 110px; margin-left: 5px">
@@ -27,7 +27,8 @@
 
     <!-- 로그인/로그아웃 버튼 설정 -->
     <div class="items">
-        <button type="button" class="btn btn-danger" sec:authorize="hasAuthority('ADMIN')" onclick="location.href='/admin'">
+        <button type="button" class="btn btn-danger" sec:authorize="hasAuthority('ADMIN')"
+                onclick="location.href='/admin'">
             <div class="text-wrapper-17">관리자 페이지</div>
         </button>
         <button type="button" class="btn btn-dark" sec:authorize="isAuthenticated()" onclick="location.href='/logout'">
@@ -44,23 +45,23 @@
         <div class="top-divider"></div> <!-- 사이드바 맨 위에 추가된 검은 줄 -->
         <div class="list-3">
             <button class="menu-item" id="home-button">
-                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/home.svg" />
+                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/home.svg"/>
                 <div class="text-wrapper-14">Home</div>
             </button>
             <button class="menu-item">
-                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/search.svg" />
+                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/search.svg"/>
                 <div class="text-wrapper-14">영화</div>
             </button>
             <button class="menu-item">
-                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg"/>
                 <div class="text-wrapper-14">음악</div>
             </button>
             <button class="menu-item" id="actor-button">
-                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg"/>
                 <div class="text-wrapper-14">배우</div>
             </button>
             <button class="menu-item" id="webtoon-button">
-                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg"/>
                 <div class="text-wrapper-14">웹툰</div>
             </button>
         </div>
@@ -120,7 +121,8 @@
 <button id="excelButton" class="btn btn-primary">엑셀로 내려받기</button>
 
 
-<div id="overlay" class="overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:999;"></div>
+<div id="overlay" class="overlay"
+     style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); z-index:999;"></div>
 
 <!-- 자바스크립트 코드 -->
 <script th:inline="javascript">
@@ -132,9 +134,9 @@
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "/api/keywords", true); // 키워드 인코딩
         xhr.setRequestHeader("Content-Type", "application/json");
-        var data = JSON.stringify({ keyword: keyword });
+        var data = JSON.stringify({keyword: keyword});
 
-        xhr.onload = function() {
+        xhr.onload = function () {
             if (xhr.status === 200) {
                 console.log("Keyword saved successfully:", xhr.responseText);
             } else {
@@ -143,8 +145,9 @@
         };
         xhr.send(data);  // 요청 전송
     }
+
     // 페이지가 로드될 때 saveKeyword 호출
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         saveKeyword(keyword_search); // 기본 키워드를 저장
     });
     /*]]>*/
@@ -152,7 +155,7 @@
 <script>
     let data = null;
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // 요소 참조 및 이벤트 리스너 설정
         var menuButton = document.getElementById('menu-button');
         var sidebar = document.getElementById('sidebar');
@@ -160,29 +163,29 @@
         var issueMarketTitle = document.getElementById('issue-market-title');
         var homeButton = document.getElementById('home-button');
 
-        menuButton.addEventListener('click', function() {
+        menuButton.addEventListener('click', function () {
             sidebar.classList.toggle('sidebar-visible');
             overlay.classList.toggle('overlay-visible');
         });
 
-        overlay.addEventListener('click', function() {
+        overlay.addEventListener('click', function () {
             sidebar.classList.remove('sidebar-visible');
             overlay.classList.remove('overlay-visible');
         });
 
-        document.getElementById('actor-button').addEventListener('click', function() {
+        document.getElementById('actor-button').addEventListener('click', function () {
             window.location.href = '/actor'; // 배우 버튼 클릭 시 actor로 이동
         });
 
-        document.getElementById('webtoon-button').addEventListener('click', function() {
+        document.getElementById('webtoon-button').addEventListener('click', function () {
             window.location.href = '/webtoon'; // 웹툰 버튼 클릭 시 webtoon으로 이동
         });
 
-        issueMarketTitle.addEventListener('click', function() {
+        issueMarketTitle.addEventListener('click', function () {
             window.location.href = 'index'; // 홈 버튼을 클릭하면 메인 화면으로 이동
         });
 
-        homeButton.addEventListener('click', function() {
+        homeButton.addEventListener('click', function () {
             window.location.href = 'index'; // 홈 버튼을 클릭하면 메인 화면으로 이동
         });
 
@@ -398,31 +401,41 @@
     });
 
     //엑셀 다운로드 버튼 클릭 이벤트
-    document.getElementById('excelButton').addEventListener('click',function (){
-        if (!data) { // data가 로드되었는지 확인
+    document.getElementById('excelButton').addEventListener('click', function() {
+        if (!data) {
             alert("데이터가 아직 로드되지 않았습니다. 잠시 후 다시 시도해주세요");
             return;
         }
 
-        //엑셀 파일 다운로드 요청
         fetch('/exportExcel', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(data) // 전체 data 전송
+            body: JSON.stringify(data)
         })
-            .then(response => response.blob())
-            .then(blob => {
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'data_export.xlsx';
-                a.click();
-                a.remove();
+            .then(response => {
+                if (response.status === 401) { // 비회원인 경우
+                    alert("회원 전용 기능입니다. 로그인 해주세요.");
+                    window.location.href = "/login"; // 로그인 페이지로 리다이렉트
+                    return;
+                } else if (!response.ok) {
+                    throw new Error("엑셀 내보내기 중 오류가 발생했습니다.");
+                }
+                return response.blob();
             })
-            .catch(error => console.error('엑셀 내보내기 중 오류',error));
-    })
+            .then(blob => {
+                if (blob) {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'data_export.xlsx';
+                    a.click();
+                    a.remove();
+                }
+            })
+            .catch(error => console.error('엑셀 내보내기 중 오류', error));
+    });
 
 
 </script>

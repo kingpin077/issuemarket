@@ -19,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
@@ -37,6 +39,7 @@ public class SecurityConfig {
                 .authorizeRequests((authorizeHttpRequests) -> authorizeHttpRequests
                         .antMatchers("/", "/login", "/signup", "/css/**").permitAll()
                         .antMatchers("/admin/**").hasAuthority("ADMIN")
+                        .antMatchers("/exportExcel").authenticated()
                         .anyRequest().permitAll())
                 .headers((headers)-> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
@@ -52,6 +55,8 @@ public class SecurityConfig {
                 )
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .accessDeniedHandler(accessDeniedHandler)
+                        .authenticationEntryPoint((request, response, authException) ->
+                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")

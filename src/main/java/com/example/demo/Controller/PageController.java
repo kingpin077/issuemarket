@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -210,7 +209,7 @@ public class PageController {
 
     /** 엑셀 다운로드 **/
     @PostMapping("/exportExcel")
-    public ResponseEntity<byte[]> exportToExcel(@RequestBody Map<String, Object> data) throws IOException {
+    public ResponseEntity<byte[]> exportExcel(@RequestBody Map<String, Object> data) throws IOException {
         byte[] excelData = testService.generateExcelFile(data);
 
         return ResponseEntity.ok()
