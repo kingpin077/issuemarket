@@ -202,7 +202,13 @@ public class PageController {
 //    }
 
     @PostMapping("/searchKeyword")
-    public String index(@RequestParam("keyword_search") String keyword_search, Model model) {
+    public String searchKeyword(@RequestParam("keyword_search") String keyword_search, Model model) {
+        model.addAttribute("keyword_search", keyword_search);
+        return "searchKeyword";
+    }
+
+    @GetMapping("/searchKeyword")
+    public String searchKeywordGet(@RequestParam("keyword_search") String keyword_search, Model model) {
         model.addAttribute("keyword_search", keyword_search);
         return "searchKeyword";
     }

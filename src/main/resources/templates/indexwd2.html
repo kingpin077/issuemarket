@@ -134,6 +134,14 @@
         chart.title("키워드 워드 클라우드");
         chart.angles([0]);
         chart.container("wordCloudContainer");
+
+        // 단어 클릭 이벤트 추가
+        chart.listen("pointClick", function(e) {
+            const keyword = e.point.get("x");
+            // 키워드를 포함한 URL로 이동
+            window.location.href = `/searchKeyword?keyword_search=${keyword}`;
+        });
+
         chart.draw();
     });
 </script>

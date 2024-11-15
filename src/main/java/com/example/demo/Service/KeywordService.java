@@ -88,6 +88,7 @@ public class KeywordService {
     public String getKeywordData(String keyword) {
         // API로부터 받은 JSON 응답을 가져옴
         String jsonResponse = requestKeyword(keyword);
+        System.out.println("Keyword List: " + jsonResponse);
         if (jsonResponse == null) {
             return "{}";
         }
@@ -99,6 +100,7 @@ public class KeywordService {
             JsonNode keywordList = rootNode.get("keywordList"); // keywordList 노드 추출
             ArrayNode relatedKeywordsArray = objectMapper.createArrayNode();  // 여러 키워드를 담기 위한 배열
             ObjectNode result = objectMapper.createObjectNode();
+
 
             // 검색량 초기화
             int monthlyPcQcCnt = 0;
