@@ -6,7 +6,9 @@ import com.example.demo.Entity.TestEntity;
 import com.example.demo.Repository.TestRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xddf.usermodel.chart.*;
+import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -133,10 +135,19 @@ public class TestService {
 
             int rowNum = 0;
 
+            // Font와 CellStyle 생성
+            Font boldFont = workbook.createFont();
+            boldFont.setBold(true); // Bold 설정
+            boldFont.setFontName("Arial"); // 원하는 글꼴 이름 설정 (선택 사항)
+            CellStyle boldCellStyle = workbook.createCellStyle();
+            boldCellStyle.setFont(boldFont);
+
             // 퍼센트 형식의 CellStyle 설정
             CellStyle percentStyle = workbook.createCellStyle();
             DataFormat format = workbook.createDataFormat();
             percentStyle.setDataFormat(format.getFormat("0%"));  // 숫자를 백분율 형식으로 설정
+
+            String keyword = (String) data.get("keyword_search");
 
             // 1. naverData 작성
             String naverDataJson = (String) data.get("naverData");
@@ -145,7 +156,12 @@ public class TestService {
 
                 // naverData 섹션 제목
                 Row naverTitleRow = sheet.createRow(rowNum++);
-                naverTitleRow.createCell(0).setCellValue("Naver Data");
+                Cell keywordCell = naverTitleRow.createCell(0);
+                naverTitleRow.createCell(0).setCellValue("키워드");
+                keywordCell.setCellStyle(boldCellStyle);
+                naverTitleRow.createCell(1).setCellValue(keyword);
+
+                sheet.createRow(rowNum++); // 빈 행 추가
 
                 // naverData 값 작성
                 for (Map.Entry<String, Object> entry : naverData.entrySet()) {
@@ -201,6 +217,7 @@ public class TestService {
                 ageTitleRow.createCell(0).setCellValue("연령별 통계");
 
                 Map<String, Integer> ageData = (Map<String, Integer>) kakaoData.get("age");
+                int startRow = rowNum;
                 for (Map.Entry<String, Integer> entry : ageData.entrySet()) {
                     Row ageRow = sheet.createRow(rowNum++);
                     ageRow.createCell(0).setCellValue(entry.getKey() + "대");
@@ -209,7 +226,31 @@ public class TestService {
                     ageCell.setCellValue(entry.getValue() / 100.0);  // 백분율로 계산
                     ageCell.setCellStyle(percentStyle);
                 }
-                rowNum++; // 빈 행 추가
+                int endRow = rowNum - 1;
+                rowNum = rowNum + 3; // 빈 행 추가
+                // 원그래프 추가
+                XSSFDrawing drawing = ((XSSFSheet) sheet).createDrawingPatriarch();
+                XSSFClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, 3, startRow, 8, endRow + 5);
+
+                XSSFChart chart = drawing.createChart(anchor);
+                chart.setTitleText("연령별 비율"); // 차트 제목
+                chart.setTitleOverlay(false);
+
+                XDDFChartLegend legend = chart.getOrAddLegend();
+                legend.setPosition(LegendPosition.TOP_RIGHT);
+
+                XSSFSheet xssfSheet = (XSSFSheet) sheet; // Sheet 객체를 XSSFSheet로 캐스팅
+
+                XDDFCategoryDataSource categories = XDDFDataSourcesFactory.fromStringCellRange(xssfSheet,
+                        new CellRangeAddress(startRow, endRow, 0, 0)); // 연령 범위
+                XDDFNumericalDataSource<Double> values = XDDFDataSourcesFactory.fromNumericCellRange(xssfSheet,
+                        new CellRangeAddress(startRow, endRow, 1, 1)); // 값 범위
+
+                XDDFPieChartData pieData = (XDDFPieChartData) chart.createData(ChartTypes.PIE, null, null);
+                XDDFPieChartData.Series series = (XDDFPieChartData.Series) pieData.addSeries(categories, values);
+
+                pieData.setVaryColors(true); // 각 조각의 색상 다르게 설정
+                chart.plot(pieData);
             }
 
             // 3. monthlyPcQcCnt 및 monthlyMobileQcCnt 추가
@@ -243,6 +284,7 @@ public class TestService {
                 ratioHeaderRow.createCell(0).setCellValue("날짜");
                 ratioHeaderRow.createCell(1).setCellValue("값");
 
+                int startRow = rowNum;
                 for (Map<String, Object> ratio : ratioResults) {
                     Row ratioRow = sheet.createRow(rowNum++);
 
@@ -256,11 +298,42 @@ public class TestService {
                         int estimatedValue = ((Number) estimatedValueObj).intValue();
                         ratioRow.createCell(1).setCellValue(estimatedValue);
                     } else {
-                        ratioRow.createCell(1).setCellValue(0); // 값이 없으면 기본값 0으로 설정
+                        ratioRow.createCell(1).setCellValue(0.0); // 값이 없으면 기본값 0으로 설정
                     }
                 }
+                int endRow = rowNum - 1;
 
-                sheet.createRow(rowNum++); // 빈 행 추가
+                // 꺾은선 그래프 추가
+                XSSFDrawing drawing = ((XSSFSheet) sheet).createDrawingPatriarch();
+                XSSFClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, 3, startRow, 10, startRow + 20); // 그래프 위치 조정
+
+                XSSFChart chart = drawing.createChart(anchor);
+                chart.setTitleText("기간별 검색량 추이"); // 그래프 제목
+                chart.setTitleOverlay(false);
+
+                XDDFCategoryAxis categoryAxis = chart.createCategoryAxis(AxisPosition.BOTTOM); // 하단 축
+                categoryAxis.setTitle("기간");
+
+                XDDFValueAxis valueAxis = chart.createValueAxis(AxisPosition.LEFT); // 왼쪽 값 축
+                valueAxis.setTitle("검색량");
+                valueAxis.setCrosses(AxisCrosses.AUTO_ZERO);
+
+                XDDFChartLegend legend = chart.getOrAddLegend();
+                legend.setPosition(LegendPosition.BOTTOM);
+
+                XDDFCategoryDataSource categories = XDDFDataSourcesFactory.fromStringCellRange((XSSFSheet) sheet,
+                        new CellRangeAddress(startRow, endRow, 0, 0)); // 날짜 범위
+                XDDFNumericalDataSource<Double> values = XDDFDataSourcesFactory.fromNumericCellRange((XSSFSheet) sheet,
+                        new CellRangeAddress(startRow, endRow, 1, 1)); // 값 범위
+
+                XDDFLineChartData lineData = (XDDFLineChartData) chart.createData(ChartTypes.LINE, categoryAxis, valueAxis);
+                XDDFLineChartData.Series series = (XDDFLineChartData.Series) lineData.addSeries(categories, values);
+                series.setTitle("검색량", null); // 범례 제목 설정
+                series.setSmooth(true); // 꺾은선 부드럽게
+                series.setMarkerStyle(MarkerStyle.CIRCLE); // 데이터 포인트 마커 스타일
+
+                chart.plot(lineData);
+
             }
 
             // 각 열의 너비를 자동으로 조정
@@ -270,6 +343,9 @@ public class TestService {
             // 4. 엑셀 파일로 출력
             workbook.write(out);
             return out.toByteArray();
+        }catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("엑셀 파일 생성 중 오류 발생", e);
         }
     }
 
