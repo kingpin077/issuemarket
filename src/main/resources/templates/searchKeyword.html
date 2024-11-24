@@ -74,7 +74,7 @@
         <div class="col">
             <h3>Keyword Data</h3>
             <pre id="keywordData"></pre>
-            <p th:text="${keyword_search}"></p>
+            <p id="keywordSearch" th:text="${keyword_search}"></p>
         </div>
         <div class="col">
             <h3>Gender Ratio</h3>
@@ -407,12 +407,27 @@
             return;
         }
 
+        // HTML에서 keyword_search 값을 가져오기
+        const keywordSearchElement = document.querySelector('#keywordSearch');
+
+        if (keywordSearchElement) {
+            console.log('키워드 요소를 찾았습니다:', keywordSearchElement.innerText);
+        } else {
+            console.error('키워드 요소를 찾을 수 없습니다.');
+        }
+
+        // data 객체에 keyword_search 추가
+        const requestData = {
+            ...data, // 기존 데이터
+            keyword_search: keywordSearchElement.innerText // keyword_search 추가
+        };
+
         fetch('/exportExcel', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(requestData)
         })
             .then(response => {
                 if (response.status === 401) { // 비회원인 경우
