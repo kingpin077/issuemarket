@@ -95,27 +95,47 @@ Webtoon.html
                     <div class="element-sidebar" id="sidebar">
                         <div class="top-divider"></div>
                         <div class="list-3">
-                            <button class="menu-item" id="home-button">
-                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/home.svg" />
-                                <div class="text-wrapper-14" th:text="#{home}">Home</div>
-                            </button>
-                            <button class="menu-item">
-                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/search.svg" />
-                                <div class="text-wrapper-14" th:text="#{movie}">영화</div>
-                            </button>
-                            <button class="menu-item">
-                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
-                                <div class="text-wrapper-14" th:text="#{music}">음악</div>
-                            </button>
-                            <button class="menu-item" id="actor-button">
-                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
-                                <div class="text-wrapper-14" th:text="#{actor}">배우</div>
-                            </button>
-                            <button class="menu-item" id="webtoon-button">
-                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
-                                <div class="text-wrapper-14" th:text="#{webtoon}">웹툰</div>
-                            </button>
+                            <a th:href="@{/home(lang=${#request.getParameter('lang')})}">
+                                <button class="menu-item">
+                                    <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/home.svg" />
+                                    <div class="text-wrapper-14" th:text="#{home}">Home</div>
+                                </button>
+                            </a>
+                            <a th:href="@{/movie(lang=${#request.getParameter('lang')})}">
+                                <button class="menu-item">
+                                    <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/search.svg" />
+                                    <div class="text-wrapper-14" th:text="#{movie}">영화</div>
+                                </button>
+                            </a>
+                            <a th:href="@{/music(lang=${#request.getParameter('lang')})}">
+                                <button class="menu-item">
+                                    <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                                    <div class="text-wrapper-14" th:text="#{music}">음악</div>
+                                </button>
+                            </a>
+                            <a th:href="@{/actor(lang=${#request.getParameter('lang')})}">
+                                <button class="menu-item">
+                                    <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                                    <div class="text-wrapper-14" th:text="#{actor}">배우</div>
+                                </button>
+                            </a>
+                            <a th:href="@{/webtoon(lang=${#request.getParameter('lang')})}">
+                                <button class="menu-item">
+                                    <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
+                                    <div class="text-wrapper-14" th:text="#{webtoon}">웹툰</div>
+                                </button>
+                            </a>
                         </div>
+
+                        <div class="language-selector mt-3">
+                            <label for="languageSelect" th:text="#{select.language}">언어 선택:</label>
+                            <select id="languageSelect" class="form-control" onchange="changeLanguage(this.value)">
+                                <option value="ko" th:attr="selected=${#locale == ''}"></option>
+                                <option value="ko" th:attr="selected=${#locale == 'ko'}" th:text="#{language.korean}">한국어</option>
+                                <option value="en" th:attr="selected=${#locale == 'en'}" th:text="#{language.english}">English</option>
+                            </select>
+                        </div>
+
                         <div class="list-4" sec:authorize="isAuthenticated()">
                             <div class="library-header">Library</div>
                             <button class="menu-item">
@@ -221,6 +241,17 @@ Webtoon.html
         xhr.setRequestHeader("Content-Type", "application/json");
         var data = JSON.stringify({keyword:keyword});
         xhr.send(data);
+    }
+
+
+    function changeLanguage(lang) {
+        console.log("Current URL before change:", window.location.href); // 디버깅용
+        const currentUrl = new URL(window.location.href, window.location.origin);
+        console.log("Parsed URL object:", currentUrl.toString()); // 디버깅용
+        currentUrl.searchParams.set('lang', lang);
+        console.log("Updated URL with lang parameter:", currentUrl.toString()); // 디버깅용
+        window.location.href = currentUrl.toString();
+        console.log(document.getElementById('languageSelect').value);
     }
 </script>
 </body>
