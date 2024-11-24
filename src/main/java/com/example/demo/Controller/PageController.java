@@ -32,23 +32,6 @@ public class PageController {
         Page<TestDTO> totalRankings = testService.findAllByTotalOrderByDescPaged(page);
         Page<TestDTO> pcRankings = testService.findAllByPcOrderByDescPaged(page);
 
-        // 모델에 데이터 추가
-        model.addAttribute("keyword", totalRankings);
-        model.addAttribute("keyword2", pcRankings);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", totalRankings.getTotalPages());
-
-        return "index";
-
-    }
-
-
-    @GetMapping("/test_index")
-    public String testIndexPage(@RequestParam(defaultValue = "0") int page, Model model) {
-        // 페이징된 총 검색량 및 PC 검색량 순위 데이터 가져오기
-        Page<TestDTO> totalRankings = testService.findAllByTotalOrderByDescPaged(page);
-        Page<TestDTO> pcRankings = testService.findAllByPcOrderByDescPaged(page);
-
         // 전체 키워드 데이터 (총 검색량 순위와 PC 검색량 순위) 가져오기
         List<TestDTO> allTotalRankings = testService.findAllByTotalOrderByDesc();
         List<TestDTO> allPcRankings = testService.findAllByPcOrderByDesc();
@@ -65,11 +48,9 @@ public class PageController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalRankings.getTotalPages());
 
-        return "test_index";
+        return "index";
+
     }
-
-
-
 
     @GetMapping("/indexwd")
     public String mainPagewd(Model model) {

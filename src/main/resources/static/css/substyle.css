@@ -1,14 +1,12 @@
-
 body, html {
-    height: 100%;
     margin: 0;
     padding: 0;
-    font-family: "Inter", Helvetica, Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #F2F4F8;
+    font-family: "Noto Sans KR", sans-serif;
+    overflow-x: hidden;
+    width: 100%;
+    height: 100%;
+    background-color: #F7F7F8;
+    overflow-y: auto;
 }
 
 #inputField {
@@ -38,7 +36,7 @@ body, html {
     justify-content: center;
     align-items: center; /* 추가: 수직 가운데 정렬 */
     position: absolute;
-    top: 0;
+    top: -11%;
     left: 50%; /* 추가: 가운데 정렬을 위해 왼쪽 정렬 수정 */
     transform: translateX(-50%); /* 추가: 가운데 정렬을 위한 변형 */
 }
@@ -67,7 +65,7 @@ body, html {
 }
 
 .title {
-    color: #000;
+    color: #0A0A0B;
     font-size: 18px;
 }
 
@@ -93,21 +91,21 @@ body, html {
 }
 
 .text-wrapper-14 {
-    font-family: "Inter", Helvetica, Arial, sans-serif;
+    color: #FFFFFF;
 }
 
 .header-wrapper {
     position: fixed;
-    width: 100%;
+    width: calc(100% - 10px);
     height: 60px;
-    background: #fff;
+    background: #0A0A0B; /* 배경색을 검은색으로 설정 */
     box-shadow: 0px 4px 12px #0000001a;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
-    top: 0;
     z-index: 1000;
+    margin-right: 10px;
 }
 
 .menu-button-wrapper {
@@ -128,12 +126,12 @@ body, html {
 }
 
 .issue-market-title {
+    color: #FFFFFF;
     font-size: 24px;
     font-weight: bold;
     text-decoration: none;
     border: none;
     background: none;
-    color: inherit;
     padding: 0;
     cursor: pointer;
 }
@@ -142,7 +140,7 @@ body, html {
 .issue-market-title:focus,
 .issue-market-title:active {
     text-decoration: none;
-    color: inherit;
+    color: #EFEFEF;
 }
 
 .items {
@@ -170,7 +168,7 @@ body, html {
     position: fixed;
     width: 200px;
     height: calc(100% - 60px);
-    background: #fff;
+    background: #0A0A0B;
     left: -200px;
     top: 60px;
     transition: all 0.3s ease;
@@ -179,6 +177,7 @@ body, html {
 
 .sidebar-visible {
     left: 0;
+    display: block;
 }
 
 .overlay {
@@ -209,10 +208,10 @@ body, html {
 }
 
 .menu-item:hover {
-    background-color: #e0e0e0;
+    background-color: #4f4f4f;
 }
 
-.menu-item img, .menu-item-2 img, .menu-item-3 img {
+.menu-item img {
     margin-right: 10px;
 }
 
@@ -236,12 +235,12 @@ body, html {
 
 .top-divider {
     height: 1px;
-    background: #e0e0e0;
+    background: #262626;
 }
 
 .element-input-field-with {
-    position: absolute;
-    top: 100px;
+    position: relative;
+    top: 10%;
     display: flex;
     justify-content: center;
     width: 100%;
@@ -384,4 +383,23 @@ body, html {
 }
 .dot.active {
     background-color: #007bff !important;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    position: fixed;
+    right: 0;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
