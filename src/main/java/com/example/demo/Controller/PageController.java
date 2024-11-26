@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -153,6 +154,11 @@ public class PageController {
 
                     actor.setArticleUrl(link);
                     actor.setArticleTitle(title);
+                }
+
+                // ratioResults 초기화 확인
+                if (actor.getRatioResults() == null) {
+                    actor.setRatioResults(new ArrayList<>());
                 }
             } catch (Exception e) {
                 e.printStackTrace();

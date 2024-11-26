@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/globals.css">
     <link rel="stylesheet" href="/css/substyle.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -60,7 +61,8 @@
                         </div>
                         <div class="list">
                             <div th:each="keywordItem, iterStat : ${keywords}">
-                                <button class="keyword-button frame" onclick="expandButton(this)">
+                                <button class="keyword-button frame" onclick="expandButton(this)"
+                                        th:attr="data-ratio-results=${#json.toJson(keywordItem.ratioResults)}">
                                     <div class="keyword-wrapper d-flex justify-content-between align-items-center">
                                         <!-- 순위 번호 계산 수정 -->
                                         <div class="text-wrapper-3"
@@ -71,6 +73,9 @@
                                              th:attr="data-keyword=${keywordItem.keyword}">
                                         </div>
                                         <div class="text-wrapper-4 ml-2" th:text="${keywordItem.total}"></div>
+                                        <div class="chart-container" style="display: none;">
+                                            <canvas id="ratioChart-[[${keywordItem.keyword}]]" width="400" height="200"></canvas>
+                                        </div>
                                     </div>
                                     <div class="divider"></div>
                                     <div class="article-url" th:if="${keywordItem.articleUrl}" style="display: none;">
@@ -189,15 +194,55 @@
     });
 
     function expandButton(button) {
-        // 확장 여부 확인
+        // 기존 확장 여부 확인
         if (button.classList.contains('expanded')) {
             button.style.height = '48px';
             button.querySelector('.article-url').style.display = 'none'; // 기사 숨김
+            button.querySelector('.chart-container').style.display = 'none'; // 차트 숨김
             button.classList.remove('expanded');
         } else {
-            button.style.height = '198px';
+            button.style.height = '400px';
             button.querySelector('.article-url').style.display = 'block'; // 기사 보이기
+            button.querySelector('.chart-container').style.display = 'block'; // 차트 보이기
             button.classList.add('expanded');
+
+            // 차트 데이터 가져오기
+            const chartCanvas = button.querySelector('canvas');
+            const ratioResults = JSON.parse(button.getAttribute('data-ratio-results')); // JSON 데이터 파싱
+            const labels = ratioResults.map(item => item.period); // X축 라벨 (기간)
+            const data = ratioResults.map(item => item.estimatedValue); // Y축 데이터 (추정값)
+
+            // 기존 차트가 있으면 제거
+            if (Chart.getChart(chartCanvas)) {
+                Chart.getChart(chartCanvas).destroy();
+            }
+
+            // 새로운 차트 생성
+            new Chart(chartCanvas, {
+                type: 'line', // 차트 유형 (선형 그래프)
+                data: {
+                    labels: labels, // X축 데이터
+                    datasets: [{
+                        label: 'Estimated Value', // 데이터 라벨
+                        data: data, // Y축 데이터
+                        borderColor: 'rgba(75, 192, 192, 1)', // 선 색상
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)', // 배경 색상
+                        borderWidth: 2, // 선 두께
+                    }]
+                },
+                options: {
+                    responsive: true, // 반응형
+                    plugins: {
+                        legend: {
+                            position: 'top', // 범례 위치
+                        },
+                        title: {
+                            display: true,
+                            text: 'Keyword Ratio Results' // 차트 제목
+                        }
+                    }
+                }
+            });
         }
     }
 
