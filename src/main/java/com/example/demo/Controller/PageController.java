@@ -26,7 +26,7 @@ public class PageController {
         this.newsApiController = newsApiController;
     }
 
-    @GetMapping("/index")
+    @GetMapping(value = {"/index", "/"})
     public String mainPage(@RequestParam(defaultValue = "0") int page, Model model) {
         // 페이징된 데이터 가져오기
         Page<TestDTO> totalRankings = testService.findAllByTotalOrderByDescPaged(page);
@@ -49,7 +49,6 @@ public class PageController {
         model.addAttribute("totalPages", totalRankings.getTotalPages());
 
         return "index";
-
     }
 
     @GetMapping("/indexwd")
