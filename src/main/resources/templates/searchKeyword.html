@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  <!-- 반응형 웹을 위한 뷰포트 설정 -->
     <title>Issue Market</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Jua&family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/globals.css">
@@ -159,6 +161,7 @@
     });
     /*]]>*/
 </script>
+
 <script>
     let data = null;
 
@@ -467,6 +470,33 @@
             .catch(error => console.error('엑셀 내보내기 중 오류', error));
     });
 
+    function changeLanguage(lang) {
+        // 현재 URL 업데이트
+        const currentUrl = new URL(window.location.href, window.location.origin);
+        currentUrl.searchParams.set('lang', lang);
+
+        // 선택된 언어를 로컬 스토리지에 저장
+        localStorage.setItem('selectedLanguage', lang);
+
+        // URL 이동
+        window.location.href = currentUrl.toString();
+    }
+
+    // 페이지 로드 시 로컬 스토리지에서 언어를 가져와 설정
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedLanguage = localStorage.getItem('selectedLanguage');
+        const languageSelect = document.getElementById('languageSelect');
+
+        if (savedLanguage) {
+            // 선택된 언어를 셀렉트 박스에 반영
+            languageSelect.value = savedLanguage;
+
+            // URL의 lang 파라미터 동기화 (선택적)
+            const currentUrl = new URL(window.location.href, window.location.origin);
+            currentUrl.searchParams.set('lang', savedLanguage);
+            window.history.replaceState({}, '', currentUrl);
+        }
+    });
 
 </script>
 </body>
