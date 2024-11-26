@@ -27,26 +27,22 @@ public class PageController {
     }
 
     @GetMapping(value = {"/index", "/"})
-    public String mainPage(@RequestParam(defaultValue = "0") int page, Model model) {
-        // 페이징된 데이터 가져오기
-        Page<TestDTO> totalRankings = testService.findAllByTotalOrderByDescPaged(page);
-        Page<TestDTO> pcRankings = testService.findAllByPcOrderByDescPaged(page);
+    public String mainPage(
+            @RequestParam(defaultValue = "0") int totalPage,  // 이름 변경
+            @RequestParam(defaultValue = "0") int pcPage,     // PC용 페이지 파라미터 추가
+            Model model) {
 
-        // 전체 키워드 데이터 (총 검색량 순위와 PC 검색량 순위) 가져오기
-        List<TestDTO> allTotalRankings = testService.findAllByTotalOrderByDesc();
-        List<TestDTO> allPcRankings = testService.findAllByPcOrderByDesc();
+        // 각각의 페이지네이션을 위한 데이터 조회
+        Page<TestDTO> totalRankings = testService.findAllByTotalOrderByDescPaged(totalPage);
+        Page<TestDTO> pcRankings = testService.findAllByPcOrderByDescPaged(pcPage);
 
-        // 상위 50개의 키워드 데이터 가져오기 (워드클라우드 용)
-        List<TestDTO> topKeywords = testService.findTop50ByTotalOrderByDesc();
-
-        // 모델에 데이터 추가
-        model.addAttribute("keyword", totalRankings);       // 페이징된 총 검색량 데이터
-        model.addAttribute("keyword2", pcRankings);         // 페이징된 PC 검색량 데이터
-        model.addAttribute("allKeywords", allTotalRankings); // 전체 총 검색량 데이터
-        model.addAttribute("allKeywords2", allPcRankings);   // 전체 PC 검색량 데이터
-        model.addAttribute("keywordCloudData", topKeywords); // 워드클라우드 데이터
-        model.addAttribute("currentPage", page);
+        // 모델에 데이터 추가 - 페이지 번호를 구분해서 전달
+        model.addAttribute("keyword", totalRankings);
+        model.addAttribute("keyword2", pcRankings);
+        model.addAttribute("currentTotalPage", totalPage);    // Total 페이지 번호
+        model.addAttribute("currentPcPage", pcPage);         // PC 페이지 번호
         model.addAttribute("totalPages", totalRankings.getTotalPages());
+        model.addAttribute("pcTotalPages", pcRankings.getTotalPages());
 
         return "index";
     }
