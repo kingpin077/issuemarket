@@ -1,6 +1,6 @@
 body {
-    font-family: Arial, sans-serif;
     overflow-y: auto;
+    font-family: "Noto Sans KR", sans-serif;
 }
 
 
@@ -12,7 +12,7 @@ body {
     text-align: center;
     align-items: center;
     position: relative;
-    margin-top: 90vh;
+    margin-top: 120vh;
 }
 
 .row {
@@ -33,6 +33,7 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
+    background-color: #FFFFFF;
 }
 
 .full-width {
@@ -46,6 +47,7 @@ body {
     align-items: center;
     text-align: center;
     box-sizing: border-box;
+    background-color: #FFFFFF;
 }
 
 .chart-container {
@@ -126,7 +128,7 @@ pre {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    text-align: center;
+    text-align: left;
     flex: 1;
     min-width: 300px;
     max-width: 1450px;
@@ -136,8 +138,5 @@ pre {
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-#newsResults > div {
-    text-align: left;
+    background-color: #FFFFFF;
 }

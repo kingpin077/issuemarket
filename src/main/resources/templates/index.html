@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Issue Market</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Jua&family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="/css/globals.css">
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -14,11 +18,10 @@
 <div class="header-wrapper" id="header-wrapper">
     <div class="menu-button-wrapper">
         <button type="button" class="btn btn-light" id="menu-button">
-            <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/list.svg" />
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
         </button>
         <button class="issue-market-title btn btn-link d-flex align-items-center" id="issue-market-title">
-            <img src="/css/image/logo_black.png" alt="Logo" style="height: 60px; width: 110px; margin-left: 5px">
-            <span>&nbsp;Issue Market</span>
+            <span>&nbsp;&nbsp;Issue Market</span>
         </button>
     </div>
     <div class="items">
@@ -31,125 +34,131 @@
         <button type="button" class="btn btn-dark" sec:authorize="!isAuthenticated()" onclick="location.href='/login'">
             <div class="text-wrapper-17" th:text="#{login}">로그인</div>
         </button>
+        <div class="language-selector-wrapper">
+            <select id="languageSelect" class="form-control" onchange="changeLanguage(this.value)">
+                <option value="ko" th:attr="selected=${#locale == 'ko'}">한국어</option>
+                <option value="en" th:attr="selected=${#locale == 'en'}">English</option>
+            </select>
+        </div>
     </div>
 </div>
-
-<div class="element-input-field-with">
-    <form id="keywordForm" action="/searchKeyword" method="post" class="d-flex">
-        <div class="form-group mr-2" style="flex: 1;">
-            <input type="text" id="keyword_search" name="keyword_search" class="form-control" th:placeholder="#{search_placeholder}" required>
-        </div>
-        <button type="submit" class="btn btn-dark bigbutton">
-            <div class="text-wrapper-12" th:text="#{submit}">Submit</div>
-        </button>
-    </form>
-</div>
+<div class="horizontal-divider"></div>
 
 <div class="box">
-    <div class="group">
-        <div class="overlap-group">
-            <div class="homepage">
-                <div class="element-tables">
-                    <!-- 실시간 인기순위(Total) -->
-                    <div class="element-table">
-                        <div class="title" th:text="#{real_time_popularity}">실시간 인기순위(Total)</div>
-                        <div class="table-header">
-                            <div class="text-wrapper" th:text="#{keyword}">키워드</div>
-                            <div class="div" th:text="#{Searchvolume}">검색량</div>
-                        </div>
-                        <div class="list">
-                            <div th:each="keywordItem, iterStat : ${keyword.content}">
-                                <button class="btn btn-primary btn-lg frame" type="button"
-                                        th:data-keyword="${keywordItem.keyword}"
-                                        onclick="submitKeyword(this.getAttribute('data-keyword'))">
-                                    <div class="text-wrapper-3"
-                                         th:text="${iterStat.index + 1 + (currentPage * 5)} + '. ' + ${keywordItem.keyword}">
-                                    </div>
-                                    <div class="text-wrapper-4" th:text="${keywordItem.total}"></div>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- Total 페이지네이션 -->
-                        <div class="pagination-wrapper">
-                            <div class="pagination-dots">
-                                <th:block th:each="pageNum : ${#numbers.sequence(0, 6)}">
-                                    <a th:href="@{/index(page=${pageNum})}"
-                                       th:class="${pageNum == currentPage ? 'dot active' : 'dot'}">
-                                    </a>
-                                </th:block>
-                            </div>
-                        </div>
-                    </div>
+    <div class="intro-section">
+        <h2 class="input-header">이슈마켓,<br><span class="sub-title">검색 엔진 마케팅을 위한 가장 쉽고 강력한 데이터 분석 툴</span></h2>
+        <div class="element-input-field-with">
+            <form id="keywordForm" action="/searchKeyword" method="post" class="d-flex">
+                <div class="form-group mr-2" style="flex: 1;">
+                    <input type="text" id="keyword_search" name="keyword_search" class="form-control" th:placeholder="#{search_placeholder}" required>
+                </div>
+                <button type="submit" class="btn btn-dark bigbutton">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960" width="35px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
+                </button>
+            </form>
+        </div>
+    </div>
 
-                    <!-- 기간별 인기순위(PC) -->
-                    <div class="element-table-2">
-                        <div class="title" th:text="#{period_popularity}">기간별 인기순위(PC)</div>
-                        <div class="table-header">
-                            <div class="text-wrapper" th:text="#{keyword}">키워드</div>
-                            <div class="div" th:text="#{Searchvolume}">검색량</div>
-                        </div>
-                        <div class="list">
-                            <div th:each="keywordItem2, iterStat : ${keyword2.content}">
-                                <button class="btn btn-primary btn-lg frame" type="button"
-                                        th:data-keyword="${keywordItem2.keyword}"
-                                        onclick="submitKeyword(this.getAttribute('data-keyword'))">
-                                    <div class="text-wrapper-3"
-                                         th:text="${iterStat.index + 1 + (currentPage * 5)} + '. ' + ${keywordItem2.keyword}">
-                                    </div>
-                                    <div class="text-wrapper-4" th:text="${keywordItem2.pc}"></div>
-                                </button>
+    <div class="element-sidebar" id="sidebar">
+        <div class="top-divider"></div>
+        <div class="list-3">
+            <button class="menu-item" id="home-button">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg>&nbsp;
+                <div class="text-wrapper-14" th:text="#{home}"></div>
+            </button>
+            <button class="menu-item" id="movie-button">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>&nbsp;
+                <div class="text-wrapper-14" th:text="#{movie}"></div>
+            </button>
+            <button class="menu-item" id="music-button">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>&nbsp;
+                <div class="text-wrapper-14" th:text="#{music}"></div>
+            </button>
+            <button class="menu-item" id="actor-button">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>&nbsp;
+                <div class="text-wrapper-14" th:text="#{actor}"></div>
+            </button>
+            <button class="menu-item" id="webtoon-button">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>&nbsp;
+                <div class="text-wrapper-14" th:text="#{webtoon}"></div>
+            </button>
+        </div>
+    </div>
+    <div class="vertical-divider"></div>
+
+    <div class="scroll-box">
+        <h2 class="scroll-box-header">&nbsp;&nbsp;&nbsp;<strong>키워드</strong> 🔥</h2>
+        <h2 class="scroll-box-sub-header">지금 가장 인기있는 키워드를 살펴보세요!</h2>
+        <div class="element-tables">
+            <!-- 실시간 인기순위(Total) -->
+            <div class="element-table">
+                <div class="title" th:text="#{real_time_popularity}">실시간 인기순위(Total)</div>
+                <div class="table-header">
+                    <div class="text-wrapper" th:text="#{keyword}">키워드</div>
+                    <div class="div" th:text="#{Searchvolume}">검색량</div>
+                </div>
+                <div class="list">
+                    <div th:each="keywordItem, iterStat : ${keyword.content}">
+                        <button class="btn btn-primary btn-lg frame" type="button"
+                                th:data-keyword="${keywordItem.keyword}"
+                                onclick="submitKeyword(this.getAttribute('data-keyword'))">
+                            <div class="text-wrapper-3"
+                                 th:text="${iterStat.index + 1 + (currentTotalPage * 10)} + '. ' + ${keywordItem.keyword}">
                             </div>
-                        </div>
-                        <!-- PC 페이지네이션 -->
-                        <div class="pagination-wrapper">
-                            <div class="pagination-dots">
-                                <th:block th:each="pageNum : ${#numbers.sequence(0, 6)}">
-                                    <a th:href="@{/index(page=${pageNum})}"
-                                       th:class="${pageNum == currentPage ? 'dot active' : 'dot'}">
-                                    </a>
-                                </th:block>
-                            </div>
-                        </div>
+                            <div class="text-wrapper-4" th:text="${keywordItem.total}"></div>
+                        </button>
                     </div>
                 </div>
+                <!-- Total 페이지네이션 -->
+                <div class="pagination-wrapper">
+                    <div class="pagination-dots">
+                        <th:block th:each="pageNum : ${#numbers.sequence(0, 6)}">
+                            <a th:href="@{/index(totalPage=${pageNum}, pcPage=${currentPcPage})}"
+                               th:class="${pageNum == currentTotalPage ? 'dot active' : 'dot'}">
+                            </a>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
 
-                <div class="element-header-navigation">
-                    <div class="element-sidebar" id="sidebar">
-                        <div class="top-divider"></div>
-                        <div class="list-3">
-                            <button class="menu-item" id="home-button">
-                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/home.svg" />
-                                <div class="text-wrapper-14" th:text="#{home}">Home</div>
-                            </button>
-                            <button class="menu-item" id="movie-button">
-                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/search.svg" />
-                                <div class="text-wrapper-14" th:text="#{movie}">영화</div>
-                            </button>
-                            <button class="menu-item" id="music-button">
-                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
-                                <div class="text-wrapper-14" th:text="#{music}">음악</div>
-                            </button>
-                            <button class="menu-item" id="actor-button">
-                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
-                                <div class="text-wrapper-14" th:text="#{actor}">배우</div>
-                            </button>
-                            <button class="menu-item" id="webtoon-button">
-                                <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/radio-2.svg" />
-                                <div class="text-wrapper-14" th:text="#{webtoon}">웹툰</div>
-                            </button>
-                        </div>
+            <!-- 기간별 인기순위(PC) -->
+            <div class="element-table-2">
+                <div class="title" th:text="#{period_popularity}">기간별 인기순위(PC)</div>
+                <div class="table-header">
+                    <div class="text-wrapper" th:text="#{keyword}">키워드</div>
+                    <div class="div" th:text="#{Searchvolume}">검색량</div>
+                </div>
+                <div class="list">
+                    <div th:each="keywordItem2, iterStat : ${keyword2.content}">
+                        <button class="btn btn-primary btn-lg frame" type="button"
+                                th:data-keyword="${keywordItem2.keyword}"
+                                onclick="submitKeyword(this.getAttribute('data-keyword'))">
+                            <div class="text-wrapper-3"
+                                 th:text="${iterStat.index + 1 + (currentPcPage * 10)} + '. ' + ${keywordItem2.keyword}">
+                            </div>
+                            <div class="text-wrapper-4" th:text="${keywordItem2.pc}"></div>
+                        </button>
+                    </div>
+                </div>
+                <!-- PC 페이지네이션 -->
+                <div class="pagination-wrapper">
+                    <div class="pagination-dots">
+                        <th:block th:each="pageNum : ${#numbers.sequence(0, 6)}">
+                            <a th:href="@{/index(totalPage=${currentTotalPage}, pcPage=${pageNum})}"
+                               th:class="${pageNum == currentPcPage ? 'dot active' : 'dot'}">
+                            </a>
+                        </th:block>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- 인기 급상승 동영상 섹션 -->
-    <div class="element-table-3">
-        <div class="title" th:text="#{trending_videos}">YouTube 인기 급상승 동영상</div>
-        <ul id="trendingVideos" class="list-group">
-            <!-- 동영상 목록이 여기에 표시됩니다 -->
-        </ul>
+        <div class="element-table-3">
+            <div class="title" th:text="#{trending_videos}">YouTube 인기 급상승 동영상</div>
+            <ul id="trendingVideos" class="list-group">
+                <!-- 동영상 목록이 여기에 표시됩니다 -->
+            </ul>
+        </div>
     </div>
 </div>
 
@@ -157,6 +166,12 @@
 
 <script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', function() {
+        setupUI();
+        setupPaginationListeners();
+        loadTrendingVideos();
+    });
+
+    function setupUI() {
         var menuButton = document.getElementById('menu-button');
         var sidebar = document.getElementById('sidebar');
         var overlay = document.getElementById('overlay');
@@ -196,13 +211,58 @@
         homeButton.addEventListener('click', function() {
             location.reload();
         });
+    }
 
-        window.submitKeyword = function(keyword) {
-            document.getElementById('keyword_search').value = keyword;
-            document.getElementById('keywordForm').submit();
-        };
+    function setupPaginationListeners() {
+        document.querySelectorAll('.pagination-dots a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const href = this.getAttribute('href');
 
-        // 인기 급상승 동영상 목록 가져오기
+                fetch(href)
+                    .then(response => response.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+
+                        // Total 순위 업데이트
+                        const totalTable = document.querySelector('.element-table .list');
+                        const newTotalTable = doc.querySelector('.element-table .list');
+                        if (totalTable && newTotalTable) {
+                            totalTable.innerHTML = newTotalTable.innerHTML;
+                        }
+
+                        // PC 순위 업데이트
+                        const pcTable = document.querySelector('.element-table-2 .list');
+                        const newPcTable = doc.querySelector('.element-table-2 .list');
+                        if (pcTable && newPcTable) {
+                            pcTable.innerHTML = newPcTable.innerHTML;
+                        }
+
+                        // 페이지네이션 도트 업데이트
+                        const dots = document.querySelectorAll('.pagination-dots');
+                        const newDots = doc.querySelectorAll('.pagination-dots');
+                        dots.forEach((dot, index) => {
+                            dot.innerHTML = newDots[index].innerHTML;
+                        });
+
+                        // URL 업데이트
+                        history.pushState(null, '', href);
+
+                        // 이벤트 리스너 다시 설정
+                        setupPaginationListeners();
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+        });
+    }
+
+    function submitKeyword(keyword) {
+        document.getElementById('keyword_search').value = keyword;
+        document.getElementById('keywordForm').submit();
+    }
+
+    function loadTrendingVideos() {
         fetch('/youtube/trending')
             .then(response => response.json())
             .then(data => {
@@ -215,6 +275,27 @@
                 });
             })
             .catch(error => console.error('Error fetching trending videos:', error));
+    }
+
+    function changeLanguage(lang) {
+        const currentUrl = new URL(window.location.href, window.location.origin);
+        currentUrl.searchParams.set('lang', lang);
+        localStorage.setItem('selectedLanguage', lang);
+        window.location.href = currentUrl.toString();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedLanguage = localStorage.getItem('selectedLanguage');
+        if (savedLanguage) {
+            const languageSelect = document.getElementById('languageSelect');
+            if (languageSelect) {
+                languageSelect.value = savedLanguage;
+            }
+
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('lang', savedLanguage);
+            history.replaceState({}, '', currentUrl);
+        }
     });
 </script>
 </body>
