@@ -23,7 +23,6 @@ public class TestDTO {
     // 추가된 필드
     private String articleUrl;   // 기사 URL
     private String articleTitle; // 기사 제목
-    private List<Map<String, Object>> ratioResults= new ArrayList<>(); // ratioResults 추가
 
     // Entity -> DTO 변환 메서드
     public static TestDTO toTestDTO(TestEntity testEntity) {

@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="/css/globals.css">
     <link rel="stylesheet" href="/css/substyle.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <div class="header-wrapper" id="header-wrapper">
@@ -67,7 +68,9 @@
                         </div>
                         <div class="list">
                             <div th:each="keywordItem, iterStat : ${keywords}">
-                                <button class="keyword-button frame" onclick="expandButton(this)">
+                                <button class="keyword-button frame"
+                                        onclick="expandButton(this)"
+                                        th:attr="data-keyword=${keywordItem.keyword}">
                                     <div class="keyword-wrapper d-flex justify-content-between align-items-center">
                                         <div class="text-wrapper-3"
                                              th:with="rank=${(currentPage * 10) + iterStat.index + 1}"
@@ -78,10 +81,14 @@
                                         </div>
                                         <div class="text-wrapper-4 ml-2" th:text="${keywordItem.total}"></div>
                                     </div>
+                                    <div class="related-keywords-graph" style="display: none;">
+                                        <canvas width="300" height="200"></canvas>
+                                    </div>
                                     <div class="divider"></div>
-                                    <div class="article-url" th:if="${keywordItem.articleUrl}" style="display: none;">
+                                    <div class="article-url" th:if="${keywordItem.articleUrl}" style="display: block;">
                                         기사 URL: <a th:href="${keywordItem.articleUrl}" th:text="${keywordItem.articleTitle}" target="_blank">기사 제목</a>
                                     </div>
+
                                 </button>
                             </div>
                         </div>
@@ -206,16 +213,88 @@
     });
 
     function expandButton(button) {
+        const graphContainer = button.querySelector('.related-keywords-graph');
+        const canvas = graphContainer.querySelector('canvas');
+        const articleUrlDiv = button.querySelector('.article-url');
+
         if (button.classList.contains('expanded')) {
             button.style.height = '48px';
-            button.querySelector('.article-url').style.display = 'none';
+            graphContainer.style.display = 'none';
             button.classList.remove('expanded');
+            articleUrlDiv.style.display = 'none';
         } else {
-            button.style.height = '198px';
-            button.querySelector('.article-url').style.display = 'block';
+            button.style.height = '400px';
+            graphContainer.style.display = 'block';
+            articleUrlDiv.style.display = 'block'; // URL 항상 표시
             button.classList.add('expanded');
+
+            // 그래프 데이터 가져오기
+            const keyword = button.getAttribute('data-keyword'); // 키워드 가져오기
+            fetch(`/search?groupName=${keyword}&keywords=${keyword}`, {
+                method: 'POST'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const ratioResults = data.ratioResults;
+
+                    if (ratioResults && Array.isArray(ratioResults)) {
+                        const labels = ratioResults.map(item => item.period);
+                        const values = ratioResults.map(item => item.estimatedValue);
+
+                        // 이전 그래프 제거
+                        if (canvas.chartInstance) {
+                            canvas.chartInstance.destroy();
+                        }
+
+                        // 새로운 그래프 생성
+                        const ctx = canvas.getContext('2d');
+                        canvas.chartInstance = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    label: 'Estimated Value',
+                                    data: values,
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    fill: true
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: true,
+                                scales: {
+                                    x: {
+                                        display: true,
+                                        title: {
+                                            display: true,
+                                            text: 'Date'
+                                        }
+                                    },
+                                    y: {
+                                        beginAtZero: true,
+                                        display: true,
+                                        title: {
+                                            display: true,
+                                            text: 'Estimated Value'
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+                        console.error('Ratio results data is missing or invalid.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching ratio results:', error);
+                });
         }
     }
+
+
+
+
 
     document.querySelectorAll('.keyword-button .text-wrapper-3').forEach(wrapper => {
         wrapper.addEventListener('click', function(event) {

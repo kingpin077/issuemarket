@@ -132,10 +132,6 @@ public class PageController {
                     actor.setArticleTitle(title);
                 }
 
-                // ratioResults 초기화 확인
-                if (actor.getRatioResults() == null) {
-                    actor.setRatioResults(new ArrayList<>());
-                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

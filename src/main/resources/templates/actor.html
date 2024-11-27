@@ -69,8 +69,9 @@
                         </div>
                         <div class="list">
                             <div th:each="keywordItem, iterStat : ${keywords}">
-                                <button class="keyword-button frame" onclick="expandButton(this)"
-                                        th:attr="data-ratio-results=${#json.toJson(keywordItem.ratioResults)}">
+                                <button class="keyword-button frame"
+                                        onclick="expandButton(this)"
+                                        th:attr="data-keyword=${keywordItem.keyword}">
                                     <div class="keyword-wrapper d-flex justify-content-between align-items-center">
                                         <!-- 순위 번호 계산 수정 -->
                                         <div class="text-wrapper-3"
@@ -81,9 +82,9 @@
                                              th:attr="data-keyword=${keywordItem.keyword}">
                                         </div>
                                         <div class="text-wrapper-4 ml-2" th:text="${keywordItem.total}"></div>
-                                        <div class="chart-container" style="display: none;">
-                                            <canvas id="ratioChart-[[${keywordItem.keyword}]]" width="400" height="200"></canvas>
-                                        </div>
+                                    </div>
+                                    <div class="related-keywords-graph" style="display: none;">
+                                        <canvas width="300" height="200"></canvas>
                                     </div>
                                     <div class="divider"></div>
                                     <div class="article-url" th:if="${keywordItem.articleUrl}" style="display: none;">
@@ -208,57 +209,85 @@
     });
 
     function expandButton(button) {
-        // 기존 확장 여부 확인
+        const graphContainer = button.querySelector('.related-keywords-graph');
+        const canvas = graphContainer.querySelector('canvas');
+        const articleUrlDiv = button.querySelector('.article-url');
+
         if (button.classList.contains('expanded')) {
             button.style.height = '48px';
-            button.querySelector('.article-url').style.display = 'none'; // 기사 숨김
-            button.querySelector('.chart-container').style.display = 'none'; // 차트 숨김
+            graphContainer.style.display = 'none';
             button.classList.remove('expanded');
+            articleUrlDiv.style.display = 'none';
         } else {
             button.style.height = '400px';
-            button.querySelector('.article-url').style.display = 'block'; // 기사 보이기
-            button.querySelector('.chart-container').style.display = 'block'; // 차트 보이기
+            graphContainer.style.display = 'block';
+            articleUrlDiv.style.display = 'block'; // URL 항상 표시
             button.classList.add('expanded');
 
-            // 차트 데이터 가져오기
-            const chartCanvas = button.querySelector('canvas');
-            const ratioResults = JSON.parse(button.getAttribute('data-ratio-results')); // JSON 데이터 파싱
-            const labels = ratioResults.map(item => item.period); // X축 라벨 (기간)
-            const data = ratioResults.map(item => item.estimatedValue); // Y축 데이터 (추정값)
+            // 그래프 데이터 가져오기
+            const keyword = button.getAttribute('data-keyword'); // 키워드 가져오기
+            fetch(`/search?groupName=${keyword}&keywords=${keyword}`, {
+                method: 'POST'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const ratioResults = data.ratioResults;
 
-            // 기존 차트가 있으면 제거
-            if (Chart.getChart(chartCanvas)) {
-                Chart.getChart(chartCanvas).destroy();
-            }
+                    if (ratioResults && Array.isArray(ratioResults)) {
+                        const labels = ratioResults.map(item => item.period);
+                        const values = ratioResults.map(item => item.estimatedValue);
 
-            // 새로운 차트 생성
-            new Chart(chartCanvas, {
-                type: 'line', // 차트 유형 (선형 그래프)
-                data: {
-                    labels: labels, // X축 데이터
-                    datasets: [{
-                        label: 'Estimated Value', // 데이터 라벨
-                        data: data, // Y축 데이터
-                        borderColor: 'rgba(75, 192, 192, 1)', // 선 색상
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)', // 배경 색상
-                        borderWidth: 2, // 선 두께
-                    }]
-                },
-                options: {
-                    responsive: true, // 반응형
-                    plugins: {
-                        legend: {
-                            position: 'top', // 범례 위치
-                        },
-                        title: {
-                            display: true,
-                            text: 'Keyword Ratio Results' // 차트 제목
+                        // 이전 그래프 제거
+                        if (canvas.chartInstance) {
+                            canvas.chartInstance.destroy();
                         }
+
+                        // 새로운 그래프 생성
+                        const ctx = canvas.getContext('2d');
+                        canvas.chartInstance = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    label: 'Estimated Value',
+                                    data: values,
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    fill: true
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: true,
+                                scales: {
+                                    x: {
+                                        display: true,
+                                        title: {
+                                            display: true,
+                                            text: 'Date'
+                                        }
+                                    },
+                                    y: {
+                                        beginAtZero: true,
+                                        display: true,
+                                        title: {
+                                            display: true,
+                                            text: 'Estimated Value'
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+                        console.error('Ratio results data is missing or invalid.');
                     }
-                }
-            });
+                })
+                .catch(error => {
+                    console.error('Error fetching ratio results:', error);
+                });
         }
     }
+
 
     function submitKeyword(keyword) {
         // 키워드 값으로 폼 필드 업데이트
