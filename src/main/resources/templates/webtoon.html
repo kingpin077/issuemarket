@@ -104,6 +104,12 @@
                             </div>
                         </div>
                     </div>
+                    <div class="new-window">
+                        <button class="close-button">X</button>
+                        <h2>기사 제목</h2>
+                        <p>기사 내용이 여기에 표시됩니다.</p>
+                        <div class="graph">여기에 그래프가 표시됩니다.</div>
+                    </div>
                 </div>
 
                 <div class="element-header-navigation">
@@ -343,6 +349,39 @@
         }
     });
 
+    document.addEventListener("DOMContentLoaded", () => {
+        const expandButtons = document.querySelectorAll(".keyword-button");
+        const elementTable = document.querySelector(".element-table");
+        const newWindow = document.querySelector(".new-window");
+        const closeButton = document.querySelector('.close-button');
+        let isNewWindowOpen = false;
+
+        expandButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                // 이미 new-window가 열려있다면 닫기
+                if (isNewWindowOpen) {
+                    // new-window 닫기
+                    newWindow.classList.remove('visible');
+                    // 테이블 원래 크기로 복구
+                    elementTable.classList.remove("shrunk");
+                    isNewWindowOpen = false;
+                } else {
+                    // new-window 열기
+                    newWindow.classList.add('visible');
+                    // 테이블 크기 축소
+                    elementTable.classList.add("shrunk");
+                    isNewWindowOpen = true;
+                }
+            });
+        });
+
+        // X 버튼 클릭 시 new-window 닫기
+        closeButton.addEventListener('click', () => {
+            newWindow.classList.remove('visible');
+            elementTable.classList.remove("shrunk");
+            isNewWindowOpen = false;
+        });
+    });
 </script>
 </body>
 </html>
