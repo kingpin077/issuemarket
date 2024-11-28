@@ -30,7 +30,7 @@ public interface TestRepository extends JpaRepository<TestEntity, Long> {
     List<TestEntity> findTop10ByOrderByTotalDesc();
 
     // 총 검색량 순위에 따라 상위 50개의 데이터를 내림차순으로 가져옴
-    List<TestEntity> findTop50ByOrderByTotalDesc();
+    List<TestEntity> findTop100ByOrderByTotalDesc();
 
     // keyword와 total을 가져와 total 내림차순으로 정렬
     @Query("SELECT t.keyword, t.total FROM TestEntity t ORDER BY t.total DESC")

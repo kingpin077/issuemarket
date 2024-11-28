@@ -89,8 +89,8 @@ public class TestService {
 
 
     // 총 검색량 상위 30개의 데이터를 가져오는 메서드
-    public List<TestDTO> findTop50ByTotalOrderByDesc() {
-        List<TestEntity> entities = testRepository.findTop50ByOrderByTotalDesc();
+    public List<TestDTO> findTop100ByTotalOrderByDesc() {
+        List<TestEntity> entities = testRepository.findTop100ByOrderByTotalDesc();
 
         return entities.stream().map(entity -> {
             TestDTO dto = new TestDTO();

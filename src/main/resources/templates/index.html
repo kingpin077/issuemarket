@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/css/globals.css">
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-bundle.min.js"></script>
 </head>
 
 <body>
@@ -159,6 +160,57 @@
                 <!-- 동영상 목록이 여기에 표시됩니다 -->
             </ul>
         </div>
+
+        <!--    워드클라우드 펼치기 버튼    -->
+        <div class="word-cloud-toggle">
+            <button id="toggleWordCloudButton" class="btn btn-dark">워드 클라우드 펼치기</button>
+        </div>
+    </div>
+
+    <div class="word-cloud">
+        <!-- 워드 클라우드 컨테이너 -->
+        <div id="wordCloudContainer" style="width: 100%; height: 95vh;"></div>
+
+        <!-- JSON 형식으로 데이터를 Thymeleaf에서 전달 -->
+        <script th:inline="javascript">
+            var keywordCloudData = /*[[${keywordCloudData}]]*/ '[]';
+            keywordCloudData = JSON.parse(keywordCloudData);
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                if (keywordCloudData.length > 0) {
+                    const formattedData = keywordCloudData.map(item => ({
+                        x: item.keyword,
+                        value: item.total
+                    }));
+
+                    anychart.onDocumentReady(function () {
+                        anychart.theme("pastel");
+                        const chart = anychart.tagCloud(formattedData);
+                        chart.angles([0]);
+                        chart.container("wordCloudContainer");
+
+                        // 배경 변경
+                        chart.background().fill({
+                            keys: ["#C4E1F6", "#f2eafa"], // 그라데이션 컬러
+                            angle: 90 // 그라데이션 각도
+                        });
+
+                        // 단어 클릭 이벤트 추가
+                        chart.listen("pointClick", function (e) {
+                            const keyword = e.point.get("x");
+                            // 키워드를 포함한 URL로 이동
+                            window.location.href = `/searchKeyword?keyword_search=${keyword}`;
+                        });
+
+                        chart.draw();
+                    });
+                } else {
+                    document.getElementById("wordCloudContainer").innerHTML = "워드 클라우드 데이터를 로드할 수 없습니다.";
+                }
+            });
+        </script>
     </div>
 </div>
 
@@ -296,6 +348,25 @@
             currentUrl.searchParams.set('lang', savedLanguage);
             history.replaceState({}, '', currentUrl);
         }
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+        setupUI();
+        setupPaginationListeners();
+        loadTrendingVideos();
+
+        // 워드 클라우드 토글
+        const wordCloudContainer = document.getElementById("wordCloudContainer");
+        const toggleButton = document.getElementById("toggleWordCloudButton");
+
+        toggleButton.addEventListener("click", function () {
+            if (wordCloudContainer.style.display === "none") {
+                wordCloudContainer.style.display = "block";
+                toggleButton.textContent = "워드 클라우드 접기";
+            } else {
+                wordCloudContainer.style.display = "none";
+                toggleButton.textContent = "워드 클라우드 펼치기";
+            }
+        });
     });
 </script>
 </body>
