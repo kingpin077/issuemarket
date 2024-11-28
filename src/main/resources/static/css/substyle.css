@@ -9,20 +9,9 @@ body, html {
     overflow-y: auto;
 }
 
-#inputField {
-    width: 1000px;
-    height: 60px;
-    padding: 14px 24px;
-    font-size: 16px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    box-shadow: 0px 1px 2px #0000000d;
-}
-
 .box {
     width: 100%;
     height: 100%;
-    margin-top: 200px;
     padding: 0;
     display: flex;
     flex-direction: column;
@@ -33,48 +22,50 @@ body, html {
 
 .element-tables {
     display: flex;
-    flex-basis: 100%;
-    justify-content: center;
+    width: 1200px; /* 부모 컨테이너의 고정 너비 */
+    justify-content: flex-start; /* 기본 정렬: 왼쪽 정렬 */
     align-items: stretch;
-    position: absolute;
-    top: -11%;
-    left: 50%; /* 추가: 가운데 정렬을 위해 왼쪽 정렬 수정 */
-    transform: translateX(-50%); /* 추가: 가운데 정렬을 위한 변형 */
-    transition: flex-basis 0.5s ease;
-    overflow: hidden; /* 축소 시 내용 숨김 */
+    position: relative;
+    overflow: hidden; /* 넘치는 콘텐츠 숨김 */
 }
 
 .element-table {
-    position: relative;
-    width: 1200px; /* 넓이 조정 */
-    max-height: none; /* 높이 제한 제거 */
-    margin: 10px;
+    width: 100%; /* 초기 상태에서 전체 너비 */
+    transition: width 0.5s ease; /* 너비 변화 애니메이션 */
+    height: auto;
+    background-color: #fff;
     border-radius: 8px;
-    overflow-y: auto;
     border: 1px solid #e0e0e0;
-    box-shadow: 0px 4px 12px #0000000a;
-    background-color: #FFFFFF;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
 }
 
 .element-table.shrunk {
-    flex-basis: 60%; /* 너비를 60%로 줄임 */
+    width: 60%; /* 축소 상태에서 60% 너비 */
 }
 
 .new-window {
-    flex-basis: 0%; /* 초기 넓이는 0% */
-    opacity: 0; /* 초기에는 보이지 않음 */
-    transition: flex-basis 0.5s ease, opacity 0.5s ease;
+    width: 0%;
+    opacity: 0;
+    font-size: 24px;
+    transition: width 0.5s ease, opacity 0.5s ease; /* 애니메이션 */
     background: #ffffff;
     border-left: 1px solid #e0e0e0;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
     padding: 20px;
     overflow-y: auto;
-    flex-grow: 1;
 }
 
 .new-window.visible {
-    flex-basis: 40%; /* 새 창이 화면의 40% 차지 */
-    opacity: 1; /* 새 창 표시 */
+    width: 40%; /* 열릴 때 너비 40% */
+    margin-left: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    justify-content: center;
+    align-items: center;
+    opacity: 1; /* 보이도록 설정 */
 }
 
 .close-button {
@@ -91,6 +82,58 @@ body, html {
 
 .close-button:hover {
     color: #000;
+}
+
+.button-container {
+    display: flex;         /* 버튼들을 가로로 배치 */
+    align-items: center;   /* 버튼을 세로로 중앙 정렬 */
+}
+
+.explore-button {
+    width: 94px;
+    height: 48px;
+    background-color: #2656C9;
+    color: #FFFFFF;
+    border-radius: 32px;
+    border: #2656C9;
+    padding: 2px;
+    display: flex;  /* 가로로 배치 */
+    justify-content: center;  /* 아이콘과 텍스트를 가로로 중앙 정렬 */
+    align-items: center;  /* 아이콘과 텍스트를 세로로 중앙 정렬 */
+    margin: 10px;
+    cursor: pointer;
+}
+
+.search-button {
+    width: 94px;
+    height: 48px;
+    border-radius: 32px;
+    padding: 2px;
+    display: flex;  /* 가로로 배치 */
+    justify-content: center;  /* 아이콘과 텍스트를 가로로 중앙 정렬 */
+    align-items: center;  /* 아이콘과 텍스트를 세로로 중앙 정렬 */
+    margin: 10px;
+    border: 1px solid #000000;
+    cursor: pointer;
+}
+
+.explore-button:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+.search-button:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+.explore-text {
+    font-size: 18px;
+}
+.related-keywords-graph {
+    margin-top: 20px;
 }
 
 .element-table-2 {
@@ -317,24 +360,6 @@ body, html {
 .element-input-field-with input.form-control,
 .element-input-field-with button.bigbutton {
     height: 80px; /* 동일한 높이 설정 */
-}
-
-.expanded-button {
-    width: 100%; /* 너비를 100%로 */
-    height: 200px; /* 높이를 150px로 */
-}
-
-.expanded-button .text-wrapper-16 {
-    position: absolute; /* 절대 위치 */
-    top: 20px; /* 위쪽에 배치 */
-    left: 20px;
-}
-
-.expanded-button .divider {
-    width: 100%;
-    height: 1px;
-    background: #828282;
-    position: absolute;
 }
 
 .keyword-button, .frame {
