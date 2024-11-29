@@ -51,26 +51,28 @@ public class PageController {
         return "index";
     }
 
-    @GetMapping("/indexwd")
-    public String mainPagewd(Model model) {
-        // 키워드의 총 검색량 순위를 내림차순으로 가져옴
-        List<TestDTO> keywords = testService.findAllByTotalOrderByDesc();
-        System.out.println("Keywords: " + keywords); // 데이터 확인
+    @GetMapping(value = {"/index2"})
+    public String mainPage2(
+            @RequestParam(defaultValue = "0") int totalPage,  // 이름 변경
+            @RequestParam(defaultValue = "0") int pcPage,     // PC용 페이지 파라미터 추가
+            Model model) {
 
-        // 키워드의 PC 검색량 순위를 내림차순으로 가져옴
-        List<TestDTO> keywords2 = testService.findAllByPcOrderByDesc();
-        System.out.println("Keywords2: " + keywords2); // 데이터 확인
-
+        // 각각의 페이지네이션을 위한 데이터 조회
+        Page<TestDTO> totalRankings = testService.findAllByTotalOrderByDescPaged(totalPage);
+        Page<TestDTO> pcRankings = testService.findAllByPcOrderByDescPaged(pcPage);
         // 상위 50개의 키워드를 총 검색량 기준 내림차순으로 가져옴 (wordCloud 용 데이터)
         List<TestDTO> topKeywords = testService.findTop100ByTotalOrderByDesc();
-        System.out.println("Top Keywords: " + topKeywords); // 데이터 확인
 
-        // 모델에 키워드 데이터를 저장 - index.html과 wordCloud.html에서 모두 사용 가능
-        model.addAttribute("keyword", keywords);       // index.html 용
-        model.addAttribute("keyword2", keywords2);     // index.html 용
+        // 모델에 데이터 추가 - 페이지 번호를 구분해서 전달
+        model.addAttribute("keyword", totalRankings);
+        model.addAttribute("keyword2", pcRankings);
+        model.addAttribute("currentTotalPage", totalPage);    // Total 페이지 번호
+        model.addAttribute("currentPcPage", pcPage);         // PC 페이지 번호
+        model.addAttribute("totalPages", totalRankings.getTotalPages());
+        model.addAttribute("pcTotalPages", pcRankings.getTotalPages());
         model.addAttribute("keywordCloudData", topKeywords); // wordCloud.html 용
 
-        return "indexwd2"; // "indexwd" 페이지로 반환하여 데이터를 전달
+        return "index2";
     }
 
     @GetMapping("/webtoon")

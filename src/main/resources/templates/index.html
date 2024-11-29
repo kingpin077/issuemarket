@@ -11,6 +11,10 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="/css/globals.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/2.9.7/jquery.fullpage.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/2.9.7/vendors/scrolloverflow.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/2.9.7/jquery.fullpage.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.anychart.com/releases/v8/js/anychart-bundle.min.js"></script>
 </head>
@@ -45,171 +49,172 @@
 </div>
 <div class="horizontal-divider"></div>
 
-<div class="box">
-    <div class="intro-section">
-        <h2 class="input-header"><strong>이슈마켓,</strong>실시간 인기 키워드를<br><br>빠르고 간편하게 확인할 수 있는 트렌드 플랫폼</h2><br>
-        <div class="element-input-field-with">
-            <form id="keywordForm" action="/searchKeyword" method="post" class="d-flex">
-                <div class="form-group mr-2" style="flex: 1;">
-                    <input type="text" id="keyword_search" name="keyword_search" class="form-control" th:placeholder="#{search_placeholder}" required>
-                </div>
-                <button type="submit" class="btn btn-dark bigbutton">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960" width="35px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
-                </button>
-            </form>
+<div class="element-sidebar" id="sidebar">
+    <div class="top-divider"></div>
+    <div class="list-3">
+        <button class="menu-item" id="home-button">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg>&nbsp;
+            <div class="text-wrapper-14" th:text="#{home}"></div>
+        </button>
+        <button class="menu-item" id="movie-button">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>&nbsp;
+            <div class="text-wrapper-14" th:text="#{movie}"></div>
+        </button>
+        <button class="menu-item" id="music-button">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>&nbsp;
+            <div class="text-wrapper-14" th:text="#{music}"></div>
+        </button>
+        <button class="menu-item" id="actor-button">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>&nbsp;
+            <div class="text-wrapper-14" th:text="#{actor}"></div>
+        </button>
+        <button class="menu-item" id="webtoon-button">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>&nbsp;
+            <div class="text-wrapper-14" th:text="#{webtoon}"></div>
+        </button>
+    </div>
+</div>
+
+<div class="box" id="fullpage">
+    <div class="section">
+        <div class="intro-section" style="margin: auto">
+            <h2 class="input-header"><strong>이슈마켓,</strong>실시간 인기 키워드를<br><br>빠르고 간편하게 확인할 수 있는 트렌드 플랫폼</h2><br>
+            <div class="element-input-field-with">
+                <form id="keywordForm" action="/searchKeyword" method="post" class="d-flex">
+                    <div class="form-group mr-2" style="flex: 1;">
+                        <input type="text" id="keyword_search" name="keyword_search" class="form-control" th:placeholder="#{search_placeholder}" required>
+                    </div>
+                    <button type="submit" class="btn btn-dark bigbutton">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960" width="35px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 
-    <div class="element-sidebar" id="sidebar">
-        <div class="top-divider"></div>
-        <div class="list-3">
-            <button class="menu-item" id="home-button">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg>&nbsp;
-                <div class="text-wrapper-14" th:text="#{home}"></div>
-            </button>
-            <button class="menu-item" id="movie-button">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>&nbsp;
-                <div class="text-wrapper-14" th:text="#{movie}"></div>
-            </button>
-            <button class="menu-item" id="music-button">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>&nbsp;
-                <div class="text-wrapper-14" th:text="#{music}"></div>
-            </button>
-            <button class="menu-item" id="actor-button">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>&nbsp;
-                <div class="text-wrapper-14" th:text="#{actor}"></div>
-            </button>
-            <button class="menu-item" id="webtoon-button">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>&nbsp;
-                <div class="text-wrapper-14" th:text="#{webtoon}"></div>
-            </button>
-        </div>
-    </div>
-
-    <div class="scroll-box">
-        <h2 class="scroll-box-header">&nbsp;&nbsp;&nbsp;<strong>키워드</strong> 🔥</h2>
-        <h2 class="scroll-box-sub-header">지금 가장 인기있는 키워드를 살펴보세요!</h2>
-        <div class="element-tables">
-            <!-- 실시간 인기순위(Total) -->
-            <div class="element-table">
-                <div class="title" th:text="#{real_time_popularity}">실시간 인기순위(Total)</div>
-                <div class="table-header">
-                    <div class="text-wrapper" th:text="#{keyword}">키워드</div>
-                    <div class="div" th:text="#{Searchvolume}">검색량</div>
-                </div>
-                <div class="list">
-                    <div th:each="keywordItem, iterStat : ${keyword.content}">
-                        <button class="btn btn-primary btn-lg frame" type="button"
-                                th:data-keyword="${keywordItem.keyword}"
-                                onclick="submitKeyword(this.getAttribute('data-keyword'))">
-                            <div class="text-wrapper-3"
-                                 th:text="${iterStat.index + 1 + (currentTotalPage * 10)} + '. ' + ${keywordItem.keyword}">
-                            </div>
-                            <div class="text-wrapper-4" th:text="${keywordItem.total}"></div>
-                        </button>
+    <div class="section scrollable">
+        <div class="scroll-box">
+            <h2 class="scroll-box-header">&nbsp;&nbsp;&nbsp;<strong>키워드</strong> 🔥</h2>
+            <h2 class="scroll-box-sub-header">지금 가장 인기있는 키워드를 살펴보세요!</h2>
+            <div class="element-tables">
+                <!-- 실시간 인기순위(Total) -->
+                <div class="element-table">
+                    <div class="title" th:text="#{real_time_popularity}">실시간 인기순위(Total)</div>
+                    <div class="table-header">
+                        <div class="text-wrapper" th:text="#{keyword}">키워드</div>
+                        <div class="div" th:text="#{Searchvolume}">검색량</div>
+                    </div>
+                    <div class="list">
+                        <div th:each="keywordItem, iterStat : ${keyword.content}">
+                            <button class="btn btn-primary btn-lg frame" type="button"
+                                    th:data-keyword="${keywordItem.keyword}"
+                                    onclick="submitKeyword(this.getAttribute('data-keyword'))">
+                                <div class="text-wrapper-3"
+                                     th:text="${iterStat.index + 1 + (currentTotalPage * 10)} + '. ' + ${keywordItem.keyword}">
+                                </div>
+                                <div class="text-wrapper-4" th:text="${keywordItem.total}"></div>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Total 페이지네이션 -->
+                    <div class="pagination-wrapper">
+                        <div class="pagination-dots">
+                            <th:block th:each="pageNum : ${#numbers.sequence(0, 6)}">
+                                <a th:href="@{/index(totalPage=${pageNum}, pcPage=${currentPcPage})}"
+                                   th:class="${pageNum == currentTotalPage ? 'dot active' : 'dot'}">
+                                </a>
+                            </th:block>
+                        </div>
                     </div>
                 </div>
-                <!-- Total 페이지네이션 -->
-                <div class="pagination-wrapper">
-                    <div class="pagination-dots">
-                        <th:block th:each="pageNum : ${#numbers.sequence(0, 6)}">
-                            <a th:href="@{/index(totalPage=${pageNum}, pcPage=${currentPcPage})}"
-                               th:class="${pageNum == currentTotalPage ? 'dot active' : 'dot'}">
-                            </a>
-                        </th:block>
+
+                <!-- 기간별 인기순위(PC) -->
+                <div class="element-table-2">
+                    <div class="title" th:text="#{period_popularity}">기간별 인기순위(PC)</div>
+                    <div class="table-header">
+                        <div class="text-wrapper" th:text="#{keyword}">키워드</div>
+                        <div class="div" th:text="#{Searchvolume}">검색량</div>
+                    </div>
+                    <div class="list">
+                        <div th:each="keywordItem2, iterStat : ${keyword2.content}">
+                            <button class="btn btn-primary btn-lg frame" type="button"
+                                    th:data-keyword="${keywordItem2.keyword}"
+                                    onclick="submitKeyword(this.getAttribute('data-keyword'))">
+                                <div class="text-wrapper-3"
+                                     th:text="${iterStat.index + 1 + (currentPcPage * 10)} + '. ' + ${keywordItem2.keyword}">
+                                </div>
+                                <div class="text-wrapper-4" th:text="${keywordItem2.pc}"></div>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- PC 페이지네이션 -->
+                    <div class="pagination-wrapper">
+                        <div class="pagination-dots">
+                            <th:block th:each="pageNum : ${#numbers.sequence(0, 6)}">
+                                <a th:href="@{/index(totalPage=${currentTotalPage}, pcPage=${pageNum})}"
+                                   th:class="${pageNum == currentPcPage ? 'dot active' : 'dot'}">
+                                </a>
+                            </th:block>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 기간별 인기순위(PC) -->
-            <div class="element-table-2">
-                <div class="title" th:text="#{period_popularity}">기간별 인기순위(PC)</div>
-                <div class="table-header">
-                    <div class="text-wrapper" th:text="#{keyword}">키워드</div>
-                    <div class="div" th:text="#{Searchvolume}">검색량</div>
-                </div>
-                <div class="list">
-                    <div th:each="keywordItem2, iterStat : ${keyword2.content}">
-                        <button class="btn btn-primary btn-lg frame" type="button"
-                                th:data-keyword="${keywordItem2.keyword}"
-                                onclick="submitKeyword(this.getAttribute('data-keyword'))">
-                            <div class="text-wrapper-3"
-                                 th:text="${iterStat.index + 1 + (currentPcPage * 10)} + '. ' + ${keywordItem2.keyword}">
-                            </div>
-                            <div class="text-wrapper-4" th:text="${keywordItem2.pc}"></div>
-                        </button>
-                    </div>
-                </div>
-                <!-- PC 페이지네이션 -->
-                <div class="pagination-wrapper">
-                    <div class="pagination-dots">
-                        <th:block th:each="pageNum : ${#numbers.sequence(0, 6)}">
-                            <a th:href="@{/index(totalPage=${currentTotalPage}, pcPage=${pageNum})}"
-                               th:class="${pageNum == currentPcPage ? 'dot active' : 'dot'}">
-                            </a>
-                        </th:block>
-                    </div>
-                </div>
+            <div class="element-table-3">
+                <div class="title" th:text="#{trending_videos}">YouTube 인기 급상승 동영상</div>
+                <ul id="trendingVideos" class="list-group">
+                    <!-- 동영상 목록이 여기에 표시됩니다 -->
+                </ul>
             </div>
-        </div>
-
-        <div class="element-table-3">
-            <div class="title" th:text="#{trending_videos}">YouTube 인기 급상승 동영상</div>
-            <ul id="trendingVideos" class="list-group">
-                <!-- 동영상 목록이 여기에 표시됩니다 -->
-            </ul>
-        </div>
-
-        <!--    워드클라우드 펼치기 버튼    -->
-        <div class="word-cloud-toggle">
-            <button id="toggleWordCloudButton" class="btn btn-dark">워드 클라우드 펼치기</button>
         </div>
     </div>
 
-    <div class="word-cloud">
-        <!-- 워드 클라우드 컨테이너 -->
-        <div id="wordCloudContainer" style="width: 100%; height: 95vh;"></div>
+    <div class="section">
+        <div class="word-cloud">
+            <!-- 워드 클라우드 컨테이너 -->
+            <div id="wordCloudContainer" style="width: 100%; height: 95vh;"></div>
 
-        <!-- JSON 형식으로 데이터를 Thymeleaf에서 전달 -->
-        <script th:inline="javascript">
-            var keywordCloudData = /*[[${keywordCloudData}]]*/ '[]';
-            keywordCloudData = JSON.parse(keywordCloudData);
-        </script>
+            <!-- JSON 형식으로 데이터를 Thymeleaf에서 전달 -->
+            <script th:inline="javascript">
+                var keywordCloudData = /*[[${keywordCloudData}]]*/ '[]';
+                keywordCloudData = JSON.parse(keywordCloudData);
+            </script>
 
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                if (keywordCloudData.length > 0) {
-                    const formattedData = keywordCloudData.map(item => ({
-                        x: item.keyword,
-                        value: item.total
-                    }));
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    if (keywordCloudData.length > 0) {
+                        const formattedData = keywordCloudData.map(item => ({
+                            x: item.keyword,
+                            value: item.total
+                        }));
 
-                    anychart.onDocumentReady(function () {
-                        anychart.theme("pastel");
-                        const chart = anychart.tagCloud(formattedData);
-                        chart.angles([0]);
-                        chart.container("wordCloudContainer");
+                        anychart.onDocumentReady(function () {
+                            anychart.theme("pastel");
+                            const chart = anychart.tagCloud(formattedData);
+                            chart.angles([0]);
+                            chart.container("wordCloudContainer");
 
-                        // 배경 변경
-                        chart.background().fill({
-                            keys: ["#C4E1F6", "#f2eafa"], // 그라데이션 컬러
-                            angle: 90 // 그라데이션 각도
+                            // 배경 변경
+                            chart.background().fill({
+                                keys: ["#C4E1F6", "#f2eafa"], // 그라데이션 컬러
+                                angle: 90 // 그라데이션 각도
+                            });
+
+                            // 단어 클릭 이벤트 추가
+                            chart.listen("pointClick", function (e) {
+                                const keyword = e.point.get("x");
+                                // 키워드를 포함한 URL로 이동
+                                window.location.href = `/searchKeyword?keyword_search=${keyword}`;
+                            });
+
+                            chart.draw();
                         });
-
-                        // 단어 클릭 이벤트 추가
-                        chart.listen("pointClick", function (e) {
-                            const keyword = e.point.get("x");
-                            // 키워드를 포함한 URL로 이동
-                            window.location.href = `/searchKeyword?keyword_search=${keyword}`;
-                        });
-
-                        chart.draw();
-                    });
-                } else {
-                    document.getElementById("wordCloudContainer").innerHTML = "워드 클라우드 데이터를 로드할 수 없습니다.";
-                }
-            });
-        </script>
+                    } else {
+                        document.getElementById("wordCloudContainer").innerHTML = "워드 클라우드 데이터를 로드할 수 없습니다.";
+                    }
+                });
+            </script>
+        </div>
     </div>
 </div>
 
@@ -348,20 +353,14 @@
             history.replaceState({}, '', currentUrl);
         }
     });
-    document.addEventListener("DOMContentLoaded", function () {
-
-        // 워드 클라우드 토글
-        const wordCloudContainer = document.getElementById("wordCloudContainer");
-        const toggleButton = document.getElementById("toggleWordCloudButton");
-
-        toggleButton.addEventListener("click", function () {
-            if (wordCloudContainer.style.display === "none") {
-                wordCloudContainer.style.display = "block";
-                toggleButton.textContent = "워드 클라우드 접기";
-            } else {
-                wordCloudContainer.style.display = "none";
-                toggleButton.textContent = "워드 클라우드 펼치기";
-            }
+    $(document).ready(function () {
+        console.log("Initializing fullPage.js");
+        $('#fullpage').fullpage({
+            // fullPage.js 옵션 설정
+            navigation: true, // 오른쪽에 내비게이션 점 표시
+            navigationPosition: 'right', // 내비게이션 점 위치
+            scrollingSpeed: 1500, // 스크롤 속도
+            // scrollOverflow: true,
         });
     });
 </script>
