@@ -78,7 +78,7 @@
 <div class="box" id="fullpage">
     <div class="section">
         <div class="intro-section" style="margin: auto">
-            <h2 class="input-header"><strong>이슈마켓,</strong>실시간 인기 키워드를<br><br>빠르고 간편하게 확인할 수 있는 트렌드 플랫폼</h2><br>
+            <h2 class="input-header" th:utext="#{trend.platform.description}"><strong>이슈마켓,</strong>실시간 인기 키워드를<br><br>빠르고 간편하게 확인할 수 있는 트렌드 플랫폼</h2><br>
             <div class="element-input-field-with">
                 <form id="keywordForm" action="/searchKeyword" method="post" class="d-flex">
                     <div class="form-group mr-2" style="flex: 1;">
@@ -94,8 +94,8 @@
 
     <div class="section scrollable">
         <div class="scroll-box">
-            <h2 class="scroll-box-header">&nbsp;&nbsp;&nbsp;<strong>키워드</strong> 🔥</h2>
-            <h2 class="scroll-box-sub-header">지금 가장 인기있는 키워드를 살펴보세요!</h2>
+            <h2 class="scroll-box-header">&nbsp;&nbsp;&nbsp;<strong th:text="#{keyword}">키워드</strong> 🔥</h2>
+            <h2 class="scroll-box-sub-header" th:text="#{keyword_comment}">지금 가장 인기있는 키워드를 살펴보세요!</h2>
             <div class="element-tables">
                 <!-- 실시간 인기순위(Total) -->
                 <div class="element-table">

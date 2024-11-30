@@ -47,7 +47,7 @@
 <div class="element-input-field-with">
     <form id="keywordForm" action="/searchKeyword" method="post" class="d-flex">
         <div class="form-group mr-2" style="flex: 1;">
-            <input type="text" id="keyword_search" name="keyword_search" class="form-control" placeholder="검색할 키워드를 입력하세요" required>
+            <input type="text" id="keyword_search" name="keyword_search" class="form-control" th:placeholder="#{search_placeholder}" required>
         </div>
         <button type="submit" class="btn btn-dark bigbutton">
             <div class="text-wrapper-12" th:text="#{submit}">Submit</div>
