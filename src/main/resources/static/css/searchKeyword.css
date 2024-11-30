@@ -67,6 +67,10 @@ pre {
     word-wrap: break-word;
 }
 
+#keywordData {
+    overflow-y: hidden;
+}
+
 .keyword-stats {
     display: flex;
     justify-content: space-around;
