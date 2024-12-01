@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="ko" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>관리자 페이지</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/globals.css">
-    <link rel="stylesheet" href="/css/admin_style.css"> <!-- CSS 파일 링크 -->
+    <link rel="stylesheet" href="/css/admin_style.css">
 </head>
 <body>
 <div class="header-wrapper" id="header-wrapper">
@@ -14,10 +14,10 @@
         <button type="button" class="btn btn-light" id="menu-button">
             <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/list.svg" />
         </button>
-        <button class="issue-market-title btn btn-link d-flex align-items-center" id="issue-market-title" onclick="window.location.href='/index'">
+        <a class="issue-market-title btn btn-link d-flex align-items-center" href="/index">
             <img src="/css/image/logo_black.png" alt="Logo" style="height: 60px; width: 110px; margin-left: 5px">
             <span>&nbsp;Issue Market</span>
-        </button>
+        </a>
     </div>
     <div class="items">
         <button type="button" class="btn btn-danger" sec:authorize="hasAuthority('ROLE_ADMIN')" onclick="location.href='/admin'">
@@ -32,24 +32,78 @@
     </div>
 </div>
 
-<main>
-    <!-- 회원 조회 버튼 추가 -->
-    <div class="add-user">
-        <button type="button" id="fetch-users-btn">회원 조회</button>
+<div class="sidebar-wrapper" id="sidebar">
+    <div class="sidebar-menu">
+        <a href="/admin" class="sidebar-item" id="user-list-link">회원 조회</a>
+        <!-- 추가 메뉴 항목이 여기에 추가될 수 있습니다 -->
     </div>
+</div>
 
-
+<main>
+    <div class="user-list-container">
+        <!-- 회원 목록이 여기에 표시됩니다 -->
+        <table class="user-table">
+            <thead>
+            <tr>
+                <th>아이디</th>
+                <th>이름</th>
+                <th>성별</th>
+                <th>생년월일</th>
+            </tr>
+            </thead>
+            <tbody id="user-table-body">
+            <tr th:each="user : ${users}">
+                <td th:text="${user.userId}"></td>
+                <td th:text="${user.userName}"></td>
+                <td th:text="${user.gender ? '남' : '여'}"></td>
+                <td th:text="${user.userBirth}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </main>
 
-<!-- JavaScript 추가 -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const fetchUsersBtn = document.getElementById('fetch-users-btn');
+        const menuButton = document.getElementById('menu-button');
+        const sidebar = document.getElementById('sidebar');
+        const userListContainer = document.getElementById('user-table-body');
+        const userListLink = document.getElementById('user-list-link');
 
-        // 회원 조회 버튼 클릭 시 사용자 목록 페이지로 이동
-        fetchUsersBtn.addEventListener('click', function () {
-            window.location.href = '/admin/users'; // 회원 목록 페이지로 리다이렉트
+        // 사이드바 메뉴 토글
+        menuButton.addEventListener('click', function () {
+            sidebar.classList.toggle('sidebar-visible');
         });
+
+        // 회원 목록 가져오기 및 표시
+        function fetchUserList() {
+            fetch('/admin/users')
+                .then(response => response.json())
+                .then(users => {
+                    let userListHtml = '';
+                    users.forEach(user => {
+                        userListHtml += `
+                            <tr>
+                                <td>${user.userId}</td>
+                                <td>${user.userName}</td>
+                                <td>${user.gender ? '남' : '여'}</td>
+                                <td>${user.userBirth}</td>
+                            </tr>
+                        `;
+                    });
+                    userListContainer.innerHTML = userListHtml;
+                })
+                .catch(error => console.error('Error fetching user list:', error));
+        }
+
+        // 사이드바 "회원 조회" 메뉴 클릭 시 페이지 리로드
+        userListLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            location.reload();
+        });
+
+        // 페이지 로드 시 자동으로 회원 목록 가져오기
+        fetchUserList();
     });
 </script>
 </body>

@@ -6,7 +6,7 @@
     <title>회원 목록</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/globals.css">
-    <link rel="stylesheet" href="/css/admin_style.css"> <!-- CSS 파일 링크 -->
+    <link rel="stylesheet" href="/css/admin_style.css">
 </head>
 <body>
 <div class="header-wrapper" id="header-wrapper">
@@ -14,10 +14,10 @@
         <button type="button" class="btn btn-light" id="menu-button">
             <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/list.svg" />
         </button>
-        <button class="issue-market-title btn btn-link d-flex align-items-center" id="issue-market-title" onclick="window.location.href='/index'">
+        <a class="issue-market-title btn btn-link d-flex align-items-center" href="/index">
             <img src="/css/image/logo_black.png" alt="Logo" style="height: 60px; width: 110px; margin-left: 5px">
             <span>&nbsp;Issue Market</span>
-        </button>
+        </a>
     </div>
     <div class="items">
         <button type="button" class="btn btn-danger" sec:authorize="hasAuthority('ROLE_ADMIN')" onclick="location.href='/admin'">
@@ -88,12 +88,11 @@
         const rows = document.querySelectorAll("tbody tr"); // 테이블의 모든 행 선택
 
         rows.forEach(row => {
-            const userCode = row.querySelector("td:nth-child(1)").innerText.toLowerCase(); // 회원 코드
-            const userId = row.querySelector("td:nth-child(2)").innerText.toLowerCase(); // 아이디
-            const userName = row.querySelector("td:nth-child(3)").innerText.toLowerCase(); // 이름
+            const userId = row.querySelector("td:nth-child(1)").innerText.toLowerCase(); // 아이디
+            const userName = row.querySelector("td:nth-child(2)").innerText.toLowerCase(); // 이름
 
-            // 입력값이 회원 코드, 아이디 또는 이름에 포함되면 행을 보이도록 설정
-            if (userCode.includes(input) || userId.includes(input) || userName.includes(input)) {
+            // 입력값이 아이디 또는 이름에 포함되면 행을 보이도록 설정
+            if (userId.includes(input) || userName.includes(input)) {
                 row.style.display = ""; // 행 보이기
             } else {
                 row.style.display = "none"; // 행 숨기기
