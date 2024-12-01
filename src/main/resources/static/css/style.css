@@ -9,12 +9,18 @@ body, html {
   background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
 }
 
+.section:nth-child(2) {
+  min-height: 100vh;
+}
+
 .word-cloud{
-  width: 100%;
+  /*width: 100%;*/
+  width: 70%;
   background-color: #f2eafa;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: auto;
   /*padding: 50px 0;*/
 }
 
@@ -28,7 +34,8 @@ body, html {
 }
 
 .intro-section {
-  height: 1000px;
+  /*height: 1000px;*/
+  height: calc(100% - 60px);
   display: flex;
   flex-direction: column;
   align-items: center;
