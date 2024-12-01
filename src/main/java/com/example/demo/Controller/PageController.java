@@ -13,6 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -199,12 +203,32 @@ public class PageController {
     /** 엑셀 다운로드 **/
     @PostMapping("/exportExcel")
     public ResponseEntity<byte[]> exportExcel(@RequestBody Map<String, Object> data) throws IOException {
-        byte[] excelData = testService.generateExcelFile(data);
 
+        //키워드 명 가져오기
+        String keywordSearch = (String) data.get("keyword_search");
+
+        // 현재 날짜 가져오기
+        String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        String currentTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HHmm"));
+
+        // 파일 이름 생성
+        String fileName = String.format("%s_%s_%s.xlsx", keywordSearch, currentDate, currentTime);
+
+        // 파일 이름 UTF-8 인코딩
+        String encodedFileName = URLEncoder.encode(fileName, "UTF-8").replace("+", "%20");
+
+        // Excel 데이터 생성
+        byte[] excelFileData = testService.generateExcelFile(data);
+        System.out.println("Generated file name: " + fileName);
+        System.out.println("Excel data size: " + excelFileData.length);
+
+        // 파일 다운로드 응답 생성
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=exported_data.xlsx")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + encodedFileName + "\"")
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .body(excelData);
+                .body(excelFileData);
+
+
     }
 
 

@@ -430,56 +430,58 @@
 
     });
 
-    //엑셀 다운로드 버튼 클릭 이벤트
-    document.getElementById('excelButton').addEventListener('click', function() {
+    document.getElementById('excelButton').addEventListener('click', function () {
         if (!data) {
             alert("데이터가 아직 로드되지 않았습니다. 잠시 후 다시 시도해주세요");
             return;
         }
 
-        // HTML에서 keyword_search 값을 가져오기
         const keywordSearchElement = document.querySelector('#keywordSearch');
+        const keywordSearch = keywordSearchElement ? keywordSearchElement.innerText : 'default';
 
-        if (keywordSearchElement) {
-            console.log('키워드 요소를 찾았습니다:', keywordSearchElement.innerText);
-        } else {
-            console.error('키워드 요소를 찾을 수 없습니다.');
-        }
-
-        // data 객체에 keyword_search 추가
         const requestData = {
-            ...data, // 기존 데이터
-            keyword_search: keywordSearchElement.innerText // keyword_search 추가
+            ...data,
+            keyword_search: keywordSearch,
         };
 
         fetch('/exportExcel', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(requestData)
+            body: JSON.stringify(requestData),
         })
             .then(response => {
-                if (response.status === 401) { // 비회원인 경우
+                if (response.status === 401) {
                     alert("회원 전용 기능입니다. 로그인 해주세요.");
-                    window.location.href = "/login"; // 로그인 페이지로 리다이렉트
+                    window.location.href = "/login";
                     return;
                 } else if (!response.ok) {
                     throw new Error("엑셀 내보내기 중 오류가 발생했습니다.");
                 }
-                return response.blob();
-            })
-            .then(blob => {
-                if (blob) {
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'data_export.xlsx';
-                    a.click();
-                    a.remove();
+
+                const contentDisposition = response.headers.get('Content-Disposition');
+                let fileName = 'export.xlsx'; // 기본 파일 이름
+
+                // Content-Disposition에서 파일 이름 추출
+                if (contentDisposition) {
+                    const matches = contentDisposition.match(/filename\*?=['"]?([^;'"]+)['"]?/);
+                    if (matches && matches[1]) {
+                        fileName = decodeURIComponent(matches[1].replace('UTF-8\'\'', ''));
+                    }
                 }
+
+                return response.blob().then(blob => ({ blob, fileName }));
             })
-            .catch(error => console.error('엑셀 내보내기 중 오류', error));
+            .then(({ blob, fileName }) => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileName;
+                a.click();
+                a.remove();
+            })
+            .catch(error => console.error('엑셀 내보내기 중 오류:', error));
     });
 
     function changeLanguage(lang) {
