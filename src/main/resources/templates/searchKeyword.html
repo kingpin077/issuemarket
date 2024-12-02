@@ -18,6 +18,14 @@
 
 </head>
 <body>
+<div id="loadingOverlay" style="display: none;">
+    <div class="spinner-container">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <p class="loading-message">다운로드 중입니다. 잠시만 기다려 주세요...</p>
+    </div>
+</div>
 <div class="header-wrapper" id="header-wrapper">
     <div class="menu-button-wrapper">
         <button type="button" class="btn btn-light" id="menu-button">
@@ -455,6 +463,10 @@
             return;
         }
 
+        // 로딩 오버레이 표시
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        loadingOverlay.style.display = 'flex';
+
         const keywordSearchElement = document.querySelector('#keywordSearch');
         const keywordSearch = keywordSearchElement ? keywordSearchElement.innerText : 'default';
 
@@ -500,7 +512,11 @@
                 a.click();
                 a.remove();
             })
-            .catch(error => console.error('엑셀 내보내기 중 오류:', error));
+            .catch(error => console.error('엑셀 내보내기 중 오류:', error))
+            .finally(() => {
+            // 로딩 오버레이 숨기기
+            loadingOverlay.style.display = 'none';
+        });
     });
 
     function changeLanguage(lang) {
