@@ -154,6 +154,79 @@ public class PageController {
         return "actor";
     }
 
+    @GetMapping("/movie")
+    public String movie(@RequestParam(defaultValue = "0") int page, Model model) {
+        Page<TestDTO> webtoons = testService.findAllByTagOrderByDescPaged("webtoon", page);
+
+        // NewsApi 호출 로직
+        for (TestDTO webtoon : webtoons.getContent()) {
+            try {
+                ResponseEntity<Map<String, Object>> responseEntity =
+                        newsApiController.search(webtoon.getKeyword(), "1", "1", "sim");
+
+                String jsonResponse = (String) responseEntity.getBody().get("naverData");
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode rootNode = mapper.readTree(jsonResponse);
+                JsonNode itemsNode = rootNode.path("items");
+
+                if (itemsNode.isArray() && itemsNode.size() > 0) {
+                    JsonNode firstArticle = itemsNode.get(0);
+                    String title = firstArticle.path("title").asText()
+                            .replaceAll("<.*?>", "").replaceAll("&quot;", "");
+                    String link = firstArticle.path("link").asText().replace("\\", "");
+
+                    webtoon.setArticleUrl(link);
+                    webtoon.setArticleTitle(title);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        int totalPages = Math.min(webtoons.getTotalPages(), 7); // 최대 7페이지로 제한
+
+        model.addAttribute("keywords", webtoons.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        return "movie";
+    }
+
+    @GetMapping("/music")
+    public String music(@RequestParam(defaultValue = "0") int page, Model model) {
+        Page<TestDTO> webtoons = testService.findAllByTagOrderByDescPaged("webtoon", page);
+
+        // NewsApi 호출 로직
+        for (TestDTO webtoon : webtoons.getContent()) {
+            try {
+                ResponseEntity<Map<String, Object>> responseEntity =
+                        newsApiController.search(webtoon.getKeyword(), "1", "1", "sim");
+
+                String jsonResponse = (String) responseEntity.getBody().get("naverData");
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode rootNode = mapper.readTree(jsonResponse);
+                JsonNode itemsNode = rootNode.path("items");
+
+                if (itemsNode.isArray() && itemsNode.size() > 0) {
+                    JsonNode firstArticle = itemsNode.get(0);
+                    String title = firstArticle.path("title").asText()
+                            .replaceAll("<.*?>", "").replaceAll("&quot;", "");
+                    String link = firstArticle.path("link").asText().replace("\\", "");
+
+                    webtoon.setArticleUrl(link);
+                    webtoon.setArticleTitle(title);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        int totalPages = Math.min(webtoons.getTotalPages(), 7); // 최대 7페이지로 제한
+
+        model.addAttribute("keywords", webtoons.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        return "music";
+    }
     @GetMapping("/wordCloud")
     public String wordCloudPage(Model model) {
         // 키워드의 총 검색량 순위를 내림차순으로 가져옴

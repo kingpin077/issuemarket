@@ -271,7 +271,7 @@
                 const relatedKeywordsContainer = document.getElementById('relatedKeywordsContainer');
                 const relatedKeywords = data.relatedKeywords;
 
-                if (relatedKeywords && Array.isArray(relatedKeywords) && Array.isArray(relatedKeywords).length > 0) {
+                if (relatedKeywords && Array.isArray(relatedKeywords) && relatedKeywords.length > 0) {
                     const ul = document.createElement('ul'); // <ul> 태그 생성
 
                     relatedKeywords.forEach((keyword, index) => {
