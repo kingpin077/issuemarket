@@ -106,7 +106,6 @@ body, html {
 
 .scroll-box {
   width: 100%;
-  background-color: #f2eafa;
   display: flex;
   flex-direction: column;
   align-items: center;

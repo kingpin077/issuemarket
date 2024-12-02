@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="/css/substyle.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body>
 <div class="header-wrapper" id="header-wrapper">
     <div class="menu-button-wrapper">
@@ -25,6 +24,16 @@
         </button>
     </div>
     <div class="items">
+        <button id="header-search">
+            <div class="text-wrapper-12"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg></div>
+        </button>
+
+        <form id="keywordForm" action="/searchKeyword" method="post" class="d-flex">
+            <div class="header-input">
+                <input type="text" id="keyword_search" name="keyword_search" class="form-control" th:placeholder="#{search_placeholder}" required>
+            </div>
+        </form>
+
         <button type="button" class="btn btn-danger" sec:authorize="hasAuthority('ADMIN')" onclick="location.href='/admin'">
             <div class="text-wrapper-17" th:text="#{admin_page}">관리자 페이지</div>
         </button>
@@ -43,99 +52,91 @@
         </div>
     </div>
 </div>
-
-<div class="element-input-field-with">
-    <form id="keywordForm" action="/searchKeyword" method="post" class="d-flex">
-        <div class="form-group mr-2" style="flex: 1;">
-            <input type="text" id="keyword_search" name="keyword_search" class="form-control" th:placeholder="#{search_placeholder}" required>
-        </div>
-        <button type="submit" class="btn btn-dark bigbutton">
-            <div class="text-wrapper-12" th:text="#{submit}">Submit</div>
-        </button>
-    </form>
-</div>
-
+<div class="horizontal-divider"></div>
 
 <div class="box">
-    <div class="group">
-        <div class="overlap-group">
-            <div class="homepage">
-                <div class="element-tables">
-                    <div class="element-table">
-                        <div class="title" th:text="#{real_time_popularity}">실시간 인기순위(Total)</div>
-                        <div class="table-header">
-                            <div class="text-wrapper" th:text="#{keyword}">키워드</div>
-                            <div class="div" th:text="#{Searchvolume}">검색량</div>
-                        </div>
-                        <div class="list">
-                            <div th:each="keywordItem, iterStat : ${keywords}">
-                                <button class="keyword-button frame"
-                                        onclick="expandButton(this)"
-                                        th:attr="data-keyword=${keywordItem.keyword}">
-                                    <div class="keyword-wrapper d-flex justify-content-between align-items-center">
-                                        <!-- 순위 번호 계산 수정 -->
-                                        <div class="text-wrapper-3"
-                                             th:with="rank=${(currentPage * 10) + iterStat.index + 1}"
-                                             th:text="${rank} + '. ' + ${keywordItem.keyword}"
-                                             style="cursor: pointer;"
-                                             onclick="submitKeyword(this.getAttribute('data-keyword')); event.stopPropagation();"
-                                             th:attr="data-keyword=${keywordItem.keyword}">
-                                        </div>
-                                        <div class="text-wrapper-4 ml-2" th:text="${keywordItem.total}"></div>
-                                    </div>
-                                    <div class="related-keywords-graph" style="display: none;">
-                                        <canvas width="300" height="200"></canvas>
-                                    </div>
-                                    <div class="divider"></div>
-                                    <div class="article-url" th:if="${keywordItem.articleUrl}" style="display: none;">
-                                        기사 URL: <a th:href="${keywordItem.articleUrl}" th:text="${keywordItem.articleTitle}" target="_blank">기사 제목</a>
-                                    </div>
-                                </button>
+    <h2 class="webtoon-title" th:text="#{actor_title}"></h2>
+    <div class="element-tables">
+        <div class="element-table">
+            <div class="title" th:text="#{real_time_popularity}">실시간 인기순위(Total)</div>
+            <div class="table-header">
+                <div class="text-wrapper" th:text="#{keyword}">키워드</div>
+                <div class="div" th:text="#{Searchvolume}">검색량</div>
+            </div>
+            <div class="list">
+                <div th:each="keywordItem, iterStat : ${keywords}">
+                    <button class="keyword-button frame"
+                            onclick="expandButton(this)"
+                            th:attr="data-keyword=${keywordItem.keyword}">
+                        <div class="keyword-wrapper d-flex justify-content-between align-items-center">
+                            <div class="text-wrapper-3"
+                                 th:with="rank=${(currentPage * 10) + iterStat.index + 1}"
+                                 th:text="${rank} + '. ' + ${keywordItem.keyword}"
+                                 style="cursor: pointer;"
+                                 onclick="submitKeyword(this.getAttribute('data-keyword')); event.stopPropagation();"
+                                 th:attr="data-keyword=${keywordItem.keyword}">
                             </div>
+                            <div class="text-wrapper-4 ml-2" th:text="${keywordItem.total}"></div>
                         </div>
-                        <!-- 페이지네이션 -->
-                        <div class="pagination-wrapper">
-                            <div class="pagination-dots">
-                                <th:block th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
-                                    <a th:href="@{${#httpServletRequest.requestURI}(page=${pageNum})}"
-                                       th:class="${pageNum == currentPage ? 'dot active' : 'dot'}"
-                                       th:onclick="'updateActiveDot(this); return true;'">
-                                    </a>
-                                </th:block>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="element-header-navigation">
-                    <div class="element-sidebar" id="sidebar">
-                        <div class="top-divider"></div>
-                        <div class="list-3">
-                            <button class="menu-item" id="home-button">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg>
-                                <div class="text-wrapper-14" th:text="#{home}"></div>
-                            </button>
-                            <button class="menu-item" id="movie-button">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
-                                <div class="text-wrapper-14" th:text="#{movie}"></div>
-                            </button>
-                            <button class="menu-item" id="music-button">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
-                                <div class="text-wrapper-14" th:text="#{music}"></div>
-                            </button>
-                            <button class="menu-item" id="actor-button">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
-                                <div class="text-wrapper-14" th:text="#{actor}"></div>
-                            </button>
-                            <button class="menu-item" id="webtoon-button">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
-                                <div class="text-wrapper-14" th:text="#{webtoon}"></div>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="vertical-divider"></div>
+                        <div class="divider"></div>
+                    </button>
                 </div>
             </div>
+
+            <div class="pagination-wrapper">
+                <div class="pagination-dots">
+                    <th:block th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
+                        <a th:href="@{${#httpServletRequest.requestURI}(page=${pageNum})}"
+                           th:class="${pageNum == currentPage ? 'dot active' : 'dot'}"
+                           th:onclick="'updateActiveDot(this); return true;'">
+                        </a>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+        <div class="new-window">
+            <button class="close-button"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></button>
+            <h2> </h2>
+            <div class="related-keywords-graph" style="display: none;">
+                <canvas width="200" height="100"></canvas>
+            </div>
+            <div class="button-container">
+                <button class="explore-button"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF">
+                    <path d="m105-399-65-47 200-320 120 140 160-260 120 180 135-214 65 47-198 314-119-179-152 247-121-141-145 233Zm475 159q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29ZM784-80 676-188q-21 14-45.5 21t-50.5 7q-75 0-127.5-52.5T400-340q0-75 52.5-127.5T580-520q75 0 127.5 52.5T760-340q0 26-7 50.5T732-244l108 108-56 56Z"/></svg><p class ="explore-text">&nbsp;&nbsp;탐색</p></button>
+                <button class="search-button"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 48 48">
+                    <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path>
+                </svg><p class ="explore-text">&nbsp;&nbsp;검색</p></button>
+            </div>
+            <div id="newsContainer"></div>  <!-- 뉴스 기사를 담는 컨테이너 -->
+        </div>
+    </div>
+
+    <div class="element-header-navigation">
+        <div class="element-sidebar" id="sidebar">
+            <div class="top-divider"></div>
+            <div class="list-3">
+                <button class="menu-item" id="home-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg>&nbsp;
+                    <div class="text-wrapper-14" th:text="#{home}"></div>
+                </button>
+                <button class="menu-item" id="movie-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>&nbsp;
+                    <div class="text-wrapper-14" th:text="#{movie}"></div>
+                </button>
+                <button class="menu-item" id="music-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>&nbsp;
+                    <div class="text-wrapper-14" th:text="#{music}"></div>
+                </button>
+                <button class="menu-item" id="actor-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>&nbsp;
+                    <div class="text-wrapper-14" th:text="#{actor}"></div>
+                </button>
+                <button class="menu-item" id="webtoon-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>&nbsp;
+                    <div class="text-wrapper-14" th:text="#{webtoon}"></div>
+                </button>
+            </div>
+            <div class="vertical-divider"></div>
         </div>
     </div>
 </div>
@@ -156,9 +157,23 @@
             dots[currentPage].classList.add('active');
         }
     });
+
+    function submitKeyword(keyword) {
+        document.getElementById('keyword_search').value = keyword;
+        document.getElementById('keywordForm').submit();
+    }
 </script>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const headerSearchButton = document.getElementById('header-search');
+        const keywordForm = document.getElementById('keywordForm');
+
+        headerSearchButton.addEventListener('click', function () {
+            keywordForm.submit();
+        });
+    });
+
     document.addEventListener('DOMContentLoaded', function() {
         var menuButton = document.getElementById('menu-button');
         var sidebar = document.getElementById('sidebar');
@@ -177,11 +192,11 @@
         });
 
         document.getElementById('movie-button').addEventListener('click', function() {
-            alert("개발중인 페이지 입니다.");
+            window.location.href = '/movie';
         });
 
         document.getElementById('music-button').addEventListener('click', function() {
-            alert("개발중인 페이지 입니다.");
+            window.location.href = '/music';
         });
 
         document.getElementById('actor-button').addEventListener('click', function() {
@@ -209,19 +224,15 @@
     });
 
     function expandButton(button) {
-        const graphContainer = button.querySelector('.related-keywords-graph');
+        const newWindow = document.querySelector('.new-window'); // new-window 컨테이너 선택
+        const graphContainer = newWindow.querySelector('.related-keywords-graph');
         const canvas = graphContainer.querySelector('canvas');
-        const articleUrlDiv = button.querySelector('.article-url');
 
         if (button.classList.contains('expanded')) {
-            button.style.height = '48px';
             graphContainer.style.display = 'none';
             button.classList.remove('expanded');
-            articleUrlDiv.style.display = 'none';
         } else {
-            button.style.height = '400px';
             graphContainer.style.display = 'block';
-            articleUrlDiv.style.display = 'block'; // URL 항상 표시
             button.classList.add('expanded');
 
             // 그래프 데이터 가져오기
@@ -285,25 +296,73 @@
                 .catch(error => {
                     console.error('Error fetching ratio results:', error);
                 });
+
+            // 뉴스 API 호출
+            fetch(`/news?query=${keyword}`)
+                .then(newsResponse => newsResponse.json())
+                .then(newsData => {
+                    const newsContainer = document.getElementById('newsContainer');
+
+                    // 이전 기사 제거
+                    newsContainer.innerHTML = '';
+
+                    // JSON 파싱 및 데이터 출력
+                    let naverData = null;
+                    if (newsData.naverData) {
+                        try {
+                            naverData = JSON.parse(newsData.naverData);
+                        } catch (error) {
+                            console.error('Error parsing naverData:', error);
+                        }
+                    }
+
+                    // 뉴스 데이터 표시 부분 수정
+                    if (naverData && naverData.items && Array.isArray(naverData.items)) {
+                        // 최대 2개의 기사만 가져오기
+                        const maxArticles = 2;
+                        naverData.items.slice(0, maxArticles).forEach(article => {
+                            const newsItem = document.createElement('div');
+                            newsItem.classList.add('news-item');
+                            newsItem.innerHTML = `
+                    <div class="news-content">
+                        <a href="${article.link}" target="_blank">${article.title}</a>
+                        <p>${article.description}</p>
+                    </div>
+                `;
+                            newsContainer.appendChild(newsItem);
+                        });
+                    } else {
+                        console.error('News data is missing or invalid.');
+                    }
+
+                })
+                .catch(newsError => {
+                    console.error('Error fetching news:', newsError);
+                });
+
+
         }
     }
 
-
-    function submitKeyword(keyword) {
-        // 키워드 값으로 폼 필드 업데이트
-        document.getElementById('keyword_search').value = keyword; // 키워드 필드에 키워드 채움
-        document.getElementById('keywordForm').submit(); // 폼 제출
-    }
-
-    // 클릭 이벤트를 추가하여 detail 페이지로 이동하도록 설정
     document.querySelectorAll('.keyword-button .text-wrapper-3').forEach(wrapper => {
         wrapper.addEventListener('click', function(event) {
-            const button = this.closest('.keyword-button'); // 부모 버튼 요소를 찾기
-            const keyword = this.innerText.split('. ')[1]; // 키워드 가져오기 (형식: "1. 키워드")
-            submitKeyword(keyword); // 키워드 전송
-            event.stopPropagation(); // 부모 클릭 이벤트 방지
+            const button = this.closest('.keyword-button');
+            const keyword = this.innerText.split('. ')[1];
+            submitKeyword(keyword);
+            event.stopPropagation();
         });
     });
+
+
+    function saveKeyword(button) {
+        var keyword = button.getAttribute("data-keyword");
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/api/keywords", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        var data = JSON.stringify({keyword:keyword});
+        xhr.send(data);
+    }
+
 
     function changeLanguage(lang) {
         // 현재 URL 업데이트
@@ -333,6 +392,100 @@
         }
     });
 
+    document.addEventListener("DOMContentLoaded", () => {
+        const expandButtons = document.querySelectorAll(".keyword-button");
+        const elementTable = document.querySelector(".element-table");
+        const newWindow = document.querySelector(".new-window");
+        const closeButton = document.querySelector('.close-button');
+        const newWindowTitle = newWindow.querySelector('h2'); // new-window의 h2 요소
+        const graphContainer = newWindow.querySelector('.related-keywords-graph');
+        let isNewWindowOpen = false;
+        let lastClickedButton = null; // 마지막으로 클릭된 버튼 추적
+
+        expandButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                const keyword = button.querySelector(".text-wrapper-3").innerText.split(". ")[1]; // 버튼의 텍스트 값
+
+                // 동일한 버튼을 다시 클릭한 경우 new-window 닫기
+                if (button === lastClickedButton && isNewWindowOpen) {
+                    newWindow.classList.remove('visible');
+                    elementTable.classList.remove("shrunk");
+                    isNewWindowOpen = false;
+                    lastClickedButton = null; // 클릭 상태 초기화
+                    return;
+                }
+
+                // 다른 버튼을 클릭했거나 새로 열 때
+                lastClickedButton = button; // 현재 클릭된 버튼으로 갱신
+
+                // 제목 설정
+                newWindowTitle.innerText = keyword;
+
+                // new-window가 이미 열려 있을 때
+                if (isNewWindowOpen) {
+                    // 그래프 데이터를 업데이트
+                    updateGraphData(graphContainer, keyword);
+                }
+                // new-window를 처음 열 때
+                else {
+                    // new-window 열기
+                    newWindow.classList.add('visible');
+                    elementTable.classList.add("shrunk");
+                    isNewWindowOpen = true;
+
+                    // 그래프 데이터 로드
+                    updateGraphData(graphContainer, keyword);
+                }
+            });
+        });
+
+        // X 버튼 클릭 시 new-window 닫기
+        closeButton.addEventListener('click', () => {
+            newWindow.classList.remove('visible');
+            elementTable.classList.remove("shrunk");
+            isNewWindowOpen = false;
+            lastClickedButton = null; // 클릭 상태 초기화
+        });
+
+        const exploreButton = document.querySelector(".explore-button");
+        const searchButton = document.querySelector(".search-button");
+
+
+        // exploreButton 클릭 이벤트
+        exploreButton.addEventListener("click", () => {
+            // 현재 열린 키워드 값을 가져옴
+            const keyword = document.querySelector(".new-window h2").innerText;
+
+            if (keyword) {
+                // submitKeyword 함수를 호출하여 폼 제출
+                submitKeyword(keyword);
+            } else {
+                console.error("Keyword is missing.");
+            }
+        });
+
+        // submitKeyword 함수 정의
+        function submitKeyword(keyword) {
+            // 'keyword_search'라는 hidden input 필드의 값을 설정
+            document.getElementById('keyword_search').value = keyword;
+
+            // 'keywordForm'을 제출
+            document.getElementById('keywordForm').submit();
+        }
+
+        // search-button 클릭 이벤트
+        searchButton.addEventListener("click", () => {
+            // 현재 열린 키워드 값을 가져옴
+            const keyword = document.querySelector(".new-window h2").innerText;
+
+            if (keyword) {
+                // Google 검색 페이지로 이동
+                window.open(`https://www.google.com/search?q=${encodeURIComponent(keyword)}`, "_blank");
+            } else {
+                console.error("Keyword is missing.");
+            }
+        });
+    });
 </script>
 </body>
 </html>
