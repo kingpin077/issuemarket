@@ -273,6 +273,18 @@ public class PageController {
         return "searchKeyword";
     }
 
+    @PostMapping("/searchKeyword_en")
+    public String searchKeyword_en(@RequestParam("keyword_search") String keyword_search, Model model) {
+        model.addAttribute("keyword_search", keyword_search);
+        return "searchKeyword_en";
+    }
+
+    @GetMapping("/searchKeyword_en")
+    public String searchKeywordGet_en(@RequestParam("keyword_search") String keyword_search, Model model) {
+        model.addAttribute("keyword_search", keyword_search);
+        return "searchKeyword_en";
+    }
+
     /** 엑셀 다운로드 **/
     @PostMapping("/exportExcel")
     public ResponseEntity<byte[]> exportExcel(@RequestBody Map<String, Object> data) throws IOException {

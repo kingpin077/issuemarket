@@ -440,8 +440,8 @@ body, html {
 }
 
 .dot {
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
   background-color: #ccc;
   cursor: pointer;
