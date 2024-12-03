@@ -157,11 +157,33 @@ public class TestService {
                 // naverData 섹션 제목
                 Row naverTitleRow = sheet.createRow(rowNum++);
                 Cell keywordCell = naverTitleRow.createCell(0);
+
                 naverTitleRow.createCell(0).setCellValue("키워드");
-                keywordCell.setCellStyle(boldCellStyle);
+                // Bold 스타일과 배경색 설정
+                CellStyle boldAndColoredCellStyle = workbook.createCellStyle();
+                // 기존 boldFont 재사용
+                boldAndColoredCellStyle.setFont(boldFont);
+
+                // 배경색 설정
+                XSSFColor backgroundColor = new XSSFColor(new java.awt.Color(166, 166, 166), null); // #A6A6A6 색상
+                ((XSSFCellStyle) boldAndColoredCellStyle).setFillForegroundColor(backgroundColor);
+                boldAndColoredCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+                // 스타일 적용
+                keywordCell.setCellStyle(boldAndColoredCellStyle);
+
                 naverTitleRow.createCell(1).setCellValue(keyword);
 
                 sheet.createRow(rowNum++); // 빈 행 추가
+
+                // Bold 스타일과 새로운 배경색(#FFFF00) 설정 (for문 밖에서 정의)
+                CellStyle boldAndYellowCellStyle = workbook.createCellStyle();
+                boldAndYellowCellStyle.setFont(boldFont); // 기존 boldFont 재사용
+
+                // 배경색 설정
+                XSSFColor yellowBackgroundColor = new XSSFColor(new java.awt.Color(255, 255, 0), null); // #FFFF00 색상
+                ((XSSFCellStyle) boldAndYellowCellStyle).setFillForegroundColor(yellowBackgroundColor);
+                boldAndYellowCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
 
                 // naverData 값 작성
                 for (Map.Entry<String, Object> entry : naverData.entrySet()) {
@@ -187,6 +209,7 @@ public class TestService {
                     }
 
                     row.createCell(0).setCellValue(label); // 레이블 설정
+                    row.getCell(0).setCellStyle(boldAndYellowCellStyle); // 스타일 적용
                     row.createCell(1).setCellValue(entry.getValue() != null ? entry.getValue().toString() : ""); // 값 설정
                 }
                 sheet.createRow(rowNum++); // 빈 행 추가
@@ -199,13 +222,31 @@ public class TestService {
                 // Gender 데이터 작성
                 Row genderTitleRow = sheet.createRow(rowNum++);
                 genderTitleRow.createCell(0).setCellValue("성별 통계");
+                // Bold 스타일 적용 (배경색 없음)
+                CellStyle boldOnlyCellStyle = workbook.createCellStyle();
+                boldOnlyCellStyle.setFont(boldFont); // 기존 boldFont 재사용
+                // 스타일 적용
+                genderTitleRow.getCell(0).setCellStyle(boldOnlyCellStyle);
+
                 Map<String, Integer> genderData = (Map<String, Integer>) kakaoData.get("gender");
                 Row genderRow = sheet.createRow(rowNum++);
+
+                // Bold 스타일과 배경색(#E97132) 설정
+                CellStyle boldAndOrangeCellStyle = workbook.createCellStyle();
+                boldAndOrangeCellStyle.setFont(boldFont); // 기존 boldFont 재사용
+
+                // 배경색 설정
+                XSSFColor orangeBackgroundColor = new XSSFColor(new java.awt.Color(233, 113, 50), null); // #E97132 색상
+                ((XSSFCellStyle) boldAndOrangeCellStyle).setFillForegroundColor(orangeBackgroundColor);
+                boldAndOrangeCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
                 genderRow.createCell(0).setCellValue("남성");
+                genderRow.getCell(0).setCellStyle(boldAndOrangeCellStyle); // Bold와 배경색 적용
                 Cell maleCell = genderRow.createCell(1);
                 maleCell.setCellValue(genderData.get("male") / 100.0);  // 백분율로 계산
                 maleCell.setCellStyle(percentStyle);
                 genderRow.createCell(2).setCellValue("여성");
+                genderRow.getCell(2).setCellStyle(boldAndOrangeCellStyle); // Bold와 배경색 적용
                 Cell femaleCell = genderRow.createCell(3);
                 femaleCell.setCellValue(genderData.get("female") / 100.0);  // 백분율로 계산
                 femaleCell.setCellStyle(percentStyle);
@@ -215,12 +256,26 @@ public class TestService {
                 // Age 데이터 작성
                 Row ageTitleRow = sheet.createRow(rowNum++);
                 ageTitleRow.createCell(0).setCellValue("연령별 통계");
+                // Bold 스타일 적용 (배경색 없음)
+                boldOnlyCellStyle.setFont(boldFont); // 기존 boldFont 재사용
+                ageTitleRow.getCell(0).setCellStyle(boldOnlyCellStyle);
 
                 Map<String, Integer> ageData = (Map<String, Integer>) kakaoData.get("age");
                 int startRow = rowNum;
+
+                // Bold 스타일과 배경색(#4EA72E) 설정 (for문 밖에서 한 번만 생성)
+                CellStyle boldAndGreenCellStyle = workbook.createCellStyle();
+                boldAndGreenCellStyle.setFont(boldFont); // 기존 boldFont 재사용
+
+                // 배경색 설정
+                XSSFColor greenBackgroundColor = new XSSFColor(new java.awt.Color(78, 167, 46), null); // #4EA72E 색상
+                ((XSSFCellStyle) boldAndGreenCellStyle).setFillForegroundColor(greenBackgroundColor);
+                boldAndGreenCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
                 for (Map.Entry<String, Integer> entry : ageData.entrySet()) {
                     Row ageRow = sheet.createRow(rowNum++);
                     ageRow.createCell(0).setCellValue(entry.getKey() + "대");
+                    ageRow.getCell(0).setCellStyle(boldAndGreenCellStyle); // Bold와 배경색 적용
 
                     Cell ageCell = ageRow.createCell(1);
                     ageCell.setCellValue(entry.getValue() / 100.0);  // 백분율로 계산
@@ -251,25 +306,45 @@ public class TestService {
 
                 pieData.setVaryColors(true); // 각 조각의 색상 다르게 설정
                 chart.plot(pieData);
+                sheet.createRow(rowNum++); // 빈 행 추가
             }
 
             // 3. monthlyPcQcCnt 및 monthlyMobileQcCnt 추가
             Integer monthlyPcQcCnt = (Integer) data.get("monthlyPcQcCnt");
             Integer monthlyMobileQcCnt = (Integer) data.get("monthlyMobileQcCnt");
             if (monthlyPcQcCnt != null || monthlyMobileQcCnt != null) {
-                Row monthlyTitleRow = sheet.createRow(rowNum++);
+                Row deviceSearchTitleRow = sheet.createRow(rowNum++);
+
+                Cell deviceSearchTitleCell = deviceSearchTitleRow.createCell(0);
+
+                deviceSearchTitleCell.setCellValue("기기별 검색량");
+
+                // Bold 스타일 적용
+                CellStyle boldOnlyCellStyle = workbook.createCellStyle();
+                boldOnlyCellStyle.setFont(boldFont); // 기존 boldFont 재사용
+                deviceSearchTitleCell.setCellStyle(boldOnlyCellStyle);
+
+                // Bold 스타일과 배경색(#E49EDD) 설정 (for문 밖에서 한 번 생성)
+                CellStyle boldAndPinkCellStyle = workbook.createCellStyle();
+                boldAndPinkCellStyle.setFont(boldFont); // 기존 boldFont 재사용
+                XSSFColor pinkBackgroundColor = new XSSFColor(new java.awt.Color(228, 158, 221), null); // #E49EDD 색상
+                ((XSSFCellStyle) boldAndPinkCellStyle).setFillForegroundColor(pinkBackgroundColor);
+                boldAndPinkCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
                 if (monthlyPcQcCnt != null) {
                     Row pcRow = sheet.createRow(rowNum++);
                     pcRow.createCell(0).setCellValue("PC 검색량");
+                    pcRow.getCell(0).setCellStyle(boldAndPinkCellStyle); // 스타일 적용
                     pcRow.createCell(1).setCellValue(monthlyPcQcCnt);
                 }
 
                 if (monthlyMobileQcCnt != null) {
                     Row mobileRow = sheet.createRow(rowNum++);
                     mobileRow.createCell(0).setCellValue("모바일 검색량");
+                    mobileRow.getCell(0).setCellStyle(boldAndPinkCellStyle); // 스타일 적용
                     mobileRow.createCell(1).setCellValue(monthlyMobileQcCnt);
                 }
+
 
                 sheet.createRow(rowNum++); // 빈 행 추가
             }
@@ -279,18 +354,30 @@ public class TestService {
             if (ratioResults != null && !ratioResults.isEmpty()) {
                 Row ratioTitleRow = sheet.createRow(rowNum++);
                 ratioTitleRow.createCell(0).setCellValue("기간별 검색량");
-
+                ratioTitleRow.getCell(0).setCellStyle(boldCellStyle);
                 Row ratioHeaderRow = sheet.createRow(rowNum++);
                 ratioHeaderRow.createCell(0).setCellValue("날짜");
+                ratioHeaderRow.getCell(0).setCellStyle(boldCellStyle); // "날짜" 셀에 Bold 적용
                 ratioHeaderRow.createCell(1).setCellValue("값");
+                ratioHeaderRow.getCell(1).setCellStyle(boldCellStyle); // "값" 셀에 Bold 적용
 
                 int startRow = rowNum;
+                // Bold 스타일과 배경색(#94DCF8) 설정 (for문 밖에서 한 번만 생성)
+                CellStyle boldAndBlueCellStyle = workbook.createCellStyle();
+                boldAndBlueCellStyle.setFont(boldFont); // 기존 boldFont 재사용
+
+                // 배경색 설정
+                XSSFColor blueBackgroundColor = new XSSFColor(new java.awt.Color(148, 220, 248), null); // #94DCF8 색상
+                ((XSSFCellStyle) boldAndBlueCellStyle).setFillForegroundColor(blueBackgroundColor);
+                boldAndBlueCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
                 for (Map<String, Object> ratio : ratioResults) {
                     Row ratioRow = sheet.createRow(rowNum++);
 
                     // 날짜 설정
                     Object periodObj = ratio.get("period");
                     ratioRow.createCell(0).setCellValue(periodObj != null ? periodObj.toString() : "");
+                    ratioRow.getCell(0).setCellStyle(boldAndBlueCellStyle); // Bold와 배경색 적용
 
                     // 값이 존재하고, 숫자 타입인지 확인 후 정수로 변환하여 설정
                     Object estimatedValueObj = ratio.get("estimatedValue");
@@ -337,7 +424,8 @@ public class TestService {
             }
 
             // 각 열의 너비를 자동으로 조정
-            sheet.autoSizeColumn(0); // 첫 번째 열 너비 자동 조정
+            // 열의 너비를 조정
+            sheet.setColumnWidth(0, 3500); // 첫 번째 열 (기기별 검색량 제목)
             sheet.autoSizeColumn(1); // 두 번째 열 너비 자동 조정
 
             // 4. 엑셀 파일로 출력
