@@ -32,10 +32,6 @@ p {
     margin: 20px 0 30px;
 }
 
-span {
-    font-size: 12px;
-}
-
 a {
     color: #333;
     font-size: 14px;
@@ -272,6 +268,7 @@ footer a {
     margin-right: 5px;
 }
 
+.birthdate-container span,
 .gender-container span {
     font-size: 18px;
 }

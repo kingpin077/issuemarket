@@ -80,7 +80,7 @@
         <div class="intro-section" style="margin: auto">
             <h2 class="input-header" th:utext="#{trend.platform.description}"><strong>이슈마켓,</strong>실시간 인기 키워드를<br><br>빠르고 간편하게 확인할 수 있는 트렌드 플랫폼</h2><br>
             <div class="element-input-field-with">
-                <form id="keywordForm" action="/searchKeyword" method="get" class="d-flex">
+                <form id="keywordForm" action="/searchKeyword" method="get" class="d-flex" onsubmit="return validateKeyword()">
                     <div class="form-group mr-2" style="flex: 1;">
                         <input type="text" id="keyword_search" name="keyword_search" class="form-control" th:placeholder="#{search_placeholder}" required>
                     </div>
@@ -229,6 +229,16 @@
         setupPaginationListeners();
         loadTrendingVideos();
     });
+
+    //유효성 검사
+    function validateKeyword() {
+        const keywordInput = document.getElementById('keyword_search').value;
+        if (/\s/.test(keywordInput)) { // 공백 포함 여부 검사
+            alert('검색어에 공백이 포함되어 있습니다. 공백 없이 입력해주세요.');
+            return false; // 폼 제출 막기
+        }
+        return true; // 폼 제출 허용
+    }
 
     function setupUI() {
         var menuButton = document.getElementById('menu-button');
