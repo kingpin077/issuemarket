@@ -156,10 +156,10 @@ public class PageController {
 
     @GetMapping("/movie")
     public String movie(@RequestParam(defaultValue = "0") int page, Model model) {
-        Page<TestDTO> webtoons = testService.findAllByTagOrderByDescPaged("webtoon", page);
+        Page<TestDTO> movie = testService.findAllByTagOrderByDescPaged("movie", page);
 
         // NewsApi 호출 로직
-        for (TestDTO webtoon : webtoons.getContent()) {
+        for (TestDTO webtoon : movie.getContent()) {
             try {
                 ResponseEntity<Map<String, Object>> responseEntity =
                         newsApiController.search(webtoon.getKeyword(), "1", "1", "sim");
@@ -183,9 +183,9 @@ public class PageController {
             }
         }
 
-        int totalPages = Math.min(webtoons.getTotalPages(), 7); // 최대 7페이지로 제한
+        int totalPages = Math.min(movie.getTotalPages(), 7); // 최대 7페이지로 제한
 
-        model.addAttribute("keywords", webtoons.getContent());
+        model.addAttribute("keywords", movie.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
         return "movie";
@@ -193,10 +193,10 @@ public class PageController {
 
     @GetMapping("/music")
     public String music(@RequestParam(defaultValue = "0") int page, Model model) {
-        Page<TestDTO> webtoons = testService.findAllByTagOrderByDescPaged("webtoon", page);
+        Page<TestDTO> music = testService.findAllByTagOrderByDescPaged("music", page);
 
         // NewsApi 호출 로직
-        for (TestDTO webtoon : webtoons.getContent()) {
+        for (TestDTO webtoon : music.getContent()) {
             try {
                 ResponseEntity<Map<String, Object>> responseEntity =
                         newsApiController.search(webtoon.getKeyword(), "1", "1", "sim");
@@ -220,9 +220,9 @@ public class PageController {
             }
         }
 
-        int totalPages = Math.min(webtoons.getTotalPages(), 7); // 최대 7페이지로 제한
+        int totalPages = Math.min(music.getTotalPages(), 7); // 최대 7페이지로 제한
 
-        model.addAttribute("keywords", webtoons.getContent());
+        model.addAttribute("keywords", music.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
         return "music";
