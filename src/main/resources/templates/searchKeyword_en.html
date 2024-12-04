@@ -38,7 +38,7 @@
 
     <!-- 로그인/로그아웃 버튼 설정 -->
     <div class="items">
-        <form id="keywordForm" action="/searchKeyword" method="post" class="d-flex">
+        <form id="keywordForm" action="/searchKeyword" method="get" class="d-flex">
             <div class="header-input">
                 <input type="text" id="keyword_search" name="keyword_search" class="form-control" placeholder="Enter keyword to search" required>
             </div>
@@ -187,10 +187,36 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const headerSearchButton = document.getElementById('header-search');
         const keywordForm = document.getElementById('keywordForm');
+        const headerSearchButton = document.getElementById('header-search');
 
-        headerSearchButton.addEventListener('click', function () {
+        // 유효성 검사 함수
+        function validateKeyword(event) {
+            const keywordInput = document.getElementById('keyword_search').value;
+
+            // 키워드에 공백 포함 여부 확인
+            if (/\s/.test(keywordInput)) {
+                alert('검색어에 공백이 포함되어 있습니다. 공백 없이 입력해주세요.');
+                if (event) event.preventDefault(); // 폼 제출 중단
+                return false;
+            }
+            return true;
+        }
+
+        // 폼 제출 이벤트
+        keywordForm.addEventListener('submit', function (e) {
+            if (!validateKeyword(e)) {
+                // 유효하지 않으면 동작 중단
+                return;
+            }
+        });
+
+        // 버튼 클릭 이벤트
+        headerSearchButton.addEventListener('click', function (e) {
+            if (!validateKeyword(e)) {
+                // 유효하지 않으면 동작 중단
+                return;
+            }
             keywordForm.submit();
         });
     });
