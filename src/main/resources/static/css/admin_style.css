@@ -119,3 +119,82 @@ body {
 .user-table tr:hover {
     background-color: #444;
 }
+
+/* 차트 전체 컨테이너 스타일 */
+.charts-wrapper{
+    margin-top: 80px; /* 헤더 아래 위치 */
+    padding: 20px;
+    max-height: 80vh; /* 화면 높이의 80%로 제한 */
+    overflow-y: auto; /* 차트가 많을 경우 스크롤 가능 */
+}
+
+/* 개별 차트 컨테이너 스타일 */
+.chart-container {
+    height: 300px; /* 각 차트의 고정 높이 */
+    margin-bottom: 20px; /* 차트 간 간격 */
+    border: 1px solid #444; /* 구분을 위한 테두리 */
+    padding: 10px;
+    background-color: #1f1f1f; /* 차트 배경색 */
+    border-radius: 8px; /* 모서리 둥글게 */
+}
+
+/* 차트 내부 canvas 스타일 */
+.chart-container canvas {
+    width: 100%; /* 너비는 컨테이너에 맞춤 */
+    height: 100%; /* 높이는 고정 */
+}
+
+/* 카드 컨테이너 */
+.visitor-stats {
+    display: flex;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+/* 누적 방문자와 실시간 방문자 카드 스타일 */
+.stat-card {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px; /* 카드 간 여백 */
+    padding: 15px; /* 카드 내부 여백 */
+    background-color: white; /* 배경 색 */
+    border: 1px solid #ddd; /* 테두리 */
+    border-radius: 10px; /* 모서리 둥글게 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약간의 그림자 효과 */
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    margin-right: 20px; /* 아이콘과 텍스트 간 여백 */
+}
+
+.stat-icon img {
+    width: 100%;
+    height: auto;
+}
+
+.stat-info {
+    display: flex;
+    flex-direction: column; /* 세로 정렬 */
+    align-items: flex-start; /* 왼쪽 정렬 */
+}
+
+.stat-count {
+    font-size: 24px; /* 큰 글씨 */
+    font-weight: bold; /* 굵은 글씨 */
+    margin: 0;
+    padding-top: 12px;
+    color: #0A0A0B;
+}
+
+.stat-label {
+    font-size: 14px; /* 작은 글씨 */
+    color: #666; /* 약간 어두운 색 */
+    padding-top: 8px;
+    display: block;
+}
+
+.visitor-container{
+    padding: 20px;
+}

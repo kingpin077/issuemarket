@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 페이지</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/globals.css">
+    <link rel="stylesheet" href="/css/admin_style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="header-wrapper" id="header-wrapper">
+    <div class="menu-button-wrapper">
+        <button type="button" class="btn btn-light" id="menu-button">
+            <img class="img" src="https://c.animaapp.com/Z0sstfyg/img/list.svg" />
+        </button>
+        <a class="issue-market-title btn btn-link d-flex align-items-center" href="/index">
+            <img src="/css/image/logo_black.png" alt="Logo" style="height: 60px; width: 110px; margin-left: 5px">
+            <span>&nbsp;Issue Market</span>
+        </a>
+    </div>
+    <div class="items">
+        <button type="button" class="btn btn-danger" sec:authorize="hasAuthority('ROLE_ADMIN')" onclick="location.href='/admin'">
+            <div class="text-wrapper-17">관리자 페이지</div>
+        </button>
+        <button type="button" class="btn btn-dark" sec:authorize="isAuthenticated()" onclick="location.href='/logout'">
+            <div class="text-wrapper-17">로그아웃</div>
+        </button>
+        <button type="button" class="btn btn-dark" sec:authorize="!isAuthenticated()" onclick="location.href='/login'">
+            <div class="text-wrapper-17">로그인</div>
+        </button>
+    </div>
+</div>
+
+<div class="sidebar-wrapper" id="sidebar">
+    <div class="sidebar-menu">
+        <a href="/admin" class="sidebar-item" id="user-list-link">회원 조회</a>
+        <a href="/admin/chart" class="sidebar-item" id="site-stats-link">사이트 통계</a>
+    </div>
+</div>
+
+<div class="charts-wrapper">
+    <!-- 첫 번째 차트 -->
+    <div class="chart-container">
+        <h2>CPU 사용률</h2>
+        <p>현재 사용률: <span id="cpu-usage">0%</span></p>
+        <canvas id="cpuChart"></canvas>
+    </div>
+
+    <div class="chart-container">
+        <h2>날짜별 방문자 수</h2>
+        <canvas id="visitorChart"></canvas>
+    </div>
+</div>
+
+
+
+
+<div class="visitor-container">
+<div class="visitor-stats">
+    <!-- 실시간 방문자 -->
+    <div class="stat-card">
+        <div class="stat-icon">
+            <img src="/css/image/user-286.svg" alt="Active User Icon">
+        </div>
+        <div class="stat-info">
+            <p class="stat-count" id="active-visitors">0</p>
+            <p class="stat-label">실시간 방문자 수</p>
+        </div>
+    </div>
+    <!-- 메모리 사용률 -->
+    <div class="stat-card">
+        <div class="stat-icon">
+            <img src="/css/image/ram.png" alt="Memory Icon">
+        </div>
+        <div class="stat-info">
+            <p class="stat-count" id="memory-usage">0%</p>
+            <p class="stat-label">메모리 사용률</p>
+        </div>
+    </div>
+
+</div>
+</div>
+
+<script>
+    // JavaScript 코드: 차트를 생성하고 업데이트
+    const ctx = document.getElementById('cpuChart').getContext('2d');
+    const cpuUsageEl = document.getElementById('cpu-usage');
+
+    const cpuChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [], // 시간대
+            datasets: [{
+                label: 'CPU Usage (%)',
+                data: [], // CPU 사용률
+                borderColor: 'blue',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // 비율 고정 해제
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100
+                }
+            }
+        }
+    });
+
+    // 페이지 로드 시 초기 데이터 가져오기
+    async function initializeChart() {
+        try {
+            const response = await fetch('/admin/cpu-usage-latest'); // 최근 18개 데이터 가져오기
+            const data = await response.json();
+
+            // 데이터를 차트에 추가
+            data.forEach(entry => {
+                const timeLabel = new Date(entry.timestamp).toLocaleTimeString(); // 시간 라벨
+                cpuChart.data.labels.push(timeLabel);
+                cpuChart.data.datasets[0].data.push(entry.cpuUsage);
+            });
+
+            cpuChart.update(); // 차트 업데이트
+        } catch (error) {
+            console.error('Error initializing chart:', error);
+        }
+    }
+
+    // 현재 사용률 업데이트 함수
+    async function updateCurrentUsage() {
+        try {
+            const response = await fetch('/admin/cpu-usage');
+            const data = await response.json();
+            cpuUsageEl.textContent = `${data.currentUsage.toFixed(2)}%`;
+        } catch (error) {
+            console.error('Error fetching current usage:', error);
+        }
+    }
+
+    // 차트 데이터 업데이트 함수
+    async function updateChart() {
+        try {
+            const response = await fetch('/admin/cpu-usage-latest'); // 최신 18개 데이터 가져오기
+            const data = await response.json();
+
+            // 차트 데이터 초기화
+            cpuChart.data.labels = [];
+            cpuChart.data.datasets[0].data = [];
+
+            // 데이터 추가
+            data.forEach(entry => {
+                const timeLabel = new Date(entry.timestamp).toLocaleTimeString(); // 시간 라벨
+                cpuChart.data.labels.push(timeLabel);
+                cpuChart.data.datasets[0].data.push(entry.cpuUsage);
+            });
+
+            cpuChart.update(); // 차트 업데이트
+        } catch (error) {
+            console.error('Error updating chart:', error);
+        }
+    }
+
+    // 방문자 통계 업데이트 함수
+    async function updateVisitorStats() {
+        try {
+            const response = await fetch('/admin/active-visitors');
+            const data = await response.json();
+
+            // 실시간 방문자 수 갱신
+            document.getElementById('active-visitors').textContent = `${data.activeVisitors}명`;
+        } catch (error) {
+            console.error('Error fetching visitor stats:', error);
+        }
+    }
+
+    // 메모리 사용률 업데이트 함수
+    async function updateMemoryUsage() {
+        try {
+            const response = await fetch('/admin/memory-usage'); // 메모리 사용률 API 호출
+            const data = await response.json();
+            const memoryUsage = data.memoryUsage.toFixed(2); // 소수점 둘째 자리까지 표시
+            document.getElementById('memory-usage').textContent = `${memoryUsage}%`;
+        } catch (error) {
+            console.error('Error fetching memory usage:', error);
+        }
+    }
+
+    // 날짜별 방문자 차트
+    async function fetchDailyVisitors() {
+        try {
+            const response = await fetch('/admin/daily-visitors');
+            const data = await response.json();
+
+            const labels = data.map(visitor => visitor.date);
+            const values = data.map(visitor => visitor.totalVisitors);
+
+            const visitorCtx = document.getElementById('visitorChart').getContext('2d');
+            new Chart(visitorCtx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '날짜별 방문자 수',
+                        data: values,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        } catch (error) {
+            console.error('Error fetching daily visitors:', error);
+        }
+    }
+
+    // 페이지 로드 시 초기화
+    window.onload = async function () {
+        await initializeChart(); // 초기 CPU 사용률 차트 데이터
+        await fetchDailyVisitors(); // 초기 날짜별 방문자 차트 데이터
+        await updateChart(); // CPU 차트 데이터 갱신
+        updateCurrentUsage(); // 현재 사용률 업데이트
+        updateMemoryUsage(); // 메모리 사용률 업데이트
+        updateVisitorStats(); // 방문자 통계 업데이트
+    };
+
+    // 실시간 데이터 갱신 설정
+    setInterval(updateMemoryUsage, 10000); // 10초마다 메모리 사용률 갱신
+    setInterval(updateVisitorStats, 10000); // 10초마다 방문자 통계 갱신
+    setInterval(updateChart, 60000); // 1분마다 CPU 차트 데이터 갱신
+    setInterval(updateCurrentUsage, 10000); // 10초마다 CPU 현재 사용률 갱신
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const menuButton = document.getElementById('menu-button');
+        const sidebar = document.getElementById('sidebar');
+        const userListLink = document.getElementById('user-list-link');
+
+        // 사이드바 메뉴 토글
+        menuButton.addEventListener('click', function () {
+            sidebar.classList.toggle('sidebar-visible');
+        });
+
+        // 사이드바 "회원 조회" 메뉴 클릭 시 페이지 이동
+        userListLink.addEventListener('click', function (event) {
+            event.preventDefault();
+            window.location.href = '/admin'; // /admin 경로로 이동
+        });
+    });
+</script>
+
+</body>
+</html>
